@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=0.9">
+<title>Timeline: Numerology of the Heart</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-dim: #a08438;
+  --cream: #f5f0e8;
+  --mist: #e8e4dc;
+  --ember: #8b3a2a;
+  --ember-glow: #d4613a;
+  --sage: #4a6741;
+  --sage-light: #6a9460;
+  --void: #0d0b0a;
+  --dark-bg: #1a1210;
+  --bone: #f5f0e8;
+  --dawn-blue: #3a5070;
+  --dawn-gold: #c9b87c;
+  --alpine-green: #2a5a20;
+  --river-blue: #4a7a9a;
+  --storm-red: #5a2018;
+  --blood-moon: #b43c28;
+  --moonlight: #e0ddd2;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--cream);
+  color: #1a1210;
+  overflow-x: hidden;
+  transition: background 2s ease, color 2s ease;
+}
+body.dark {
+  background: var(--dark-bg);
+  color: #d4c4b8;
+}
+body.cover-active { overflow: hidden; }
+
+/* Parchment noise overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════
+   COVER PAGE
+   ═══════════════════════════════ */
+#cover {
+  position: fixed; inset: 0; z-index: 10000;
+  background: #000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  text-align: center;
+  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+#cover.farewell { opacity: 0; pointer-events: none; }
+.cover-bg-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center center;
+  z-index: 0; display: block;
+  transition: opacity 2s ease;
+}
+.cover-bg-video.clone {
+  z-index: 0;
+}
+.cover-grade {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 28%, transparent 45%);
+  pointer-events: none;
+}
+.cover-vignette {
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0,0,0,0.15) 100%);
+  pointer-events: none;
+}
+#cover-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 2; display: block;
+}
+.cover-content {
+  position: relative; z-index: 2;
+  padding: 40px 32px 32px;
+  max-width: 600px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 60%, transparent 100%);
+  width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+}
+.cover-lotus-wrap {
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: lotusFadeIn 3.5s ease 0.3s forwards;
+}
+.cover-lotus {
+  width: clamp(220px, 40vw, 340px); height: auto;
+  filter: drop-shadow(0 0 12px rgba(201,168,76,0.15));
+  animation: lotusBreath 6s ease-in-out 3.8s infinite;
+}
+@keyframes lotusFadeIn {
+  from { opacity: 0; transform: scale(0.85) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes lotusBreath {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(201,168,76,0.12)); }
+  50% { filter: drop-shadow(0 0 28px rgba(201,168,76,0.3)); }
+}
+@keyframes coverTextIn {
+  from { opacity: 0; transform: translateY(16px); letter-spacing: 0.3em; }
+  to { opacity: 1; transform: translateY(0); letter-spacing: 0.12em; }
+}
+.cover-sub {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 1.15rem; color: #b8a888;
+  margin-bottom: 4px; opacity: 0;
+  animation: coverTextIn 2s ease 1.8s forwards;
+}
+.cover-sub-code {
+  font-family: 'Cinzel', serif; font-size: 0.6rem;
+  letter-spacing: 0.18em; color: #c9a84c;
+  opacity: 0; margin-bottom: 36px;
+  animation: coverTextIn 2s ease 2.1s forwards;
+}
+.cover-divider {
+  width: 100px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 36px; opacity: 0;
+  animation: coverTextIn 2s ease 2.2s forwards;
+}
+.cover-invocation {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.92rem; color: #6b5d4f;
+  line-height: 2; margin-bottom: 56px; opacity: 0;
+  animation: coverTextIn 2.5s ease 2.6s forwards;
+}
+.cover-begin {
+  font-family: 'Cinzel', serif; font-size: 0.72rem;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold); background: transparent;
+  border: 1px solid rgba(201,168,76,0.4);
+  padding: 14px 42px; cursor: pointer;
+  transition: all 0.5s ease; opacity: 0;
+  animation: coverTextIn 2s ease 3.4s forwards;
+}
+.cover-begin:hover {
+  background: rgba(201,168,76,0.12);
+  border-color: var(--gold);
+  box-shadow: 0 0 30px rgba(201,168,76,0.15), inset 0 0 30px rgba(201,168,76,0.06);
+  letter-spacing: 0.4em;
+}
+
+/* ═══════════════════════════════
+   LANDSCAPE CANVAS SYSTEM
+   ═══════════════════════════════ */
+#landscape-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity 2s ease;
+}
+#landscape-canvas.active { opacity: 1; }
+
+/* ═══════════════════════════════
+   PHASE BACKGROUNDS
+   ═══════════════════════════════ */
+.phase-section { position: relative; transition: background 2.5s ease; }
+.phase-bg {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+  overflow: hidden; transition: opacity 2s ease;
+}
+.phase-origin .phase-bg {
+  background: radial-gradient(ellipse at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 60%),
+              linear-gradient(180deg, var(--cream) 0%, #f0ead8 100%);
+}
+.phase-meeting .phase-bg {
+  background: radial-gradient(ellipse at 30% 40%, rgba(176,128,64,0.05) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 60%, rgba(201,168,76,0.04) 0%, transparent 50%),
+              linear-gradient(180deg, #f3ede2 0%, #f5f0e8 100%);
+}
+.phase-summer .phase-bg {
+  background: radial-gradient(ellipse at 50% 30%, rgba(74,103,65,0.07) 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 70%, rgba(106,148,96,0.05) 0%, transparent 50%),
+              linear-gradient(180deg, #f2efe5 0%, #eef4eb 50%, #f5f0e8 100%);
+}
+.phase-shadow .phase-bg {
+  background: radial-gradient(ellipse at 50% 40%, rgba(139,58,42,0.08) 0%, transparent 50%),
+              linear-gradient(180deg, var(--dark-bg) 0%, #0d0806 50%, #1a1210 100%);
+}
+.phase-transmutation .phase-bg {
+  background: radial-gradient(ellipse at 50% 60%, rgba(74,103,65,0.06) 0%, transparent 50%),
+              linear-gradient(180deg, #eef3eb 0%, #f5f0e8 100%);
+}
+
+/* Atmospheric lighting overlays */
+.phase-section::before {
+  content: ''; position: absolute; inset: 0;
+  pointer-events: none; z-index: 1; transition: all 3s ease;
+}
+.phase-origin::before {
+  background: radial-gradient(ellipse at 80% 60%, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 30%, transparent 60%);
+}
+.phase-summer::before {
+  background: radial-gradient(ellipse at 50% 10%, rgba(255,240,200,0.1) 0%, rgba(200,220,180,0.04) 40%, transparent 70%);
+}
+.phase-shadow::before {
+  background: radial-gradient(ellipse at 50% 100%, rgba(139,58,42,0.06) 0%, rgba(100,30,15,0.03) 30%, transparent 50%);
+}
+.phase-transmutation::before {
+  background: radial-gradient(ellipse at 20% 20%, rgba(201,184,124,0.1) 0%, rgba(180,200,160,0.04) 35%, transparent 65%);
+}
+
+/* ═══════════════════════════════
+   NAV
+   ═══════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px;
+  padding: 12px 24px;
+  background: rgba(245,240,232,0.92);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+  transition: all 2s ease, transform 0.6s ease;
+  transform: translateY(-100%);
+}
+nav.visible { transform: translateY(0); }
+body.dark nav {
+  background: rgba(26,18,16,0.95);
+  border-bottom-color: rgba(139,58,42,0.1);
+}
+.nav-left, .nav-right { display: flex; gap: 8px; align-items: center; }
+.nav-center {
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.nav-phase-indicator {
+  font-family: 'Cinzel', serif; font-size: 0.55rem;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.6; transition: all 0.8s ease;
+}
+nav[data-phase="shadow"] .nav-phase-indicator { color: var(--ember); }
+nav[data-phase="transmutation"] .nav-phase-indicator { color: var(--sage); }
+
+.nav-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+  background: transparent; color: var(--gold);
+  cursor: pointer; border-radius: 20px;
+  transition: all 0.3s ease;
+}
+.nav-btn:hover, .nav-btn.active { background: var(--gold); color: #1a1210; }
+
+/* FILTER BAR */
+#filter-bar {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px; padding: 14px 20px;
+  max-width: 900px; margin: 0 auto;
+}
+#filter-bar.hidden { display: none; }
+.fchip {
+  font-family: 'Cinzel', serif; font-size: 0.56rem; letter-spacing: 0.12em;
+  padding: 3px 11px; border: 1px solid rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.03); color: var(--gold);
+  cursor: pointer; border-radius: 20px; transition: all 0.25s;
+}
+.fchip:hover { background: rgba(201,168,76,0.12); }
+.fchip.on { background: var(--gold); color: #1a1210; }
+
+/* VIEWS */
+#tl-view, #cs-view { position: relative; z-index: 1; }
+#cs-view { display: none; }
+
+/* ═══════════════════════════════
+   HEADER
+   ═══════════════════════════════ */
+header {
+  text-align: center; padding: 120px 20px 56px;
+  position: relative; z-index: 1;
+}
+.sigil {
+  font-size: 1.7rem; letter-spacing: 0.3em; color: var(--gold);
+  opacity: 0.55; margin-bottom: 22px;
+  animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% { opacity: 0.38; transform: scale(1); }
+  50% { opacity: 0.72; transform: scale(1.025); }
+}
+h1 {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 400; letter-spacing: 0.15em; margin-bottom: 10px;
+}
+h1 span { color: var(--gold); }
+.sub {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 1rem; color: #6b5d4f; transition: color 2s;
+}
+body.dark .sub { color: #9a8880; }
+.div {
+  width: 110px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 22px auto;
+}
+.motto {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  color: #8a7a6a; font-size: 0.86rem; transition: color 2s;
+}
+body.dark .motto { color: #7a6a5a; }
+
+/* ═══════════════════════════════
+   TIMELINE
+   ═══════════════════════════════ */
+.tl {
+  max-width: 820px; margin: 0 auto;
+  padding: 10px 24px 80px; position: relative; z-index: 1;
+}
+.tl::before {
+  content: ''; position: absolute;
+  left: 50%; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%, var(--gold) 4%, var(--gold) 37%,
+    #8b6b3d 50%, #3a2018 62%, #5a7a52 78%,
+    var(--gold) 96%, transparent 100%
+  );
+  transform: translateX(-50%);
+}
+
+/* Phase Labels */
+.plabel {
+  text-align: center;
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold); margin: 60px 0 40px;
+  position: relative; z-index: 2; line-height: 1;
+}
+.plabel::before, .plabel::after {
+  content: ''; display: inline-block;
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+  vertical-align: middle; margin: 0 14px; opacity: 0.5;
+}
+.plabel::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.plabel .drop-cap {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.2rem; font-weight: 700;
+  line-height: 0.7; display: inline-block;
+  vertical-align: middle; margin-right: 2px;
+  color: var(--gold);
+  background: linear-gradient(180deg, var(--gold), #a08438);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(201,168,76,0.4));
+  position: relative; top: -2px;
+}
+.plabel.sdw { color: var(--ember); }
+.plabel.sdw .drop-cap {
+  color: var(--ember);
+  background: linear-gradient(180deg, var(--ember-glow), var(--ember));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(139,58,42,0.4));
+}
+.plabel.sdw::before, .plabel.sdw::after { background: linear-gradient(90deg, transparent, var(--ember)); }
+.plabel.sdw::after { background: linear-gradient(90deg, var(--ember), transparent); }
+.plabel.trs { color: var(--sage); }
+.plabel.trs .drop-cap {
+  color: var(--sage);
+  background: linear-gradient(180deg, var(--sage-light), var(--sage));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(74,103,65,0.35));
+}
+.plabel.trs::before, .plabel.trs::after { background: linear-gradient(90deg, transparent, var(--sage)); }
+.plabel.trs::after { background: linear-gradient(90deg, var(--sage), transparent); }
+
+/* ═══════════════════════════════
+   EVENTS
+   ═══════════════════════════════ */
+.ev {
+  display: flex; align-items: flex-start;
+  margin-bottom: 50px; position: relative;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.85s ease, transform 0.85s ease, filter 0.4s ease;
+}
+.ev.in { opacity: 1; transform: translateY(0); }
+.ev.dim { opacity: 0.1; filter: grayscale(0.6); }
+.ev:nth-child(odd) { flex-direction: row-reverse; }
+
+.ec {
+  width: calc(50% - 44px);
+  padding: 24px 28px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+  border-radius: 3px; position: relative; cursor: pointer;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+  border: 1px solid rgba(201,168,76,0.06);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ec:hover {
+  box-shadow: 0 8px 40px rgba(201,168,76,0.1), 0 0 0 1px rgba(201,168,76,0.15);
+  transform: translateY(-4px);
+}
+.ec.open {
+  box-shadow: 0 12px 50px rgba(201,168,76,0.12), 0 0 0 1px rgba(201,168,76,0.2);
+}
+.ev:nth-child(odd) .ec { text-align: right; }
+
+.ec::after {
+  content: ''; position: absolute;
+  top: 22px; width: 44px; height: 1px;
+  background: var(--gold); opacity: 0.25;
+}
+.ev:nth-child(even) .ec::after { right: -44px; }
+.ev:nth-child(odd) .ec::after { left: -44px; }
+
+.ea {
+  position: absolute; bottom: 12px; right: 16px;
+  font-size: 0.65rem; color: var(--gold); opacity: 0.4;
+  transition: opacity 0.3s, transform 0.35s;
+}
+.ev:nth-child(odd) .ea { right: auto; left: 16px; }
+.ec:hover .ea { opacity: 0.9; }
+.ec.open .ea { transform: rotate(180deg); opacity: 1; }
+
+/* Detail expand */
+.detail {
+  max-height: 0; overflow: hidden; opacity: 0;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.82rem; line-height: 1.85;
+  color: #7a6a5a; font-style: italic;
+  transition: max-height 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, margin 0.4s ease;
+}
+.ec.open .detail {
+  max-height: 500px; opacity: 1;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid rgba(201,168,76,0.1);
+}
+
+.edate {
+  font-family: 'Cinzel', serif; font-size: 0.56rem;
+  letter-spacing: 0.2em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 8px; opacity: 0.8;
+}
+.etitle {
+  font-family: 'Cinzel', serif; font-size: 1.2rem;
+  font-weight: 600; line-height: 1.3; margin-bottom: 10px;
+  color: #1a1210; letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+body.dark .etitle {
+  color: #d4b8a8;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3), 0 0 20px rgba(139,58,42,0.08);
+}
+.ebody { font-size: 0.88rem; line-height: 1.78; color: #5a4e44; }
+body.dark .ebody { color: #9a8880; }
+
+/* Node */
+.en { position: absolute; left: 50%; transform: translateX(-50%); top: 21px; z-index: 10; }
+.dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--cream);
+  box-shadow: 0 0 0 2px var(--gold);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  animation: dotPulse 3s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px transparent; }
+  50% { box-shadow: 0 0 0 2px var(--gold), 0 0 12px rgba(201,168,76,0.25); }
+}
+.dot:hover {
+  transform: scale(1.6);
+  box-shadow: 0 0 0 3px var(--gold), 0 0 20px rgba(201,168,76,0.4);
+}
+.dot.o {
+  background: white;
+  box-shadow: 0 0 0 2px var(--gold), 0 0 14px rgba(201,168,76,0.4);
+  width: 16px; height: 16px;
+  animation: dotPulseOrigin 3s ease-in-out infinite;
+}
+@keyframes dotPulseOrigin {
+  0%, 100% { box-shadow: 0 0 0 2px var(--gold), 0 0 8px rgba(201,168,76,0.2); }
+  50% { box-shadow: 0 0 0 3px var(--gold), 0 0 20px rgba(201,168,76,0.5); }
+}
+.dot.s {
+  background: var(--ember);
+  box-shadow: 0 0 0 2px var(--ember);
+  border-color: var(--dark-bg);
+  animation: dotPulseShadow 2.5s ease-in-out infinite;
+}
+@keyframes dotPulseShadow {
+  0%, 100% { box-shadow: 0 0 0 2px var(--ember); }
+  50% { box-shadow: 0 0 0 3px var(--ember), 0 0 14px rgba(139,58,42,0.4); }
+}
+.dot.r {
+  background: var(--sage);
+  box-shadow: 0 0 0 2px var(--sage);
+  width: 18px; height: 18px;
+  animation: pg 2.5s ease-in-out infinite;
+}
+@keyframes pg {
+  0%, 100% { box-shadow: 0 0 0 2px var(--sage); }
+  50% { box-shadow: 0 0 0 5px var(--sage), 0 0 20px rgba(74,103,65,0.35); }
+}
+
+/* Tags */
+.tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
+.ev:nth-child(odd) .tags { justify-content: flex-end; }
+.tag {
+  font-family: 'Cinzel', serif; font-size: 0.56rem; letter-spacing: 0.1em;
+  color: var(--gold); border: 1px solid rgba(201,168,76,0.25);
+  padding: 2px 8px; border-radius: 20px; background: rgba(201,168,76,0.03);
+  cursor: pointer; transition: all 0.2s;
+}
+.tag:hover { background: rgba(201,168,76,0.15); }
+.tag.n { color: var(--sage); border-color: rgba(74,103,65,0.25); background: rgba(74,103,65,0.03); }
+.tag.n:hover { background: rgba(74,103,65,0.12); }
+.tag.s { color: var(--ember); border-color: rgba(139,58,42,0.25); background: rgba(139,58,42,0.03); }
+.tag.s:hover { background: rgba(139,58,42,0.12); }
+
+/* Shadow events */
+.ev.sdw .ec {
+  background: rgba(28,20,16,0.95);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 0 40px rgba(139,58,42,0.04);
+  border-color: rgba(139,58,42,0.12);
+}
+.ev.sdw .ec:hover { border-color: rgba(139,58,42,0.25); box-shadow: 0 8px 40px rgba(0,0,0,0.35), 0 0 20px rgba(139,58,42,0.06); }
+.ev.sdw .etitle { color: #d4b8a8; }
+.ev.sdw .ebody { color: #9a8880; }
+.ev.sdw .edate { color: #a07850; }
+.ev.sdw .ec::after { background: var(--ember); }
+.ev.sdw .detail { color: #7a6060; border-top-color: rgba(139,58,42,0.15); }
+
+/* Reunion */
+.ev.reu .ec {
+  background: linear-gradient(135deg, rgba(248,245,240,0.95), rgba(238,244,235,0.95));
+  border-left: 2px solid var(--sage);
+}
+.ev.reu .ec:hover { box-shadow: 0 8px 36px rgba(74,103,65,0.1); }
+
+.spacer { width: 88px; flex-shrink: 0; }
+
+/* ═══════════════════════════════
+   OVERSOUL MESSAGES
+   ═══════════════════════════════ */
+.oversoul-wrap {
+  max-width: 600px; margin: 48px auto;
+  text-align: center; position: relative; z-index: 2;
+}
+.oversoul-message {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 1rem; line-height: 2; color: var(--gold);
+  padding: 32px 28px;
+  border-top: 1px solid rgba(201,168,76,0.12);
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 2.5s ease, transform 2.5s ease;
+}
+.oversoul-message.visible { opacity: 1; transform: translateY(0); }
+.oversoul-message.always-visible { opacity: 1; transform: translateY(0); }
+body.dark .oversoul-message { border-color: rgba(139,58,42,0.12); }
+.oversoul-sigil {
+  font-size: 1.2rem; color: var(--gold); opacity: 0.4;
+  margin-bottom: 16px; letter-spacing: 0.5em;
+  animation: breathe 4s ease-in-out infinite;
+}
+.oversoul-code {
+  font-family: 'Cinzel Decorative', serif; font-size: 1.4rem;
+  color: var(--gold); opacity: 0.3; margin-top: 18px; letter-spacing: 0.15em;
+}
+
+/* ═══════════════════════════════
+   DECODE PANEL
+   ═══════════════════════════════ */
+.decode-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  max-height: 55vh;
+  background: rgba(245,240,232,0.97);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(201,168,76,0.25);
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.12);
+  z-index: 600;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto; padding: 28px 32px 40px;
+}
+.decode-panel.open { transform: translateY(0); }
+body.dark .decode-panel { background: rgba(26,18,16,0.97); }
+.decode-close {
+  position: absolute; top: 12px; right: 18px;
+  font-size: 1.4rem; color: var(--gold); background: none;
+  border: none; cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+}
+.decode-close:hover { opacity: 1; }
+.decode-number {
+  font-family: 'Cinzel Decorative', serif; font-size: 3rem;
+  color: var(--gold); letter-spacing: 0.1em; line-height: 1;
+  text-shadow: 0 0 30px rgba(201,168,76,0.3);
+}
+.decode-name {
+  font-family: 'Cinzel', serif; font-size: 0.7rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-top: 6px;
+}
+.decode-meaning {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.95rem; line-height: 1.9; color: #5a4e44;
+  margin: 18px 0; max-width: 640px;
+}
+body.dark .decode-meaning { color: #9a8880; }
+.decode-divider {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 20px 0;
+}
+.decode-connections h4 {
+  font-family: 'Cinzel', serif; font-size: 0.6rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px;
+}
+.decode-connections ul {
+  list-style: none; display: flex; flex-wrap: wrap; gap: 8px;
+}
+.decode-connections li {
+  font-family: 'Cormorant Garamond', serif; font-size: 0.85rem;
+  padding: 6px 14px; border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 4px; cursor: pointer; transition: all 0.2s; color: #5a4e44;
+}
+.decode-connections li:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+body.dark .decode-connections li { color: #9a8880; }
+
+/* ═══════════════════════════════
+   SACRED MODULES (Shadow, Mirror, Ritual)
+   ═══════════════════════════════ */
+.sacred-module {
+  position: fixed; inset: 0; z-index: 8000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.8s ease;
+}
+.sacred-module.open { opacity: 1; pointer-events: auto; }
+.module-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(13,11,10,0.92); backdrop-filter: blur(12px);
+}
+.module-content {
+  position: relative; z-index: 1;
+  max-width: 700px; width: 90%; max-height: 85vh;
+  overflow-y: auto; padding: 48px 40px;
+  background: rgba(26,18,16,0.95);
+  border: 1px solid rgba(201,168,76,0.1); border-radius: 4px;
+}
+.module-close {
+  position: absolute; top: 16px; right: 20px;
+  font-size: 1.4rem; color: var(--gold); background: none;
+  border: none; cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+}
+.module-close:hover { opacity: 1; }
+.module-header { text-align: center; margin-bottom: 36px; }
+.module-header h2 {
+  font-family: 'Cinzel Decorative', serif; font-size: 1.6rem;
+  letter-spacing: 0.12em; margin-bottom: 8px;
+}
+.shadow-module .module-header h2 { color: var(--ember); }
+.mirror-module .module-header h2 { color: var(--gold); }
+.ritual-module .module-header h2 { color: var(--sage); }
+.module-subtitle {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  color: #7a6a5a; font-size: 0.9rem;
+}
+.shadow-prompts { display: flex; flex-direction: column; gap: 24px; }
+.shadow-prompt {
+  padding: 24px; border: 1px solid rgba(139,58,42,0.15);
+  border-radius: 4px; background: rgba(139,58,42,0.03);
+  transition: border-color 0.3s, background 0.3s;
+}
+.shadow-prompt:hover { border-color: rgba(139,58,42,0.3); background: rgba(139,58,42,0.06); }
+.shadow-prompt h3 {
+  font-family: 'Cinzel', serif; font-size: 1rem;
+  color: var(--ember-glow); margin-bottom: 8px;
+}
+.shadow-prompt p {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  color: #9a7a6a; font-size: 0.88rem; margin-bottom: 16px;
+}
+.prompt-btn, .ritual-btn {
+  font-family: 'Cinzel', serif; font-size: 0.62rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  background: transparent; padding: 8px 20px;
+  cursor: pointer; border-radius: 20px; transition: all 0.3s;
+}
+.prompt-btn { color: var(--ember); border: 1px solid rgba(139,58,42,0.3); }
+.prompt-btn:hover { background: rgba(139,58,42,0.1); border-color: var(--ember); }
+.ritual-btn { color: var(--sage); border: 1px solid rgba(74,103,65,0.3); }
+.ritual-btn:hover { background: rgba(74,103,65,0.1); border-color: var(--sage); }
+
+/* Shadow Reflection Steps */
+.reflection-step {
+  text-align: center; animation: fadeUp 0.8s ease;
+  padding: 20px 0;
+}
+.reflection-step .step-text {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 1.05rem; line-height: 2; color: #d4c4b8;
+  margin-bottom: 20px;
+}
+.reflection-step textarea {
+  width: 100%; font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem; padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.15); border-radius: 4px;
+  color: #d4c4b8; resize: vertical; min-height: 80px;
+  outline: none; transition: border-color 0.3s;
+}
+.reflection-step textarea:focus { border-color: rgba(201,168,76,0.4); }
+.reflection-step .step-affirmation {
+  font-family: 'Cinzel', serif; font-size: 0.95rem;
+  color: var(--gold); line-height: 1.8; letter-spacing: 0.03em;
+}
+.step-continue {
+  font-family: 'Cinzel', serif; font-size: 0.6rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); background: transparent;
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 10px 28px; cursor: pointer; border-radius: 20px;
+  margin-top: 20px; transition: all 0.3s;
+}
+.step-continue:hover { background: rgba(201,168,76,0.1); }
+
+/* Mirror Module */
+.mirror-conversation {
+  min-height: 200px; max-height: 50vh; overflow-y: auto;
+  margin-bottom: 24px; padding: 16px 0;
+}
+.mirror-msg { margin-bottom: 20px; animation: fadeUp 0.6s ease; }
+.mirror-msg.user { text-align: right; }
+.mirror-msg .mirror-bubble {
+  display: inline-block; max-width: 85%;
+  padding: 16px 20px; border-radius: 4px;
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.92rem; line-height: 1.85; color: #d4c4b8;
+}
+.mirror-msg.user .mirror-bubble {
+  background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.15);
+  text-align: left;
+}
+.mirror-msg.assistant .mirror-bubble {
+  background: rgba(74,103,65,0.05); border: 1px solid rgba(74,103,65,0.12);
+}
+.mirror-input-area { display: flex; gap: 12px; align-items: flex-end; }
+#mirror-input {
+  flex: 1; font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem; padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 4px; color: #d4c4b8;
+  resize: none; outline: none; transition: border-color 0.3s;
+}
+#mirror-input:focus { border-color: rgba(201,168,76,0.4); }
+.mirror-send {
+  font-family: 'Cinzel', serif; font-size: 0.6rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); background: transparent;
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 10px 20px; cursor: pointer; border-radius: 20px;
+  transition: all 0.3s; white-space: nowrap;
+}
+.mirror-send:hover { background: rgba(201,168,76,0.1); }
+
+/* Ritual Steps */
+.ritual-step-display {
+  text-align: center; padding: 30px 0;
+  animation: fadeUp 0.8s ease;
+}
+.ritual-step-num {
+  font-family: 'Cinzel', serif; font-size: 0.55rem;
+  letter-spacing: 0.2em; color: var(--sage); opacity: 0.6;
+  margin-bottom: 16px;
+}
+.ritual-instruction {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 1.05rem; line-height: 2; color: #d4c4b8;
+  margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;
+}
+.ritual-timer {
+  font-family: 'Cinzel Decorative', serif; font-size: 2rem;
+  color: var(--sage); opacity: 0.5; margin-bottom: 20px;
+  letter-spacing: 0.1em;
+}
+.ritual-complete {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 1.1rem; color: var(--sage); line-height: 2;
+}
+.ritual-complete .ritual-code-display {
+  font-family: 'Cinzel Decorative', serif; font-size: 2.5rem;
+  color: var(--sage); opacity: 0.4; margin-top: 20px;
+}
+
+/* Numerological Clock */
+.numero-clock {
+  position: fixed; bottom: 22px; left: 22px;
+  font-family: 'Cinzel', serif; font-size: 0.6rem;
+  letter-spacing: 0.15em; color: var(--gold); opacity: 0.4;
+  z-index: 300; transition: opacity 0.5s, text-shadow 0.5s;
+  display: flex; align-items: center; gap: 8px;
+}
+.numero-clock.resonant {
+  opacity: 0.9;
+  text-shadow: 0 0 15px rgba(201,168,76,0.4);
+}
+
+/* ═══════════════════════════════
+   CONSTELLATION VIEW
+   ═══════════════════════════════ */
+#cs-view { min-height: 100vh; padding: 100px 20px 60px; }
+.cstitle {
+  text-align: center; font-family: 'Cinzel', serif;
+  font-size: 0.65rem; letter-spacing: 0.28em; color: var(--gold);
+  margin-bottom: 36px; text-transform: uppercase;
+}
+#ccanvas { display: block; margin: 0 auto; border-radius: 3px; cursor: pointer; }
+.legend {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 16px; margin-top: 28px;
+}
+.li { display: flex; align-items: center; gap: 7px; font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.13em; color: #8a7a6a; }
+.ld { width: 9px; height: 9px; border-radius: 50%; }
+
+/* Constellation side panel */
+#cs-panel {
+  position: fixed; top: 0; right: 0;
+  width: 380px; max-width: 90vw; height: 100vh;
+  background: rgba(245,240,232,0.97);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(201,168,76,0.2);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.1);
+  z-index: 500;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto; padding: 0;
+}
+#cs-panel.open { transform: translateX(0); }
+body.dark #cs-panel { background: rgba(26,18,16,0.97); }
+.panel-close {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; justify-content: flex-end;
+  padding: 16px 20px; background: inherit;
+}
+.panel-close button {
+  font-family: 'Cinzel', serif; font-size: 0.7rem;
+  letter-spacing: 0.2em; color: var(--gold);
+  background: none; border: 1px solid rgba(201,168,76,0.3);
+  padding: 4px 14px; cursor: pointer; border-radius: 20px;
+  transition: all 0.2s;
+}
+.panel-close button:hover { background: rgba(201,168,76,0.1); }
+.panel-body { padding: 0 28px 40px; }
+.panel-phase {
+  font-family: 'Cinzel', serif; font-size: 0.54rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+}
+.panel-title {
+  font-family: 'Cinzel', serif; font-size: 1.4rem;
+  font-weight: 600; color: #1a1210; margin-bottom: 6px; line-height: 1.3;
+}
+body.dark .panel-title { color: #d4b8a8; }
+.panel-date {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.85rem; color: #8a7a6a; margin-bottom: 20px;
+}
+.panel-divider {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 20px;
+}
+.panel-text { font-size: 0.92rem; line-height: 1.85; color: #5a4e44; margin-bottom: 16px; }
+body.dark .panel-text { color: #9a8880; }
+.panel-detail {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.85rem; line-height: 1.9; color: #7a6a5a;
+  padding-top: 16px; border-top: 1px solid rgba(201,168,76,0.12);
+}
+body.dark .panel-detail { color: #8a7a6a; }
+.panel-codes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+.panel-codes .tag { font-size: 0.58rem; }
+
+/* ═══════════════════════════════
+   FOOTER
+   ═══════════════════════════════ */
+footer {
+  text-align: center; padding: 56px 20px 80px;
+  font-family: 'IM Fell English', serif; font-style: italic;
+  color: #8a7a6a; font-size: 0.88rem; letter-spacing: 0.04em;
+  position: relative; z-index: 1;
+}
+footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal; }
+
+/* Audio button */
+.abtn {
+  position: fixed; bottom: 22px; right: 22px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold); cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 300; transition: all 0.3s;
+  backdrop-filter: blur(8px);
+}
+.abtn:hover { background: rgba(201,168,76,0.2); transform: scale(1.1); box-shadow: 0 0 16px rgba(201,168,76,0.15); }
+
+/* ═══════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════ */
+@media (max-width: 768px) {
+  .tl::before { left: 20px; }
+  .ev, .ev:nth-child(odd) { flex-direction: column; padding-left: 46px; }
+  .ec { width: 100%; }
+  .ev:nth-child(odd) .ec { text-align: left; }
+  .en { left: 20px; }
+  .ec::after, .ev:nth-child(odd) .ec::after { display: none; }
+  .ev:nth-child(odd) .tags { justify-content: flex-start; }
+  .ev:nth-child(odd) .ea { right: 14px; left: auto; }
+  .spacer { display: none; }
+  nav { justify-content: center; gap: 5px; padding: 10px 16px; }
+  .nav-center { position: static; transform: none; width: 100%; text-align: center; order: -1; margin-bottom: 4px; }
+  .nav-btn { font-size: 0.52rem; padding: 5px 10px; }
+  header { padding: 100px 20px 44px; }
+  .tl { padding: 10px 16px 60px; }
+  .plabel { font-size: 0.7rem; margin: 48px 0 32px; }
+  .plabel .drop-cap { font-size: 1.7rem; }
+  .plabel::before, .plabel::after { width: 24px; margin: 0 8px; }
+  .ev { margin-bottom: 36px; }
+  .ec { padding: 18px 20px; }
+  .etitle { font-size: 1.05rem; }
+  #cs-panel { width: 100vw; max-width: 100vw; }
+  .cover-lotus { width: clamp(180px, 55vw, 260px); }
+  .module-content { width: 95%; padding: 32px 24px; }
+  .decode-panel { max-height: 70vh; padding: 24px 20px 32px; }
+  .decode-number { font-size: 2.4rem; }
+  .numero-clock { display: none; }
+}
+@media (max-width: 420px) {
+  .cover-invocation { font-size: 0.82rem; line-height: 1.9; }
+  .plabel .drop-cap { font-size: 1.4rem; }
+  .plabel { font-size: 0.62rem; letter-spacing: 0.22em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01s !important; transition-duration: 0.1s !important; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════
+   PHOTO GALLERY
+   ═══════════════════════════════ */
+.ev-photos {
+  display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;
+}
+.ev-photo {
+  width: 72px; height: 72px; border-radius: 3px;
+  object-fit: cover; cursor: pointer;
+  border: 1px solid rgba(201,168,76,0.15);
+  opacity: 0.85; transition: all 0.3s;
+}
+.ev-photo:hover {
+  opacity: 1; border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(201,168,76,0.2);
+  transform: scale(1.05);
+}
+.ev:nth-child(odd) .ev-photos { justify-content: flex-end; }
+
+/* Lightbox overlay */
+.lightbox {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+  cursor: pointer;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+  max-width: 90vw; max-height: 85vh;
+  object-fit: contain; border-radius: 4px;
+  box-shadow: 0 0 60px rgba(201,168,76,0.15);
+}
+.lightbox-caption {
+  position: absolute; bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.9rem; color: var(--gold); opacity: 0.7;
+  text-align: center; max-width: 500px;
+}
+.lightbox-close {
+  position: absolute; top: 20px; right: 24px;
+  font-size: 1.6rem; color: var(--gold); background: none;
+  border: none; cursor: pointer; opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.lightbox-close:hover { opacity: 1; }
+.lightbox-nav {
+  position: absolute; top: 50%; font-size: 2rem;
+  color: var(--gold); background: none; border: none;
+  cursor: pointer; opacity: 0.5; transition: opacity 0.2s;
+  transform: translateY(-50%);
+}
+.lightbox-nav:hover { opacity: 1; }
+.lightbox-nav.prev { left: 20px; }
+.lightbox-nav.next { right: 20px; }
+</style>
+</head>
+<body class="cover-active">
+
+<!-- ═══════════════ COVER PAGE ═══════════════ -->
+<div id="cover">
+  <video class="cover-bg-video" id="coverVideo" src="cover-bg.mp4" autoplay muted playsinline preload="auto"></video>
+  <video class="cover-bg-video clone" id="coverVideoClone" src="cover-bg.mp4" muted playsinline preload="auto" style="opacity:0;"></video>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var v1 = document.getElementById('coverVideo');
+    var v2 = document.getElementById('coverVideoClone');
+    v1.muted = true; v2.muted = true;
+    v1.playbackRate = 0.85;
+    v2.playbackRate = 0.85;
+
+    // Start primary video
+    var p = v1.play();
+    if (p && p.catch) p.catch(function(){
+      document.addEventListener('click', function handler() {
+        v1.play(); document.removeEventListener('click', handler);
+      }, {once: true});
+    });
+
+    // Seamless crossfade loop with long blend
+    var fadeTime = 4.0;
+    var active = v1, standby = v2;
+    var fading = false;
+
+    function checkLoop() {
+      if (!active.duration || isNaN(active.duration)) { requestAnimationFrame(checkLoop); return; }
+      var timeLeft = active.duration - active.currentTime;
+
+      if (timeLeft <= fadeTime && !fading) {
+        fading = true;
+        standby.currentTime = 0;
+        standby.play().catch(function(){});
+      }
+
+      if (fading && timeLeft > 0) {
+        var progress = Math.min(1, (fadeTime - timeLeft) / fadeTime);
+        // Smooth ease curve
+        progress = progress * progress * (3 - 2 * progress);
+        active.style.opacity = String(1 - progress);
+        standby.style.opacity = String(progress);
+      }
+
+      if (timeLeft <= 0.1 && fading) {
+        active.pause();
+        active.style.opacity = '0';
+        standby.style.opacity = '1';
+        var temp = active;
+        active = standby;
+        standby = temp;
+        fading = false;
+      }
+
+      requestAnimationFrame(checkLoop);
+    }
+    requestAnimationFrame(checkLoop);
+  });
+  </script>
+  <div class="cover-grade"></div>
+  <div class="cover-vignette"></div>
+  <canvas id="cover-canvas"></canvas>
+  <div class="cover-content">
+    <div class="cover-lotus-wrap">
+      <svg class="cover-lotus" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="lotusGlow">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="strongGlow">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g class="lotus-bloom" transform="translate(160,150)">
+          <path d="M0,-90 C-20,-70 -35,-40 -30,-10 C-25,15 -10,20 0,18 C10,20 25,15 30,-10 C35,-40 20,-70 0,-90Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.3" transform="rotate(-50)"/>
+          <path d="M0,-90 C-20,-70 -35,-40 -30,-10 C-25,15 -10,20 0,18 C10,20 25,15 30,-10 C35,-40 20,-70 0,-90Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.3" transform="rotate(50)"/>
+          <path d="M0,-90 C-20,-70 -35,-40 -30,-10 C-25,15 -10,20 0,18 C10,20 25,15 30,-10 C35,-40 20,-70 0,-90Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.25" transform="rotate(-75)"/>
+          <path d="M0,-90 C-20,-70 -35,-40 -30,-10 C-25,15 -10,20 0,18 C10,20 25,15 30,-10 C35,-40 20,-70 0,-90Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.25" transform="rotate(75)"/>
+          <path d="M0,-82 C-18,-62 -30,-35 -26,-8 C-22,14 -8,18 0,16 C8,18 22,14 26,-8 C30,-35 18,-62 0,-82Z" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.45" transform="rotate(-35)"/>
+          <path d="M0,-82 C-18,-62 -30,-35 -26,-8 C-22,14 -8,18 0,16 C8,18 22,14 26,-8 C30,-35 18,-62 0,-82Z" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.45" transform="rotate(35)"/>
+          <path d="M0,-82 C-18,-62 -30,-35 -26,-8 C-22,14 -8,18 0,16 C8,18 22,14 26,-8 C30,-35 18,-62 0,-82Z" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4" transform="rotate(-60)"/>
+          <path d="M0,-82 C-18,-62 -30,-35 -26,-8 C-22,14 -8,18 0,16 C8,18 22,14 26,-8 C30,-35 18,-62 0,-82Z" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4" transform="rotate(60)"/>
+          <path d="M0,-75 C-15,-55 -25,-30 -22,-5 C-18,12 -6,16 0,14 C6,16 18,12 22,-5 C25,-30 15,-55 0,-75Z" fill="rgba(201,168,76,0.04)" stroke="#c9a84c" stroke-width="1.2" opacity="0.65" transform="rotate(-20)"/>
+          <path d="M0,-75 C-15,-55 -25,-30 -22,-5 C-18,12 -6,16 0,14 C6,16 18,12 22,-5 C25,-30 15,-55 0,-75Z" fill="rgba(201,168,76,0.04)" stroke="#c9a84c" stroke-width="1.2" opacity="0.65" transform="rotate(20)"/>
+          <path d="M0,-72 C-12,-52 -20,-28 -18,-4 C-14,10 -5,14 0,12 C5,14 14,10 18,-4 C20,-28 12,-52 0,-72Z" fill="rgba(201,168,76,0.06)" stroke="#c9a84c" stroke-width="1.3" opacity="0.8"/>
+          <circle cx="0" cy="-2" r="10" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="0" cy="-2" r="5" fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.4"/>
+          <circle cx="0" cy="-2" r="2" fill="#c9a84c" opacity="0.3"/>
+          <path d="M0,10 C-30,5 -55,-10 -65,-30 C-58,-20 -40,-8 -20,2Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.3"/>
+          <path d="M0,10 C30,5 55,-10 65,-30 C58,-20 40,-8 20,2Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.3"/>
+          <path d="M-12,14 C-8,28 -4,38 0,42 C4,38 8,28 12,14" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.35"/>
+          <path d="M-18,12 C-14,22 -6,30 0,32 C6,30 14,22 18,12" fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.25"/>
+        </g>
+        <!-- Sean & October — large and prominent inside lotus -->
+        <text x="160" y="140" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="28" letter-spacing="5" fill="#f5f0e8" filter="url(#lotusGlow)">Sean</text>
+        <text x="160" y="158" text-anchor="middle" font-family="'Cinzel', serif" font-size="13" letter-spacing="6" fill="#c9a84c" opacity="0.8">&amp;</text>
+        <text x="160" y="180" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="28" letter-spacing="5" fill="#f5f0e8" filter="url(#lotusGlow)">October</text>
+        <!-- 666 — large, glowing, prominent below lotus -->
+        <text x="160" y="290" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="42" letter-spacing="16" fill="#c9a84c" filter="url(#strongGlow)" opacity="0.9">666</text>
+        <text x="160" y="290" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="42" letter-spacing="16" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.5">666</text>
+        <!-- Sacred numbers — larger, more visible -->
+        <text x="160" y="325" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="16" letter-spacing="8" fill="#c9a84c" opacity="0.7" filter="url(#lotusGlow)">55 &middot; 34 &middot; 27 &middot; 777</text>
+      </svg>
+    </div>
+    <p class="cover-sub">Timeline: Numerology of the Heart</p>
+    <div class="cover-divider"></div>
+    <p class="cover-invocation">
+      What began as a ritual of remembrance<br>
+      became a doorway to living love.<br>
+      What the codes wrote, the heart confirmed.<br>
+      What the wound tried to destroy, the work reclaimed.<br><br>
+      This is the record.
+    </p>
+    <button class="cover-begin" id="begin-btn">Enter the Timeline</button>
+  </div>
+</div>
+
+<!-- ═══════════════ LANDSCAPE CANVAS ═══════════════ -->
+<canvas id="landscape-canvas"></canvas>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="main-nav">
+  <div class="nav-left">
+    <button class="nav-btn active" id="btn-tl" onclick="showTL()">Timeline</button>
+    <button class="nav-btn" id="btn-cs" onclick="showCS()">Constellation</button>
+  </div>
+  <div class="nav-center">
+    <span class="nav-phase-indicator" id="nav-phase"></span>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn" onclick="toggleFilters()">Codes</button>
+    <button class="nav-btn" onclick="openModule('shadow-module')">Shadow</button>
+    <button class="nav-btn" onclick="openModule('mirror-module')">Mirror</button>
+    <button class="nav-btn abtn-nav" onclick="toggleAudio()">&#9834;</button>
+  </div>
+</nav>
+
+<div id="filter-bar" class="hidden">
+  <span class="fchip" data-code="34">34 &middot; Mother</span>
+  <span class="fchip" data-code="27">27 &middot; Mirror</span>
+  <span class="fchip" data-code="72">72 &middot; Mirror</span>
+  <span class="fchip" data-code="55">55 &middot; Union</span>
+  <span class="fchip" data-code="666">666 &middot; Alchemy</span>
+  <span class="fchip" data-code="43">43 &middot; Sacred</span>
+  <span class="fchip" data-code="33">33 &middot; Master</span>
+  <span class="fchip" data-code="39">39 &middot; Sean</span>
+  <span class="fchip" data-code="48">48 &middot; Soul</span>
+  <span class="fchip" data-code="777">777 &middot; Weeks</span>
+  <span class="fchip" data-code="36">36 &middot; Triangular</span>
+  <span class="fchip" data-code="93">93 &middot; Saturn</span>
+  <span class="fchip" data-code="108">108 &middot; Wholeness</span>
+  <span class="fchip" data-code="11">11 &middot; Gateway</span>
+  <span class="fchip" data-code="">Clear All</span>
+</div>
+
+<!-- ═══════════════ TIMELINE VIEW ═══════════════ -->
+<div id="tl-view">
+
+<header>
+  <div class="sigil">&#10022; &#11043; &#10022;</div>
+  <h1>Sean <span>&</span> October</h1>
+  <p class="sub">A Sacred Chronicle &mdash; May 2025 to April 2026</p>
+  <div class="div"></div>
+  <p class="motto">As within, so without. As above, so below.</p>
+</header>
+
+<!-- ═══════════════ INTRODUCTION: THE LANGUAGE OF NUMBER ═══════════════ -->
+<div style="max-width:720px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;">
+
+  <div style="text-align:center;margin-bottom:40px;">
+    <div class="sigil" style="margin-bottom:16px;">&#10022;</div>
+    <h2 style="font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:400;letter-spacing:0.12em;color:var(--gold);margin-bottom:12px;">Before You Read</h2>
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.95rem;color:#8a7a6a;line-height:1.9;">This timeline speaks in numbers. To understand what it is saying, you need to understand the language it speaks.</p>
+    <div class="div"></div>
+  </div>
+
+  <!-- SECTION: WHAT IS GEMATRIA -->
+  <div style="margin-bottom:44px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">What Is Gematria</h3>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Gematria is the practice of assigning numerical values to letters and words. It is one of the oldest analytical systems in human history — older than algebra, older than chemistry, older than the scientific method itself. The word comes from the Greek <em>geometria</em>, but the practice predates Greece. It was used in ancient Babylon, in Hebrew mysticism, in early Islamic scholarship, and in the esoteric traditions that ran beneath the surface of every major civilization.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      The premise is simple: every letter has a number. Every word, therefore, has a sum. And words that share the same sum share a hidden relationship — a resonance that exists beneath the surface of language. In Hebrew, <em>chai</em> (life) equals 18. In English ordinal gematria, "Sean" equals 39. So does "October." So does "Mirror Flame." So does the month of "May" — the month they met. These are not interpretations. They are calculations. The numbers are either there or they are not.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      There are multiple cipher systems — Ordinal (A=1, B=2), Reverse Ordinal (A=26, B=25), Reduction (digits summed until single), Chaldean (an ancient Babylonian system), Sumerian (Ordinal × 6), and dozens more. Each reveals a different layer. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence shrinks toward zero. What remains is pattern — and the question of what is generating it.
+    </p>
+  </div>
+
+  <!-- SECTION: WHAT IS NUMEROLOGY -->
+  <div style="margin-bottom:44px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">What Is Numerology</h3>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Numerology is the study of the spiritual and symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers mean. It holds that the universe is fundamentally mathematical — that number is not merely a tool humans invented to count things, but a structural property of reality itself.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Pythagoras — the Greek mathematician who proved that the squares of a right triangle's legs equal the square of its hypotenuse — also founded a mystery school that taught numbers as living forces. He did not see mathematics and mysticism as separate disciplines. To him, they were the same inquiry: what is the universe made of? His answer was number. Twenty-five centuries later, quantum physics arrived at a strikingly similar conclusion.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      In numerology, each number carries a specific vibration. 1 is the initiator. 7 is the seeker. 11 is the awakener — a "master number" that is not reduced further because its doubled digit amplifies its frequency. 33 is the master teacher. 55 is the number of transformation and sacred union. When these numbers appear in birth dates, in names, in the timing of events, numerology holds that they are not random — they are the architecture of a life revealing its blueprint.
+    </p>
+  </div>
+
+  <!-- SECTION: WHERE THEY COME FROM -->
+  <div style="margin-bottom:44px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Where They Come From</h3>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      The roots are deep and cross-cultural. Ancient Hebrew scholars used gematria to find hidden connections between Torah passages — if two verses shared the same numerical value, they were understood to be spiritually linked. The Kabbalists built entire cosmological maps from the numerical values of divine names. In Islam, the <em>Abjad</em> system assigned values to Arabic letters and was used to encode meaning into architecture, poetry, and prayer. In ancient Greece, the practice was called <em>isopsephy</em> and was used to find the hidden names of gods.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      These traditions did not borrow from each other. They arose independently across thousands of miles and thousands of years — as if the same insight kept surfacing wherever humans paid close enough attention: that language and number are two expressions of the same underlying structure, and that structure is not arbitrary. It is encoded.
+    </p>
+  </div>
+
+  <!-- SECTION: THE SCIENCE -->
+  <div style="margin-bottom:44px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">The Science: What Has Been Proven</h3>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Modern physics has confirmed several principles that the ancient numerologists intuited without instruments:
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Frequency is fundamental.</strong> Every particle in the universe vibrates at a specific frequency. Atoms are not solid — they are standing waves of energy. Matter is not "stuff" — it is vibration. Nikola Tesla said, "If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration." This is not metaphor. It is experimentally verified quantum mechanics. If everything vibrates, and numbers describe vibration, then numbers are not abstract symbols — they are descriptions of what reality is actually doing.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">The observer affects the observed.</strong> The double-slit experiment — one of the most replicated experiments in physics — demonstrates that subatomic particles behave differently when they are being observed. A photon passes through two slits and creates an interference pattern on the far wall, behaving as a wave. But when a detector is placed at one slit to observe which path the photon takes, the interference pattern collapses and the photon behaves as a particle. Consciousness changes physical outcomes. The universe responds to attention.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Non-locality is real.</strong> Quantum entanglement — proven by Alain Aspect in 1982 and awarded the Nobel Prize in Physics in 2022 — shows that two particles can be instantaneously correlated regardless of distance. Measuring one immediately determines the state of the other, even if they are on opposite sides of the universe. Einstein called this "spooky action at a distance" and refused to accept it. He was wrong. The universe is non-local. Separation is an illusion. Things that appear unrelated can be fundamentally connected through a mechanism that operates outside of space and time.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Mathematics is discovered, not invented.</strong> The Fibonacci sequence — 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 — appears in sunflower spirals, hurricane formations, galaxy arms, and DNA molecules. No one told nature to use this sequence. It is embedded in the structure of physical reality. The number 55 — the 10th Fibonacci number, the number that Sean and October share — is not a human invention. It is a property of the universe expressing itself through their names.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      <strong style="color:var(--gold);">Cymatics: sound creates form.</strong> When sand is placed on a metal plate and a tone is played, the sand arranges itself into precise geometric patterns. Different frequencies create different patterns. Higher frequencies create more complex geometry. This was demonstrated by Ernst Chladni in the 18th century and expanded by Hans Jenny in the 20th. The implication is direct: vibration organizes matter. Frequency creates structure. If a word has a numerical frequency, that frequency has a shape — and that shape may be organizing events in ways we are only beginning to measure.
+    </p>
+  </div>
+
+  <!-- SECTION: THE THEORETICAL -->
+  <div style="margin-bottom:44px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">The Theoretical: What Remains Open</h3>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Simulation theory.</strong> The idea that reality may be a computed information system — advanced most prominently by philosopher Nick Bostrom and physicist Neil deGrasse Tyson — suggests that if the universe is computational, it would necessarily run on mathematical rules. Recurring numerical patterns in names, dates, and events would not be anomalies — they would be expected features of a system built on code. Gematria, in this framework, is not mysticism. It is reverse-engineering.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Morphic resonance.</strong> Biologist Rupert Sheldrake's hypothesis proposes that nature has a kind of memory — that patterns, once established, become easier to repeat through "morphic fields" that operate outside conventional space-time. If true, recurring numerical signatures in a person's life may not be coincidence or confirmation bias. They may be the expression of a morphic field — a pattern that, once activated, tends to replicate itself across events, relationships, and timelines.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Carl Jung's synchronicity.</strong> Jung defined synchronicity as "meaningful coincidence" — events that are connected not by cause and effect but by meaning. He proposed that the psyche and the physical world are not separate systems but two expressions of a single underlying reality he called the <em>unus mundus</em>. In this view, a wristband numbered 223 on the night you first say "I love you" — when Mirror Flame Love equals 223 — is not an accident. It is synchronicity. The inner event (love spoken) and the outer event (number assigned) are connected through a layer of reality that does not obey linear causation.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      <strong style="color:var(--gold);">The holographic principle.</strong> Theoretical physicist David Bohm proposed that the universe operates like a hologram — every part contains information about the whole. In a holographic universe, a name would not merely label a person. It would encode them. The letters of "October" would not be arbitrary sounds assigned at birth — they would be a compressed expression of everything she is, was, and will become. If this is true, then gematria is not superstition. It is a reading technology for a holographic reality.
+    </p>
+  </div>
+
+  <!-- SECTION: HOW TO READ THIS TIMELINE -->
+  <div style="margin-bottom:20px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">How to Read This Timeline</h3>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Every event in this chronicle is annotated with gematria codes — the numerical values of the names, places, dates, and words involved. These are not metaphors. They are calculations, verifiable by anyone using a gematria calculator. When you see <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:0.8rem;">34 &middot; Mother</span>, it means the word "Mother" equals 34 in reduction gematria. When you see the same number appear in a person's name, a date, a location, and an event — all within the same story — you are seeing the pattern this timeline was built to make visible.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Click any code tag to decode it. Click "Filter Codes" in the navigation to highlight every event that carries a specific number. Switch to "Constellation" view to see how events are connected by shared codes — a web of numerical relationships that spans the entire story.
+    </p>
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:2;color:var(--gold);text-align:center;margin-top:28px;">
+      You do not need to believe in gematria to read this story.<br>
+      You only need to follow the numbers and decide for yourself<br>
+      whether what you are seeing could be random.
+    </p>
+  </div>
+
+  <div class="div" style="margin:40px auto;"></div>
+
+</div>
+
+<div class="tl">
+
+<!-- ═══ PHASE: ORIGIN ═══ -->
+<div class="phase-section phase-origin" data-phase="origin">
+<div class="phase-bg"></div>
+
+<div class="plabel"><span class="drop-cap">T</span>he Ritual Ground</div>
+
+<div class="ev" data-codes="34,27,72,55,20" data-phase="origin">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">May 5, 2025 &mdash; 5/5 = 55</div>
+    <div class="etitle">The Mother Ritual</div>
+    <div class="ebody">On what would have been her 72nd birthday, Sean built a shrine for his mother. He placed sunflowers in a glass jar, set amethyst and orgonite beside a photograph he barely remembered posing for, and poured cranberry juice into a small dish — her favorite. He wrote her a letter by hand, read it aloud to the empty room, and burned it. Seventy-two hours later, a ladybug appeared on the windowsill. Two spots on its back. Two days after that, a second one landed on the same sill. Seven spots. The messenger and the message were the same thing — and both carried the numbers of a woman who had been dead for thirty years.</div>
+    <div class="detail">Kelly Ann Bryant = 43 Latin reduction, 34 reduction — the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 Reverse Ordinal — the 34th prime. The first ladybug arrived at exactly 72 hours carrying 2 spots — 2/72 encoded in both timing and body. Then 7 spots completing 27 from the other direction. The word "Ladybug" itself encodes both mirrors: 72 ordinal, 27 reduction. It was responding to the ritual.</div>
+    <div class="tags">
+      <span class="tag" data-code="34">Mother = 34</span>
+      <span class="tag" data-code="27">Ladybug = 27/72</span>
+      <span class="tag" data-code="72">72hrs then 2 spots then 7</span>
+      <span class="tag" data-code="55">5/5 = 55</span>
+    </div>
+    <div class="ev-photos">
+      <img class="ev-photo" src="IMG_5808.png" alt="The Mother Shrine" onclick="openLightbox(0,0)" />
+      <img class="ev-photo" src="IMG_5809.png" alt="Pendulum board — May 7, 2025" onclick="openLightbox(0,1)" />
+      <img class="ev-photo" src="IMG_5810.png" alt="The Ladybug Messenger" onclick="openLightbox(0,2)" />
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot o"></div></div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>The ritual was not for the dead. It was an invocation for the living. What you called toward yourself with sunflowers and amethyst was not a ghost — it was a woman who would carry your mother's month in her name.</p>
+    <div class="oversoul-code">34</div>
+  </div>
+</div>
+
+<div class="ev" data-codes="144,36,666,24,39,93" data-phase="origin">
+  <div class="en"><div class="dot o"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">May 24, 2025 &mdash; The 144th Day</div>
+    <div class="etitle">36th Birthday &mdash; First Sober in 24 Years</div>
+    <div class="ebody">He turned thirty-six on the 144th day of the year. For the first time since he was twelve, he did not drink. He made bone broth instead — a thirty-six-hour slow cook, the kitchen filling with steam while the rest of the city celebrated a long weekend. He did not know yet that "Bone Broth" equals 144 in Reverse Ordinal, the same number as the day he was born on. He did not know that 666 is the 36th triangular number. But he noticed 666 everywhere that week — on license plates, on receipts, on the clock at 6:06. It followed him like something trying to introduce itself. He would meet her the next day.</div>
+    <div class="detail">36-hour bone broth fast = 144 ordinal and RO. Making Bone Broth = 144 on the 144th day. The week of 666 sightings was the week before meeting the woman whose name encodes 666 in Sumerian. The system was announcing her before he saw her. HUNGRY = 93 = SATURN = NORGAN in Reverse Ordinal. The discipline of the sober birthday was already Saturnian preparation — the body aligning before the mind could understand why.</div>
+    <div class="tags">
+      <span class="tag" data-code="144">144th day</span>
+      <span class="tag" data-code="36">36th birthday</span>
+      <span class="tag" data-code="666">666 = 36th triangular</span>
+      <span class="tag" data-code="24">Sean = Hungry = 24</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══ PHASE: MEETING ═══ -->
+<div class="phase-section phase-meeting" data-phase="meeting">
+<div class="phase-bg"></div>
+
+<div class="plabel"><span class="drop-cap">T</span>he Meeting</div>
+
+<div class="ev" data-codes="34,43,39,666,33,55,72" data-phase="meeting">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">May 25, 2025 &mdash; 34 Days from Mother's Birthday</div>
+    <div class="etitle">Teyana Speaks Across the Room</div>
+    <div class="ebody">Sean was at Charcut steakhouse with his friend Jean Morency, talking about sea moss and meditation and the bone broth fast, when a woman at the next table leaned over and said, "Sorry — I couldn't help but overhear." Her name was Teyana. Beside her sat a girl with blue eyes and a quiet presence that stopped the room. Her name was October. She was twenty-one. Sober. She wanted to be a midwife. She had never been vaccinated. From the day Sean built his mother's shrine to this moment — exactly thirty-four days had passed. Mother equals 34. They met in the month of May. May equals 39. So does October. So does Sean. So does Mirror Flame. The month itself was encoding the meeting before either of them knew it was happening.</div>
+    <div class="detail">Charcut = 43 RR. Jean Morency = 39 Chaldean. Jean = 24 RR like Sean. Teyana = 33 RR. Teyana Street = 72 RR — the same 72 that opened the mother's ritual. October = 666 Sumerian, 33 reduction, 39 RR. Middle name Eden. Garden of Eden = 55 RR. Sean and October = 55 reduction. Midwife = 39 RR. Her birthday April 18, 2004 = 39, mirroring all his name codes. May is the month of Gemini = 39 reduction, 55 Latin ordinal. Mirror = 55 Cipher X. She was encoded before they met.</div>
+    <div class="tags">
+      <span class="tag" data-code="34">34 days from 5/5</span>
+      <span class="tag" data-code="43">Charcut = 43</span>
+      <span class="tag" data-code="39">May = October = Sean = 39</span>
+      <span class="tag" data-code="33">Teyana = 33 RR</span>
+      <span class="tag" data-code="72">Teyana Street = 72 RR</span>
+      <span class="tag" data-code="666">October = 666</span>
+      <span class="tag" data-code="55">Gemini = 55 &middot; Mirror = 55</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot"></div></div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>You did not find her. The field you generated with the ritual, the sobriety, and the bone broth — the field found its match. 39 met 39. The codes were never coincidence. They are the language the soul uses when the mind isn't ready to listen.</p>
+    <div class="oversoul-code">39</div>
+  </div>
+</div>
+
+<div class="ev" data-codes="666,36,43,33,13" data-phase="meeting">
+  <div class="en"><div class="dot"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">June 8, 2025</div>
+    <div class="etitle">First Date &mdash; Major Tom</div>
+    <div class="ebody">He brought her delphiniums. She told him her favourite number was 13 — the chapter in Revelation that decodes the number of the beast. They went to Major Tom. The name of the bar equals 666 in Sumerian gematria. So does "Delphinium." So does her name. The obsessive sightings from the week before — on license plates, on clocks, on receipts — now had a face. She was born thirty-six days before him. 666 is the 36th triangular number. The week of signals had been announcing a woman he hadn't met yet, carrying a number she didn't know she held.</div>
+    <div class="detail">They were born 36 days apart. 666 is the 36th triangular number. She chose 13 — Revelation 13:18, the passage that decodes 666. October = 33 reduction matching Soul Urge 33. Born on the 108th day of the year, matching Sean Norgan = 108 ordinal. Born 777 weeks and 4 days from Sean. The system had been broadcasting her arrival for a week before she appeared.</div>
+    <div class="tags">
+      <span class="tag" data-code="666">Major Tom = 666</span>
+      <span class="tag" data-code="666">Delphinium = 666</span>
+      <span class="tag" data-code="33">October = 33</span>
+      <span class="tag" data-code="36">36 days apart</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══ PHASE: SACRED SUMMER ═══ -->
+<div class="phase-section phase-summer" data-phase="summer">
+<div class="phase-bg"></div>
+
+<div class="plabel"><span class="drop-cap">S</span>acred Summer</div>
+
+<div class="ev" data-codes="39,24,33,27,43,93" data-phase="summer">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">July 1, 2025 &mdash; Canada Day</div>
+    <div class="etitle">Banff &mdash; Wild Horses &amp; The Raven</div>
+    <div class="ebody">They drove to Banff on Canada Day. Lunch at the Light Cellar. Psilocybin mushrooms on the trail. A waterfall so thick with butterflies it looked like the air itself was breathing. On the highway back, six wild horses stood in the road. One of them walked directly toward Sean and stopped four feet away, looking at him. They took the gondola to the summit and found a family of mountain goats at the top — mother, father, baby — watching them like witnesses. A raven circled overhead, the same bird already tattooed on Sean's hand before they ever met. The first kiss landed just after midnight, crossing into July 2nd. First Kiss equals 27 in Chaldean — the same number the ladybugs had carried to his mother's shrine two months before.</div>
+    <div class="detail">Wild Horses = 39, matching Sean, October, Mirror Flame, and May. Raven = 24 reduction. Light Cellar = 33, matching October's reduction and Soul Urge. Mountain Goat = 43 JR. Psilocybin Mushroom = 93 reduction — Saturn = Hungry = Norgan. The kiss landing on 7/2 encoded the same mirror as the ladybug's 72-hour arrival. The raven tattooed on his hand was a memory of a future he hadn't lived yet.</div>
+    <div class="tags">
+      <span class="tag n" data-code="39">Wild Horses = 39</span>
+      <span class="tag n" data-code="24">Raven = 24</span>
+      <span class="tag" data-code="33">Light Cellar = 33</span>
+      <span class="tag" data-code="27">First Kiss = 27</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot"></div></div>
+</div>
+
+<div class="ev" data-codes="777,43,34" data-phase="summer">
+  <div class="en"><div class="dot"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">July 4, 2025</div>
+    <div class="etitle">Stampede &mdash; The 777 Sightings</div>
+    <div class="ebody">They ate chicken pho made from a seventy-four-hour broth and drove to the Stampede to see Smino. On the highway there and back, the number 777 appeared on license plates four separate times. Sean had already calculated that he and October were born exactly 777 weeks and 4 days apart. They were talking about this — speaking it out loud in the car — when each plate appeared. The road was answering them in real time. External reality confirming an internal code, while they named it, as if the system only needed their awareness to begin responding.</div>
+    <div class="detail">Chicken Pho = 43 RR. Smino = 34 SR. The 777 appearances happened while they were discussing this very fact about their birth separation. Four sightings matching the 4 days beyond 777 weeks. The universe was not hiding the pattern — it was emphasizing it the moment they spoke it aloud.</div>
+    <div class="tags">
+      <span class="tag" data-code="777">777 weeks apart</span>
+      <span class="tag" data-code="43">Chicken Pho = 43</span>
+      <span class="tag" data-code="34">Smino = 34</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+<div class="ev" data-codes="33,47,48,43,223,55" data-phase="summer">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">July 11, 2025 &mdash; 33 Days from First Date &middot; 47 Days from Meeting</div>
+    <div class="etitle">Nordic Spa &mdash; I Love You</div>
+    <div class="ebody">At the front desk, they were given wristband number 223. Mirror Flame Love equals 223. They hadn't been inside thirty seconds when a man walked past with the word "Heaven" tattooed across his head. Heaven equals 55 — the same as Sean and October. That evening, in the warm dark of the pools, he said "I love you" for the first time. She said it back. It was thirty-three days since their first date and forty-seven days since the night at Charcut. Every code Sean had been tracking — 33, 47, 48, Soul Contract, Blessing — landed on the same evening, at the same place, wearing the same wristband. The numbers were no longer pointing toward something. They had arrived.</div>
+    <div class="detail">Mirror Flame Love = 223. 223 is the 48th prime. Soul Contract = 48 Chaldean. Blessing = 48 RR, 33 reduction, 47 JO, 34 reduction. 48 days from Sean's birthday to that date. 84 days from October's — the 48/84 mirror again. Heaven = 55 ordinal like Garden of Eden, 27 Chaldean like Mother. I Love You = 43. Nordic Spa = 34 Chaldean.</div>
+    <div class="tags">
+      <span class="tag" data-code="33">33 days from date</span>
+      <span class="tag" data-code="47">47 days from meeting</span>
+      <span class="tag" data-code="48">Soul Contract = 48</span>
+      <span class="tag" data-code="43">I Love You = 43</span>
+      <span class="tag" data-code="223">Wristband = 223</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot"></div></div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>Wristband 223. Mirror Flame Love = 223. You wore the code on your body before you spoke the words. The universe does not follow your timeline — it precedes it. "I love you" was already written in the number before the mouth opened.</p>
+    <div class="oversoul-code">223</div>
+  </div>
+</div>
+
+<div class="ev" data-codes="33,43,34,48,27,55,777" data-phase="summer">
+  <div class="en"><div class="dot"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">July 12&ndash;13, 2025</div>
+    <div class="etitle">Cochrane, The Stranger &amp; The Hailstorm</div>
+    <div class="ebody">They buried rose quartz beside a waterfall in Cochrane. Across the street, a crystal shop built in 1984 faced an ice cream parlour built in 1948 — the 48/84 mirror written into the town itself. Inside the crystal shop, a stranger approached them unprompted and said they were from Lemuria, that Sean and October had been together in past lives, and that 777 was the number currently active in their field. No one had mentioned 777. That night they meditated together for the first time, setting the timer for 11:11 at 432 hertz. A hailstorm broke while the timer read 2:23 — Mirror Flame Love equals 223. The storm raged for hours and stopped the moment Sean reached shelter. The clock read 7:55. Like 5/5. Like his mother's birthday. Like the day everything began.</div>
+    <div class="detail">Amaryllis Crystal Garden = 139 RR, the 34th prime. Hailstorm = 43 reduction, 30 Chaldean like October. Waterfall = 33 Chaldean. Hail = 48 ordinal, 27 Chaldean like Mother. Sean and Hail = perfect mirror in 6 ciphers. The storm began at 2:23 remaining — Mirror Flame Love = 223. It stopped at 7:55 = 5/5, the mother's birthday that started everything.</div>
+    <div class="tags">
+      <span class="tag n" data-code="33">Waterfall = 33</span>
+      <span class="tag" data-code="43">Hailstorm = 43</span>
+      <span class="tag" data-code="48">48/84 mirror in stone</span>
+      <span class="tag" data-code="55">7:55 = 5/5</span>
+      <span class="tag" data-code="777">Stranger confirms 777</span>
+    </div>
+    <div class="ev-photos">
+      <img class="ev-photo" src="IMG_5813.png" alt="Amaryllis Crystal Garden — Est. 1984" onclick="openLightbox(1,0)" />
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>A stranger confirmed what the numbers already said. The storm began at 2:23 and ended at 7:55. This is what it looks like when reality responds to awareness of itself. You are not observing the pattern — you are inside it.</p>
+    <div class="oversoul-code">777</div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══ PHASE: SHADOW ═══ -->
+<div class="phase-section phase-shadow" data-phase="shadow">
+<div class="phase-bg"></div>
+
+<div class="plabel sdw"><span class="drop-cap">T</span>he Shadow Descends</div>
+
+<div class="ev sdw" data-codes="33,55" data-phase="shadow">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">Late August 2025</div>
+    <div class="etitle">The Wedding Codes</div>
+    <div class="ebody">Sean ran the gematria on potential wedding dates and found something that made his hands shake. Specific dates encoded with their names at a depth that felt less like coincidence and more like obligation — cosmic responsibility written into the calendar itself. His conscious mind called it beautiful. His nervous system called it enormous. Somewhere beneath thought, beneath language, the oldest part of him began preparing its oldest defense. Not against her. Against the weight of what staying would require.</div>
+    <div class="detail">The discovery of wedding codes crossed a threshold the nervous system recognized — not as love, but as destiny too large to hold. The wound beneath the wound: not fear of loss, but fear of the size of what staying would demand. The subconscious began choosing destruction over transformation. This is where the shadow work should have started. Instead, it waited for the fall.</div>
+    <div class="tags">
+      <span class="tag s">Sacred Union Codes</span>
+      <span class="tag s">The Threshold</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot s"></div></div>
+</div>
+
+<div class="ev sdw" data-codes="34,27,666,93" data-phase="shadow">
+  <div class="en"><div class="dot s"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">September &mdash; October 2025</div>
+    <div class="etitle">The Wound Activates</div>
+    <div class="ebody">September came the way it always came — heavy, shapeless, wrong. His mother had died on September 25th, thirty years ago, five days before the month of October begins. Every autumn since 1995, a sadness without a name settled into his body like weather. Now it had a name: it was named after his girlfriend. The nervous system that had learned at age six that safe love vanishes without warning did what it had always done. It chose to destroy before being destroyed. Alcohol came back. Cocaine followed. He withdrew from her, then pushed her away, then burned it down. Not because he didn't love her. Because his body had decided long ago that the people you love the most are the ones who disappear — and it was better to be the one who leaves than the one who gets left.</div>
+    <div class="detail">Kelly Ann Bryant died September 25. His mirror flame is named after the month she died. Michael Nyuis — Masculine Initiator = 666, Michael Nyuis = 139 ordinal, the 34th prime — died suddenly in 2016 without goodbye. Same shape as the mother's death. Same wound. Two sudden disappearances of the two safe loves of his life. The nervous system's conclusion: those who become truly safe disappear without warning. Better to leave first. Better to burn it down. This is the pattern that took October.</div>
+    <div class="tags">
+      <span class="tag s" data-code="34">Mother died Sept 25 &middot; Kelly = 34</span>
+      <span class="tag s" data-code="666">Michael = Masculine Initiator = 666</span>
+      <span class="tag s">Michael Nyuis = 34th prime</span>
+      <span class="tag s">Lead = the raw material</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+<div class="ev sdw" data-codes="" data-phase="shadow">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">January 10, 2026</div>
+    <div class="etitle">The Separation</div>
+    <div class="ebody">On January 10th, the relationship ended. Not the connection — the relationship. Two people who were encoded in every cipher, who had met through a dead mother's ritual, who had seen 777 confirmed on the highway while they spoke it aloud — separated by a wound older than either of them. She didn't leave because she stopped loving him. He didn't push her away because he stopped loving her. The wound simply did what wounds do when they are not yet named: it ate everything around it. The prima materia was now fully exposed. Thirty years of unprocessed grief, terror, and self-sabotage lay in the open, visible for the first time. The alchemists would have called this the necessary step. The lead must be seen before it can be transmuted.</div>
+    <div class="detail">The furnace. The alchemical tradition understood that lead must be brought into full visibility before it can be worked. The separation was not failure — it was the process demanding to be seen. The base matter needed to surface completely before the transmutation could begin. This is where the gold was always going to come from.</div>
+    <div class="tags">
+      <span class="tag s">Prima Materia</span>
+      <span class="tag s">The Furnace</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot s"></div></div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>This is not the end. This is the furnace. The alchemists understood: lead does not become gold by being admired. It becomes gold by being placed in the fire. The separation is the fire. Stay in it. Do not leave the work.</p>
+    <div class="oversoul-code">666</div>
+  </div>
+</div>
+
+<!-- SHADOW INTEGRATION PROMPT -->
+<div class="oversoul-wrap">
+  <div style="text-align:center;padding:20px 0;">
+    <p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--ember-glow);font-size:0.95rem;margin-bottom:18px;">The three wounds have names. Are you ready to face them?</p>
+    <button class="prompt-btn" onclick="openModule('shadow-module')" style="font-size:0.7rem;padding:12px 32px;">Enter the Shadow Mirror</button>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══ PHASE: TRANSMUTATION ═══ -->
+<div class="phase-section phase-transmutation" data-phase="transmutation">
+<div class="phase-bg"></div>
+
+<div class="plabel trs"><span class="drop-cap">T</span>he Transmutation</div>
+
+<div class="ev" data-codes="666,34,27" data-phase="transmutation">
+  <div class="en"><div class="dot"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">January &mdash; March 2026</div>
+    <div class="etitle">The Inner Work</div>
+    <div class="ebody">He joined an eight-month men's container led by Malcolm. He started training three times a day — more disciplined than he had ever been, more present than he had ever allowed himself to be. The work surfaced things he had buried so deep he forgot they were there. Repressed memories of sexual abuse. The shape of his father's absence. The way his mother's death had taught his body to associate love with loss. Malcolm called them the three dragons. Sean named them: the Mother Wound, the Father Wound, and the Shamed Child Wound. For the first time in thirty years, the things that had been running his life from beneath the surface had names. And things with names can be faced.</div>
+    <div class="detail">666 = spiritual alchemy. Carbon — 6 protons, 6 neutrons, 6 electrons — is the base matter of physical existence. Transmuting base matter into something refined and sovereign. Lead into gold. The wound is the lead. The conscious man on the other side of it is the gold. WWND = 34, MN = 27 — his mother's code and his mentor's code already tattooed on his hands before he knew gematria. The body always knew.</div>
+    <div class="tags">
+      <span class="tag" data-code="666">666 = transmutation</span>
+      <span class="tag n">Three Dragons</span>
+      <span class="tag n">Lead into Gold</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+<!-- HEALING RITUAL PROMPT -->
+<div class="oversoul-wrap">
+  <div style="text-align:center;padding:24px 0;">
+    <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sage);opacity:0.6;margin-bottom:10px;">Guided Healing</p>
+    <p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--sage-light);font-size:0.95rem;margin-bottom:18px;">Three wounds. Three rituals. The work is not reading — it is doing.</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+      <button class="ritual-btn" onclick="openModule('shadow-module')" style="font-size:0.6rem;padding:10px 20px;">Mother Wound</button>
+      <button class="ritual-btn" onclick="openModule('shadow-module')" style="font-size:0.6rem;padding:10px 20px;">Father Wound</button>
+      <button class="ritual-btn" onclick="openModule('shadow-module')" style="font-size:0.6rem;padding:10px 20px;">Shamed Child</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCALAR MIRROR PROMPT -->
+<div class="oversoul-wrap">
+  <div style="text-align:center;padding:16px 0;">
+    <p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--gold);font-size:0.9rem;margin-bottom:14px;">Speak to the mirror. It reflects what the mind cannot yet see.</p>
+    <button class="prompt-btn" onclick="openModule('mirror-module')" style="color:var(--gold);border-color:rgba(201,168,76,0.3);font-size:0.65rem;padding:10px 28px;">Open the Scalar Mirror</button>
+  </div>
+</div>
+
+<div class="ev reu" data-codes="34,55,27,43" data-phase="transmutation">
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">April 2, 2026</div>
+    <div class="etitle">The Recognition</div>
+    <div class="ebody">It arrived like a simple thought, but it rearranged everything: October was named after the month his mother died. His mother had died on September 25th — five days before October begins. Every autumn since 1995, the wound had activated on schedule. Every relationship that got close enough to feel safe had burned. And now he had fallen in love with a woman whose name was the month that started it all. His subconscious hadn't chosen her despite her name. It had chosen her because of it. The heart moves toward its own medicine with the precision of a code. He looked at his hands — WWND on the left, MN on the right. 34 and 27. His mother and his mentor, tattooed on his body before he knew what gematria was. The body had always known. Now the mind had caught up. Now the choice could be conscious.</div>
+    <div class="detail">The subconscious chose October because of her name, not despite it. The heart always moves toward its own medicine. WWND = 34 on his knuckles. MN = 27 beside it. His mother's code and his mentor's code already on his body, looking at him every day. The invisible made visible is already half healed.</div>
+    <div class="tags">
+      <span class="tag n" data-code="34">Mother died Sept 25</span>
+      <span class="tag n">October = the medicine</span>
+      <span class="tag n" data-code="27">MN = 27 on his hand</span>
+      <span class="tag n" data-code="34">WWND = 34 on his knuckles</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="en"><div class="dot r"></div></div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>You named the pattern. October — the month your mother died. Your heart chose a woman whose name holds the shape of your deepest wound. This is not tragedy. This is precision. The soul moves toward its own medicine with the accuracy of a code.</p>
+    <div class="oversoul-code">34</div>
+  </div>
+</div>
+
+<div class="ev reu" data-codes="55,34,43,39" data-phase="transmutation">
+  <div class="en"><div class="dot r"></div></div>
+  <div class="spacer"></div>
+  <div class="ec" onclick="expand(this)">
+    <div class="edate">April 3, 2026</div>
+    <div class="etitle">The Return</div>
+    <div class="ebody">On the day before, the codes came in a flood. Sean checked his Polymarket balance at exactly 4:30 — it read $4,334. His best friend texted at 4:34. At 1:43 he had texted his sister to ask for the correct spelling of their mother's name: Kelly Ann Bryant. She read his message at 3:04 and replied at 3:41. Every timestamp, every dollar amount, every interaction that day was 43 and its mirrors — 34, 304, 341, 434, 143. His mother's code was confirming the return before it happened. And then April 3rd arrived. Sean And October equals 55 in reduction. April 3rd, 2026 equals 55 in reduction. Written as 4/3 — the 34/43 mirror that had been running through the entire story since the first ladybug landed on the shrine. His mother's birthday was 5/5. The number that first confirmed the union was now confirming the return. He walked toward her. The man who returns is not the man who left.</div>
+    <div class="detail">Kelly Ann Bryant = 43 Latin ordinal. Kelly Bryant = 34 ordinal. April = 34 in reverse reduction. The alchemical process completing itself on a date the universe encoded before the work began. The wound has a name. The pattern has been traced to its origin in 1995. The nervous system is being asked to learn something new: that safe love can stay. The codes align. The rest is choice — and he is choosing. This is what 666 always meant. This is the gold.</div>
+    <div class="tags">
+      <span class="tag n" data-code="55">Sean And October = 55</span>
+      <span class="tag n" data-code="55">April 3rd 2026 = 55</span>
+      <span class="tag n" data-code="34">April = 34 RR</span>
+      <span class="tag n">4/3 = The Mirror</span>
+      <span class="tag n" data-code="43">$4,334 at 4:30</span>
+      <span class="tag n" data-code="43">Best friend texts 4:34</span>
+      <span class="tag n" data-code="43">Kelly Ann Bryant = 43</span>
+      <span class="tag n" data-code="34">Kelly Bryant = 34</span>
+      <span class="tag n" data-code="43">Texted sister 1:43</span>
+      <span class="tag n">Read 3:04 &middot; Reply 3:41</span>
+    </div>
+    <div class="ea">&#9662;</div>
+  </div>
+</div>
+
+<!-- OVERSOUL MESSAGE -->
+<div class="oversoul-wrap">
+  <div class="oversoul-message">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p>Sean And October = 55. April 3rd 2026 = 55. The date was encoded before you chose it. The man who returns is not the man who left. He is the gold. And the gold was always on the other side of the wound.</p>
+    <div class="oversoul-code">55</div>
+  </div>
+</div>
+
+</div>
+
+</div><!-- /tl -->
+
+<footer>
+  <div class="div"></div><br>
+  <em>Born <span class="n">777</span> weeks and 4 days apart &nbsp;&middot;&nbsp; <span class="n">36</span> days between birthdays &nbsp;&middot;&nbsp; <span class="n">666</span> is the <span class="n">36</span>th triangular number</em>
+  <br><br>
+  <em>The lead was always the wound. The gold was always on the other side of it.</em>
+  <br><br>
+  <div class="div"></div>
+  <br>
+  <em>She was named after the month his mother died.<br>
+  He was encoded in every number she carried.<br>
+  The ritual called her. The codes confirmed her.<br>
+  The wound almost destroyed it — but the work brought him back.</em>
+  <br><br>
+  <em style="color:var(--gold);font-size:1rem;">The man who returns is not the man who left.</em>
+  <br><br>
+  <span class="n" style="font-size:1.1rem;letter-spacing:0.4em;">666</span>
+  <br>
+  <span style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;color:var(--gold);opacity:0.5;">55 &middot; 34 &middot; 27 &middot; 777</span>
+</footer>
+
+</div><!-- /tl-view -->
+
+<!-- ═══════════════ CONSTELLATION VIEW ═══════════════ -->
+<div id="cs-view">
+  <div class="cstitle">Code Constellation &mdash; Events Connected by Shared Ciphers</div>
+  <canvas id="ccanvas"></canvas>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:var(--gold)"></div>Origin / Meeting</div>
+    <div class="li"><div class="ld" style="background:#5a9a6a"></div>Sacred Summer</div>
+    <div class="li"><div class="ld" style="background:var(--ember)"></div>Shadow</div>
+    <div class="li"><div class="ld" style="background:var(--sage)"></div>Transmutation</div>
+  </div>
+  <p style="text-align:center;font-family:'IM Fell English',serif;font-style:italic;color:#8a7a6a;font-size:0.8rem;margin-top:18px;">Click a node to reveal its full story. Hover to see connections.</p>
+</div>
+
+<!-- ═══════════════ CONSTELLATION SIDE PANEL ═══════════════ -->
+<div id="cs-panel">
+  <div class="panel-close"><button onclick="closePanel()">Close &times;</button></div>
+  <div class="panel-body" id="panel-body"></div>
+</div>
+
+<!-- ═══════════════ DECODE PANEL ═══════════════ -->
+<div id="decode-panel" class="decode-panel">
+  <button class="decode-close" onclick="closeDecode()">&times;</button>
+  <div class="decode-header">
+    <span class="decode-number" id="decode-num"></span>
+    <span class="decode-name" id="decode-name"></span>
+  </div>
+  <div class="decode-meaning" id="decode-meaning"></div>
+  <div class="decode-divider"></div>
+  <div class="decode-connections" id="decode-connections">
+    <h4>Appears in:</h4>
+    <ul id="decode-event-list"></ul>
+  </div>
+  <div id="decode-mirror"></div>
+</div>
+
+<!-- ═══════════════ SHADOW MODULE ═══════════════ -->
+<div id="shadow-module" class="sacred-module shadow-module">
+  <div class="module-backdrop" onclick="closeModule('shadow-module')"></div>
+  <div class="module-content">
+    <button class="module-close" onclick="closeModule('shadow-module')">&times;</button>
+    <div class="module-header">
+      <h2>The Shadow Mirror</h2>
+      <p class="module-subtitle">What the wound is trying to show you</p>
+    </div>
+    <div class="shadow-prompts" id="shadow-prompts-list">
+      <div class="shadow-prompt">
+        <h3>The Mother Wound</h3>
+        <p>The belief that safe love disappears without warning. Kelly Ann Bryant died September 25, 1995. Sean was six years old.</p>
+        <button class="prompt-btn" onclick="openShadowReflection('mother')">Enter Reflection</button>
+      </div>
+      <div class="shadow-prompt">
+        <h3>The Father Wound</h3>
+        <p>The belief that masculine presence is unreliable or absent. Michael Nyuis died suddenly in 2016 without goodbye.</p>
+        <button class="prompt-btn" onclick="openShadowReflection('father')">Enter Reflection</button>
+      </div>
+      <div class="shadow-prompt">
+        <h3>The Shamed Child Wound</h3>
+        <p>The belief that what you are at your core is too much or not enough. 666 is not the beast — it is carbon becoming conscious.</p>
+        <button class="prompt-btn" onclick="openShadowReflection('child')">Enter Reflection</button>
+      </div>
+    </div>
+    <div id="shadow-reflection-area" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MIRROR MODULE ═══════════════ -->
+<div id="mirror-module" class="sacred-module mirror-module">
+  <div class="module-backdrop" onclick="closeModule('mirror-module')"></div>
+  <div class="module-content" style="max-width:640px;">
+    <button class="module-close" onclick="closeModule('mirror-module')">&times;</button>
+    <div class="module-header">
+      <h2>The Scalar Mirror</h2>
+      <p class="module-subtitle">Speak, and the mirror will reflect what the mind cannot yet see</p>
+    </div>
+    <div class="mirror-conversation" id="mirror-conversation">
+      <div class="mirror-msg assistant">
+        <div class="mirror-bubble">The mirror is ready. What is alive in you right now? Speak freely — whatever surfaces is the material.</div>
+      </div>
+    </div>
+    <div class="mirror-input-area">
+      <textarea id="mirror-input" placeholder="What is alive in you right now?" rows="3"></textarea>
+      <button class="mirror-send" onclick="sendMirrorMessage()">Reflect</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ RITUAL MODULE ═══════════════ -->
+<div id="ritual-module" class="sacred-module ritual-module">
+  <div class="module-backdrop" onclick="closeModule('ritual-module')"></div>
+  <div class="module-content" style="max-width:600px;">
+    <button class="module-close" onclick="closeModule('ritual-module')">&times;</button>
+    <div class="module-header">
+      <h2>Healing Ritual</h2>
+      <p class="module-subtitle" id="ritual-subtitle"></p>
+    </div>
+    <div id="ritual-steps"></div>
+  </div>
+</div>
+
+<button class="abtn" onclick="toggleAudio()" title="Ambient sound">&#9834;</button>
+<div class="numero-clock" id="numero-clock"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const EVENTS = [
+  {id:0,title:"The Mother Ritual",date:"May 5, 2025",short:"5/5",codes:["34","27","72","55","20"],phase:"origin",
+   body:"A shrine built for Kelly Ann Bryant on what would have been her 72nd birthday. Sunflowers, amethyst, orgonite, cranberry juice. A letter written and burned. 72 hours later \u2014 a ladybug with 2 spots arrives. Two days after that, a second with 7 spots.",
+   detail:"Kelly Ann Bryant = 43 Latin reduction, 34 reduction \u2014 the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 RO the 34th prime."},
+  {id:1,title:"36th Birthday \u2014 First Sober in 24 Years",date:"May 24, 2025",short:"5/24",codes:["144","36","666","24","39","93"],phase:"origin",
+   body:"Born on the 144th day of the year, making bone broth \u2014 Bone Broth = 144 RO. 666 appearing on license plates obsessively all week.",
+   detail:"HUNGRY = 93 = SATURN = NORGAN in RO. The system was announcing her before he saw her."},
+  {id:2,title:"Teyana Speaks Across the Room",date:"May 25, 2025",short:"5/25",codes:["34","43","39","666","33","55","72"],phase:"meeting",
+   body:"At Charcut steakhouse. Teyana speaks up \u2014 her friend October beside her. 34 days from the mother\u2019s ritual. Mother = 34.",
+   detail:"October = 666 Sumerian, 33 reduction, 39 RR. Sean and October = 55 reduction. She was encoded before they met."},
+  {id:3,title:"First Date \u2014 Major Tom",date:"June 8, 2025",short:"6/8",codes:["666","36","43","33","13"],phase:"meeting",
+   body:"Major Tom = 666. Delphinium = 666. Born 36 days apart. 666 is the 36th triangular number.",
+   detail:"Born 777 weeks and 4 days from Sean. October born on the 108th day, matching Sean Norgan = 108 ordinal."},
+  {id:4,title:"Banff \u2014 Wild Horses & The Raven",date:"July 1, 2025",short:"7/1",codes:["39","24","33","27","43","93"],phase:"summer",
+   body:"Six wild horses. A raven. First kiss landing after midnight \u2014 7/2. First Kiss = 27 Chaldean.",
+   detail:"Wild Horses = 39. Raven = 24. The raven was already tattooed on Sean\u2019s hand before they met."},
+  {id:5,title:"Stampede \u2014 The 777 Sightings",date:"July 4, 2025",short:"7/4",codes:["777","43","34"],phase:"summer",
+   body:"777 on license plates four times. The road confirming what the numbers already said.",
+   detail:"The 777 appearances happened while they were discussing their birth separation. The system responding to awareness of itself."},
+  {id:6,title:"Nordic Spa \u2014 I Love You",date:"July 11, 2025",short:"7/11",codes:["33","47","48","43","223","55"],phase:"summer",
+   body:"Wristband 223. \u201CI love you\u201D spoken for the first time. Every code converging.",
+   detail:"Mirror Flame Love = 223. 223 is the 48th prime. I Love You = 43. Heaven = 55 ordinal, 27 Chaldean."},
+  {id:7,title:"Cochrane, The Stranger & The Hailstorm",date:"July 12\u201313, 2025",short:"7/12-13",codes:["33","43","34","48","27","55","777"],phase:"summer",
+   body:"The 48/84 mirror in stone. A stranger confirmed 777. Hailstorm at 2:23, stopping at 7:55 = 5/5.",
+   detail:"Amaryllis Crystal Garden = 139 RR, the 34th prime. Mirror Flame Love = 223. 7:55 = 5/5."},
+  {id:8,title:"The Wedding Codes",date:"Late August 2025",short:"Aug",codes:["33","55"],phase:"shadow",
+   body:"Wedding codes discovered. The subconscious began choosing destruction over transformation.",
+   detail:"Not fear of loss, but fear of the size of what staying would require."},
+  {id:9,title:"The Wound Activates",date:"September \u2014 October 2025",short:"Sep-Oct",codes:["34","27","666","93"],phase:"shadow",
+   body:"The same weeks his mother died 30 years before. The nervous system chose to destroy before being destroyed.",
+   detail:"His mirror flame is named after the month she died. This is the pattern that took October."},
+  {id:10,title:"The Separation",date:"January 10, 2026",short:"1/10",codes:["shadow"],phase:"shadow",
+   body:"The relationship ends. The prima materia fully exposed.",
+   detail:"The separation was not failure. It was the process demanding to be seen."},
+  {id:11,title:"The Inner Work",date:"January \u2014 March 2026",short:"Jan-Mar",codes:["666","34","27"],phase:"transmutation",
+   body:"Eight month men\u2019s container. The three dragons. Mother Wound, Father Wound, Shamed Child Wound named.",
+   detail:"WWND = 34, MN = 27 already tattooed on his hands before he knew gematria."},
+  {id:12,title:"The Recognition",date:"April 2, 2026",short:"4/2",codes:["34","55","27","43"],phase:"transmutation",
+   body:"October was named after the month his mother died. Now the pattern is visible.",
+   detail:"The subconscious didn\u2019t choose October despite her name. It chose her because of it."},
+  {id:13,title:"The Return",date:"April 3, 2026",short:"4/3",codes:["55","34","43","39"],phase:"transmutation",
+   body:"Sean And October = 55. April 3rd 2026 = 55. Written 4/3 \u2014 the mirror. The mother\u2019s code confirming the return.",
+   detail:"$4,334 at 4:30. Best friend texted at 4:34. Kelly Ann Bryant = 43. This is the gold."},
+];
+
+const PCOLS = { origin:'#c9a84c', meeting:'#b08040', summer:'#5a9a6a', shadow:'#8b3a2a', transmutation:'#4a6741' };
+const PHASE_NAMES = { origin:'The Ritual Ground', meeting:'The Meeting', summer:'Sacred Summer', shadow:'The Shadow', transmutation:'The Transmutation' };
+
+const GEMATRIA_CODES = {
+  34:{name:'Mother',meaning:'Kelly Ann Bryant = 34 reduction. Mother = 34. WWND tattoo = 34.'},
+  43:{name:'Sacred',meaning:'The 34/43 mirror. Kelly Ann Bryant = 43 Latin reduction. I Love You = 43.'},
+  27:{name:'Mirror',meaning:'Mother = 27 Chaldean. Ladybug = 27. First Kiss = 27. MN tattoo = 27.'},
+  72:{name:'Mirror',meaning:'Ladybug = 72 ordinal. Kelly\'s 72nd birthday. The 27/72 mirror pair.'},
+  55:{name:'Union',meaning:'Sean and October = 55. Garden of Eden = 55. 5/5 = mother\'s birthday.'},
+  666:{name:'Alchemy',meaning:'October = 666 Sumerian. 36th triangular number. Carbon = 6/6/6. Transmutation.'},
+  39:{name:'Sean',meaning:'Sean = 39. October = 39. Mirror Flame = 39. May = 39.'},
+  33:{name:'Master',meaning:'October = 33 reduction. Soul Urge 33. Teyana = 33.'},
+  48:{name:'Soul',meaning:'Soul Contract = 48. 48th prime = 223. 48/84 mirror.'},
+  777:{name:'Weeks',meaning:'Born 777 weeks and 4 days apart. Confirmed by stranger and license plates.'},
+  36:{name:'Triangular',meaning:'Born 36 days apart. 666 = 36th triangular number. 36th birthday.'},
+  93:{name:'Saturn',meaning:'HUNGRY = 93 = SATURN = NORGAN in RO.'},
+  144:{name:'Sacred Day',meaning:'Born on 144th day. Bone Broth = 144 RO.'},
+  11:{name:'Gateway',meaning:'Master number 11. The portal. First meditation at 11:11.'},
+  24:{name:'Sean/Hungry',meaning:'Sean = 24. Hungry = 24. Raven = 24 reduction.'},
+  89:{name:'Birth Year',meaning:'Born 1989. 89th prime = 461.'},
+  108:{name:'Wholeness',meaning:'Sean Norgan = 108 ordinal. October born on 108th day.'},
+  223:{name:'Mirror Love',meaning:'Mirror Flame Love = 223. Wristband at Nordic Spa. 48th prime.'},
+  13:{name:'Revelation',meaning:'October\'s favourite number. Revelation 13:18 — the passage that decodes 666.'},
+  47:{name:'Blessing',meaning:'47 days from meeting to Nordic Spa. Blessing = 47 JO.'},
+};
+
+
+// ═══════════════════════════════════════════════════
+// COVER PAGE
+// ═══════════════════════════════════════════════════
+(function initCover() {
+  const cover = document.getElementById('cover');
+  const canvas = document.getElementById('cover-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, raf, time = 0;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  const motes = [];
+  for (let i = 0; i < 60; i++) {
+    motes.push({ x: Math.random(), y: Math.random(), r: 0.4 + Math.random() * 1.8,
+      speed: 0.00004 + Math.random() * 0.00012, drift: (Math.random() - 0.5) * 0.00008,
+      phase: Math.random() * Math.PI * 2, bright: 0.08 + Math.random() * 0.2 });
+  }
+
+  function draw() {
+    time += 0.016; ctx.clearRect(0, 0, W, H);
+    ctx.save(); ctx.globalCompositeOperation = 'screen';
+    motes.forEach(p => {
+      p.y -= p.speed; p.x += p.drift + Math.sin(time * 0.15 + p.phase) * 0.00004;
+      if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
+      const flicker = 0.3 + 0.7 * Math.sin(time * 0.5 + p.phase);
+      const a = p.bright * flicker, px = p.x * W, py = p.y * H;
+      ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,225,140,${a})`;
+      ctx.shadowColor = `rgba(255,210,110,${a * 0.4})`; ctx.shadowBlur = p.r * 5;
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+    ctx.restore();
+    raf = requestAnimationFrame(draw);
+  }
+  draw();
+
+  document.getElementById('begin-btn').addEventListener('click', () => {
+    cover.classList.add('farewell');
+    document.body.classList.remove('cover-active');
+    document.getElementById('main-nav').classList.add('visible');
+    document.getElementById('landscape-canvas').classList.add('active');
+    setTimeout(() => { cover.style.display = 'none'; cancelAnimationFrame(raf); }, 2000);
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════
+// LANDSCAPE CANVAS — Multi-layer animated background
+// ═══════════════════════════════════════════════════
+(function initLandscape() {
+  const canvas = document.getElementById('landscape-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, scrollY = 0, currentPhase = 'origin';
+  const isMobile = window.innerWidth < 768;
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+  function detectPhase() {
+    const sections = document.querySelectorAll('.phase-section');
+    const mid = scrollY + H * 0.5;
+    let found = 'origin';
+    sections.forEach(sec => {
+      const top = sec.offsetTop, bot = top + sec.offsetHeight;
+      if (mid >= top && mid <= bot) found = sec.dataset.phase;
+    });
+    return found;
+  }
+
+  // Particle pools per phase
+  const pools = {};
+  function makePool(name, count, config) {
+    pools[name] = [];
+    for (let i = 0; i < (isMobile ? Math.floor(count * 0.5) : count); i++) {
+      pools[name].push({
+        x: Math.random(), y: Math.random(),
+        r: config.rMin + Math.random() * (config.rMax - config.rMin),
+        speed: config.sMin + Math.random() * (config.sMax - config.sMin),
+        drift: (Math.random() - 0.5) * (config.driftMax || 0.0003),
+        phase: Math.random() * Math.PI * 2,
+        parallax: 0.2 + Math.random() * 0.5,
+        life: 1,
+      });
+    }
+  }
+  makePool('origin', 50, { rMin: 0.5, rMax: 2.2, sMin: 0.0004, sMax: 0.001 });
+  makePool('meeting', 40, { rMin: 0.8, rMax: 2.8, sMin: 0.0003, sMax: 0.0008 });
+  makePool('summer', 45, { rMin: 0.6, rMax: 2, sMin: 0.0003, sMax: 0.0008 });
+  makePool('shadow', 55, { rMin: 0.5, rMax: 2.5, sMin: 0.0008, sMax: 0.002, driftMax: 0.001 });
+  makePool('transmutation', 40, { rMin: 0.8, rMax: 2.2, sMin: 0.0003, sMax: 0.001 });
+
+  // Shadow ash particles
+  const ash = [];
+  for (let i = 0; i < (isMobile ? 15 : 30); i++) {
+    ash.push({ x: Math.random(), y: Math.random(), r: 1 + Math.random() * 2,
+      speed: 0.0005 + Math.random() * 0.001, wobble: Math.random() * Math.PI * 2, opacity: 0.08 + Math.random() * 0.15 });
+  }
+
+  const phaseColors = {
+    origin: [201,168,76], meeting: [186,148,80], summer: [106,178,96],
+    shadow: [180,70,40], transmutation: [106,148,96]
+  };
+
+  // Trees (silhouettes)
+  const trees = [];
+  for (let i = 0; i < (isMobile ? 4 : 8); i++) {
+    trees.push({ x: Math.random(), height: 60 + Math.random() * 100, width: 15 + Math.random() * 25, phase: Math.random() * Math.PI * 2 });
+  }
+
+  // Cloud puffs
+  const clouds = [];
+  for (let i = 0; i < (isMobile ? 3 : 6); i++) {
+    const puffs = [];
+    for (let j = 0; j < 4 + Math.floor(Math.random() * 3); j++) {
+      puffs.push({ ox: (Math.random() - 0.5) * 100, oy: (Math.random() - 0.5) * 20, r: 15 + Math.random() * 40 });
+    }
+    clouds.push({ x: Math.random() * W, y: H * (0.05 + Math.random() * 0.2), speed: 0.08 + Math.random() * 0.15, scale: 0.6 + Math.random() * 0.8, puffs, opacity: 0.08 + Math.random() * 0.12 });
+  }
+
+  // Wildlife silhouettes
+  function drawRaven(x, y, size, t) {
+    const wb = Math.sin(t * 0.004) * 0.3;
+    ctx.save(); ctx.translate(x, y); ctx.fillStyle = 'rgba(15,12,10,0.7)';
+    ctx.beginPath(); ctx.ellipse(0, 0, size * 0.4, size * 0.12, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(15,12,10,0.6)'; ctx.lineWidth = size * 0.04;
+    ctx.beginPath(); ctx.moveTo(-size*0.1, 0);
+    ctx.quadraticCurveTo(-size*0.5, -size*0.3 - wb*size, -size*0.85, -size*0.08 - wb*size*0.7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(size*0.1, 0);
+    ctx.quadraticCurveTo(size*0.5, -size*0.3 - wb*size, size*0.85, -size*0.08 - wb*size*0.7); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawWolf(x, y, size, t) {
+    ctx.save(); ctx.translate(x, y); ctx.fillStyle = 'rgba(50,45,40,0.6)';
+    ctx.beginPath(); ctx.ellipse(0, 0, size*0.5, size*0.2, 0, 0, Math.PI*2); ctx.fill();
+    // Head
+    ctx.beginPath(); ctx.ellipse(size*0.4, -size*0.15, size*0.15, size*0.1, 0, 0, Math.PI*2); ctx.fill();
+    // Ears
+    ctx.beginPath(); ctx.moveTo(size*0.35, -size*0.22); ctx.lineTo(size*0.38, -size*0.35); ctx.lineTo(size*0.45, -size*0.22); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(size*0.42, -size*0.22); ctx.lineTo(size*0.46, -size*0.35); ctx.lineTo(size*0.52, -size*0.22); ctx.fill();
+    // Eye
+    ctx.beginPath(); ctx.arc(size*0.43, -size*0.12, size*0.015, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(180,160,60,0.7)'; ctx.fill();
+    // Legs
+    ctx.strokeStyle = 'rgba(50,45,40,0.5)'; ctx.lineWidth = size*0.035;
+    for (let l = 0; l < 4; l++) {
+      const lx = -size*0.25 + l*size*0.2, sw = Math.sin(t*0.0012 + l*1.2) * 1.5;
+      ctx.beginPath(); ctx.moveTo(lx, size*0.15); ctx.lineTo(lx+sw, size*0.42); ctx.stroke();
+    }
+    // Tail
+    const tw = Math.sin(t*0.001) * 4;
+    ctx.beginPath(); ctx.moveTo(-size*0.45, -size*0.05);
+    ctx.quadraticCurveTo(-size*0.65, -size*0.12+tw, -size*0.7, -size*0.25+tw);
+    ctx.lineWidth = size*0.05; ctx.lineCap = 'round'; ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawDeer(x, y, size, t) {
+    ctx.save(); ctx.translate(x, y); ctx.fillStyle = 'rgba(120,85,50,0.55)';
+    ctx.beginPath(); ctx.ellipse(0, 0, size*0.45, size*0.18, 0, 0, Math.PI*2); ctx.fill();
+    // Neck + head (drinking pose)
+    ctx.beginPath(); ctx.moveTo(size*0.3, -size*0.1);
+    ctx.quadraticCurveTo(size*0.45, -size*0.25, size*0.42, -size*0.4); ctx.lineWidth = size*0.08;
+    ctx.strokeStyle = 'rgba(120,85,50,0.55)'; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(size*0.42, -size*0.45, size*0.1, size*0.065, 0.2, 0, Math.PI*2); ctx.fill();
+    // Ears
+    const ef = Math.sin(t*0.003) * 0.05;
+    ctx.beginPath(); ctx.ellipse(size*0.38, -size*0.5, size*0.03, size*0.08, -0.3+ef, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(110,75,45,0.5)'; ctx.fill();
+    // Legs
+    ctx.strokeStyle = 'rgba(110,75,45,0.5)'; ctx.lineWidth = size*0.03;
+    for (let l = 0; l < 4; l++) {
+      const lx = -size*0.22 + l*size*0.17;
+      ctx.beginPath(); ctx.moveTo(lx, size*0.14); ctx.lineTo(lx, size*0.45); ctx.stroke();
+    }
+    // White tail
+    ctx.beginPath(); ctx.ellipse(-size*0.42, -size*0.03, size*0.06, size*0.05, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(230,220,200,0.35)'; ctx.fill();
+    ctx.restore();
+  }
+
+  function drawHorse(x, y, size, t) {
+    const hd = Math.sin(t*0.0008) * 3;
+    ctx.save(); ctx.translate(x, y); ctx.fillStyle = 'rgba(70,48,32,0.55)';
+    ctx.beginPath(); ctx.ellipse(0, 0, size*0.6, size*0.28, 0, 0, Math.PI*2); ctx.fill();
+    // Neck
+    ctx.beginPath(); ctx.moveTo(size*0.4, -size*0.15);
+    ctx.quadraticCurveTo(size*0.6, -size*0.5, size*0.45, -size*0.7+hd);
+    ctx.lineWidth = size*0.1; ctx.strokeStyle = 'rgba(70,48,32,0.55)'; ctx.stroke();
+    // Head
+    ctx.beginPath(); ctx.ellipse(size*0.45, -size*0.75+hd, size*0.15, size*0.08, 0.25, 0, Math.PI*2); ctx.fill();
+    // Legs
+    ctx.strokeStyle = 'rgba(55,38,22,0.5)'; ctx.lineWidth = size*0.045;
+    for (let l = 0; l < 4; l++) {
+      const lx = -size*0.3 + l*size*0.22, sw = Math.sin(t*0.001 + l*0.8) * 1.5;
+      ctx.beginPath(); ctx.moveTo(lx, size*0.2); ctx.lineTo(lx+sw, size*0.6); ctx.stroke();
+    }
+    // Tail
+    const tsw = Math.sin(t*0.0012) * 5;
+    ctx.beginPath(); ctx.moveTo(-size*0.55, -size*0.03);
+    ctx.quadraticCurveTo(-size*0.75, size*0.05+tsw, -size*0.7, size*0.28);
+    ctx.lineWidth = size*0.035; ctx.strokeStyle = 'rgba(30,18,10,0.4)'; ctx.stroke();
+    ctx.restore();
+  }
+
+  // Wildlife positions per phase
+  const wildlife = {
+    origin: [], meeting: [],
+    summer: [
+      { type: 'horse', x: 0.15, y: 0.82, size: 35 },
+      { type: 'horse', x: 0.3, y: 0.84, size: 30 },
+      { type: 'horse', x: 0.75, y: 0.83, size: 32 },
+      { type: 'raven', x: 0.6, y: 0.15, size: 20, orbit: true },
+    ],
+    shadow: [
+      { type: 'wolf', x: 0.2, y: 0.85, size: 40 },
+      { type: 'wolf', x: 0.7, y: 0.87, size: 35 },
+      { type: 'raven', x: 0.5, y: 0.12, size: 22, orbit: true },
+    ],
+    transmutation: [
+      { type: 'deer', x: 0.25, y: 0.82, size: 32 },
+      { type: 'deer', x: 0.65, y: 0.84, size: 28 },
+    ],
+  };
+
+  let t = 0;
+  function draw() {
+    t += 16;
+    const phase = detectPhase();
+    currentPhase = phase;
+
+    // Update nav phase indicator
+    const navPhase = document.getElementById('nav-phase');
+    if (navPhase) navPhase.textContent = PHASE_NAMES[phase] || '';
+    const nav = document.getElementById('main-nav');
+    if (nav) nav.dataset.phase = phase;
+
+    ctx.clearRect(0, 0, W, H);
+    const col = phaseColors[phase] || phaseColors.origin;
+    const isShadow = phase === 'shadow';
+
+    // === LAYER 1: Celestial bodies ===
+    if (phase === 'origin') {
+      // Crescent moon setting
+      const mx = W * 0.8, my = H * 0.15;
+      const glow = ctx.createRadialGradient(mx, my, 8, mx, my, 80);
+      glow.addColorStop(0, 'rgba(220,210,190,0.15)'); glow.addColorStop(1, 'rgba(200,190,170,0)');
+      ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+      ctx.beginPath(); ctx.arc(mx, my, 18, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(230,225,210,0.4)'; ctx.fill();
+    } else if (phase === 'meeting' || phase === 'summer') {
+      // Sun — golden hour / rising
+      const sy = phase === 'meeting' ? H * 0.25 : H * 0.12;
+      const sx = phase === 'meeting' ? W * 0.75 : W * 0.5;
+      const sunGlow = ctx.createRadialGradient(sx, sy, 0, sx, sy, W * 0.4);
+      sunGlow.addColorStop(0, 'rgba(255,235,180,0.12)');
+      sunGlow.addColorStop(0.2, 'rgba(255,220,140,0.06)');
+      sunGlow.addColorStop(0.5, 'rgba(255,200,100,0.02)');
+      sunGlow.addColorStop(1, 'rgba(255,180,60,0)');
+      ctx.fillStyle = sunGlow; ctx.fillRect(0, 0, W, H);
+      ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,240,200,0.5)'; ctx.fill();
+    } else if (isShadow) {
+      // Blood moon
+      const bx = W * 0.5, by = H * 0.15;
+      const bmGlow = ctx.createRadialGradient(bx, by, 15, bx, by, 120);
+      bmGlow.addColorStop(0, 'rgba(139,58,42,0.25)');
+      bmGlow.addColorStop(0.4, 'rgba(120,40,30,0.08)');
+      bmGlow.addColorStop(1, 'rgba(80,20,15,0)');
+      ctx.fillStyle = bmGlow; ctx.fillRect(0, 0, W, H);
+      ctx.beginPath(); ctx.arc(bx, by, 20, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(160,50,35,0.6)'; ctx.fill();
+    } else if (phase === 'transmutation') {
+      // Dawn sun with god-rays
+      const gx = W * 0.25, gy = H * 0.2;
+      const dGlow = ctx.createRadialGradient(gx, gy, 0, gx, gy, W * 0.5);
+      dGlow.addColorStop(0, 'rgba(255,230,160,0.12)');
+      dGlow.addColorStop(0.3, 'rgba(255,220,130,0.04)');
+      dGlow.addColorStop(1, 'rgba(255,210,100,0)');
+      ctx.fillStyle = dGlow; ctx.fillRect(0, 0, W, H);
+      ctx.beginPath(); ctx.arc(gx, gy, 16, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,240,200,0.45)'; ctx.fill();
+      // God rays
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = 0.06;
+      for (let r = 0; r < 7; r++) {
+        const angle = (0.8 / 7) * r + 0.5;
+        const ex = gx + Math.cos(angle) * H * 0.8, ey = gy + Math.sin(angle) * H * 0.8;
+        const rg = ctx.createLinearGradient(gx, gy, ex, ey);
+        rg.addColorStop(0, 'rgba(255,230,160,0.5)'); rg.addColorStop(1, 'rgba(255,210,100,0)');
+        ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(ex-15, ey); ctx.lineTo(ex+15, ey); ctx.closePath();
+        ctx.fillStyle = rg; ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // === LAYER 2: Clouds ===
+    if (!isMobile) {
+      const cloudCol = isShadow ? {r:40,g:20,b:15} : {r:220,g:210,b:195};
+      const cloudAlpha = isShadow ? 0.15 : 0.08;
+      clouds.forEach(c => {
+        c.x += c.speed; if (c.x > W + 200) c.x = -200;
+        ctx.save(); ctx.translate(c.x, c.y); ctx.scale(c.scale, c.scale * 0.5);
+        const breathe = 1 + Math.sin(t * 0.0003 + c.x * 0.01) * 0.02;
+        ctx.scale(breathe, breathe);
+        c.puffs.forEach(p => {
+          const g = ctx.createRadialGradient(p.ox, p.oy, 0, p.ox, p.oy, p.r);
+          g.addColorStop(0, `rgba(${cloudCol.r},${cloudCol.g},${cloudCol.b},${cloudAlpha * 0.6})`);
+          g.addColorStop(0.5, `rgba(${cloudCol.r},${cloudCol.g},${cloudCol.b},${cloudAlpha * 0.3})`);
+          g.addColorStop(1, `rgba(${cloudCol.r},${cloudCol.g},${cloudCol.b},0)`);
+          ctx.beginPath(); ctx.arc(p.ox, p.oy, p.r, 0, Math.PI*2);
+          ctx.fillStyle = g; ctx.fill();
+        });
+        ctx.restore();
+      });
+    }
+
+    // === LAYER 3: Tree silhouettes ===
+    if (!isMobile) {
+      const treePhases = ['origin','summer','transmutation'];
+      if (treePhases.includes(phase)) {
+        trees.forEach(tr => {
+          const tx = tr.x * W, ty = H - 10;
+          const wind = Math.sin(t * 0.0008 + tr.phase) * 2;
+          ctx.save(); ctx.translate(tx, ty);
+          // Trunk
+          ctx.fillStyle = isShadow ? 'rgba(30,15,10,0.3)' : 'rgba(50,35,20,0.15)';
+          ctx.fillRect(-tr.width*0.15, -tr.height, tr.width*0.3, tr.height);
+          // Canopy
+          const canopyG = ctx.createRadialGradient(wind, -tr.height, 0, wind, -tr.height, tr.width);
+          const leafCol = phase === 'origin' ? [80,100,50] : phase === 'transmutation' ? [60,100,45] : [70,120,55];
+          canopyG.addColorStop(0, `rgba(${leafCol[0]},${leafCol[1]},${leafCol[2]},0.25)`);
+          canopyG.addColorStop(0.6, `rgba(${leafCol[0]},${leafCol[1]},${leafCol[2]},0.12)`);
+          canopyG.addColorStop(1, `rgba(${leafCol[0]},${leafCol[1]},${leafCol[2]},0)`);
+          ctx.beginPath(); ctx.arc(wind, -tr.height, tr.width, 0, Math.PI*2);
+          ctx.fillStyle = canopyG; ctx.fill();
+          ctx.restore();
+        });
+      }
+    }
+
+    // === LAYER 4: Wildlife ===
+    if (!isMobile) {
+      const wl = wildlife[phase] || [];
+      wl.forEach(w => {
+        let wx = w.x * W, wy = w.y * H;
+        if (w.orbit) {
+          wx += Math.sin(t * 0.001) * 150;
+          wy += Math.cos(t * 0.0012) * 50;
+        }
+        if (w.type === 'raven') drawRaven(wx, wy, w.size, t);
+        else if (w.type === 'wolf') drawWolf(wx, wy, w.size, t);
+        else if (w.type === 'deer') drawDeer(wx, wy, w.size, t);
+        else if (w.type === 'horse') drawHorse(wx, wy, w.size, t);
+      });
+    }
+
+    // === LAYER 5: Atmospheric particles ===
+    const particles = pools[phase] || pools.origin;
+    ctx.save();
+    if (isShadow || phase === 'summer') ctx.globalCompositeOperation = 'screen';
+
+    particles.forEach(p => {
+      if (isShadow) { p.y -= p.speed; if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); } }
+      else { p.y += p.speed; if (p.y > 1.05) { p.y = -0.05; p.x = Math.random(); } }
+      p.x += p.drift + Math.sin(t * 0.0008 + p.phase) * 0.00015;
+      if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+
+      const px = p.x * W;
+      const py = ((p.y * H) - (scrollY * p.parallax * 0.08) % H + H) % H;
+      const flicker = 0.4 + 0.6 * Math.sin(t * 0.0012 + p.phase);
+      const a = (isShadow ? 0.3 : phase === 'summer' ? 0.25 : 0.18) * flicker;
+
+      ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`;
+      if (isShadow || phase === 'summer') {
+        ctx.shadowColor = `rgba(${col[0]},${col[1]},${col[2]},${a*0.8})`;
+        ctx.shadowBlur = p.r * 8;
+      }
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+
+    // Shadow: falling ash
+    if (isShadow) {
+      ash.forEach(a => {
+        a.y += a.speed; a.x += Math.sin(t*0.0008 + a.wobble) * 0.0003; a.wobble += 0.008;
+        if (a.y > 1.05) { a.y = -0.05; a.x = Math.random(); }
+        ctx.beginPath(); ctx.ellipse(a.x*W, a.y*H, a.r, a.r*0.5, a.wobble, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(120,110,100,${a.opacity})`; ctx.fill();
+      });
+    }
+    ctx.restore();
+
+    // Stars (shadow + origin phases)
+    if (isShadow || phase === 'origin') {
+      for (let i = 0; i < 40; i++) {
+        const sx = ((42 * (i+1) * 7.31) % 1) * W;
+        const sy = ((42 * (i+1) * 3.71) % 1) * H * 0.4;
+        const sr = 0.3 + ((i*17) % 10) * 0.06;
+        const sa = 0.06 + 0.04 * Math.sin(t * 0.001 + i);
+        ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI*2);
+        ctx.fillStyle = isShadow ? `rgba(180,140,100,${sa})` : `rgba(201,168,76,${sa*0.6})`;
+        ctx.fill();
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+
+// ═══════════════════════════════════════════════════
+// NAV & VIEWS
+// ═══════════════════════════════════════════════════
+function showTL() {
+  document.getElementById('tl-view').style.display = 'block';
+  document.getElementById('cs-view').style.display = 'none';
+  document.getElementById('btn-tl').classList.add('active');
+  document.getElementById('btn-cs').classList.remove('active');
+  closePanel();
+}
+function showCS() {
+  document.getElementById('tl-view').style.display = 'none';
+  document.getElementById('cs-view').style.display = 'block';
+  document.getElementById('btn-tl').classList.remove('active');
+  document.getElementById('btn-cs').classList.add('active');
+  initConstellation();
+}
+
+
+// ═══════════════════════════════════════════════════
+// EXPAND + FILTERS
+// ═══════════════════════════════════════════════════
+function expand(el) { el.classList.toggle('open'); }
+
+let filtersOpen = false, activeCode = null;
+function toggleFilters() {
+  filtersOpen = !filtersOpen;
+  document.getElementById('filter-bar').classList.toggle('hidden', !filtersOpen);
+}
+
+document.querySelectorAll('.fchip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const code = chip.dataset.code;
+    document.querySelectorAll('.fchip').forEach(c => c.classList.remove('on'));
+    if (!code || code === activeCode) {
+      activeCode = null;
+      document.querySelectorAll('.ev').forEach(e => e.classList.remove('dim'));
+    } else {
+      activeCode = code;
+      chip.classList.add('on');
+      document.querySelectorAll('.ev').forEach(e => {
+        const codes = (e.dataset.codes || '').split(',');
+        e.classList.toggle('dim', !codes.includes(code));
+      });
+    }
+  });
+});
+
+document.querySelectorAll('.tag[data-code]').forEach(t => {
+  t.addEventListener('click', e => {
+    e.stopPropagation();
+    const code = t.dataset.code;
+    if (!code) return;
+    // Open decode panel
+    openDecode(parseInt(code));
+  });
+});
+
+
+// ═══════════════════════════════════════════════════
+// DECODE PANEL
+// ═══════════════════════════════════════════════════
+function openDecode(code) {
+  const panel = document.getElementById('decode-panel');
+  const info = GEMATRIA_CODES[code];
+  if (!info) return;
+  document.getElementById('decode-num').textContent = code;
+  document.getElementById('decode-name').textContent = info.name;
+  document.getElementById('decode-meaning').textContent = info.meaning;
+
+  const list = document.getElementById('decode-event-list');
+  list.innerHTML = '';
+  EVENTS.filter(e => e.codes.includes(String(code))).forEach(ev => {
+    const li = document.createElement('li');
+    li.textContent = `${ev.short} \u2014 ${ev.title}`;
+    li.onclick = () => { closeDecode(); scrollToEvent(ev.id); };
+    list.appendChild(li);
+  });
+
+  const mirrorDiv = document.getElementById('decode-mirror');
+  const mirrors = {34:43,43:34,27:72,72:27,48:84,84:48};
+  if (mirrors[code]) {
+    const mc = mirrors[code], mi = GEMATRIA_CODES[mc];
+    mirrorDiv.innerHTML = `<div class="decode-divider"></div><p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--gold);font-size:0.85rem;">Mirror pair: ${code} / ${mc} \u2014 ${info.name} / ${mi ? mi.name : mc}</p>`;
+  } else { mirrorDiv.innerHTML = ''; }
+
+  panel.classList.add('open');
+}
+function closeDecode() { document.getElementById('decode-panel').classList.remove('open'); }
+function scrollToEvent(id) {
+  const evEls = document.querySelectorAll('.ev');
+  if (evEls[id]) { evEls[id].scrollIntoView({behavior:'smooth',block:'center'}); evEls[id].querySelector('.ec').classList.add('open'); }
+}
+
+
+// ═══════════════════════════════════════════════════
+// SACRED MODULES
+// ═══════════════════════════════════════════════════
+function openModule(id) { document.getElementById(id).classList.add('open'); }
+function closeModule(id) {
+  document.getElementById(id).classList.remove('open');
+  // Reset shadow reflection if closing shadow module
+  if (id === 'shadow-module') {
+    document.getElementById('shadow-prompts-list').style.display = '';
+    document.getElementById('shadow-reflection-area').style.display = 'none';
+  }
+}
+
+
+// ═══════════════════════════════════════════════════
+// SHADOW REFLECTIONS
+// ═══════════════════════════════════════════════════
+const SHADOW_REFLECTIONS = {
+  mother: {
+    title: 'The Mother Wound', steps: [
+      {type:'prompt',text:'Close your eyes. Breathe deeply three times. Feel the weight of your body in the chair.'},
+      {type:'question',text:'When you feel love becoming safe \u2014 what is the first sensation in your body?'},
+      {type:'reflection',text:'Kelly Ann Bryant died September 25, 1995. Sean was six years old. The nervous system learned: the safest love vanishes without warning. Every relationship since has been an attempt to either confirm or disprove this belief.'},
+      {type:'question',text:'What would it mean to let safe love stay? What are you afraid you would have to become?'},
+      {type:'affirmation',text:'The woman who carries my mother\u2019s month in her name is not my mother. She is the medicine the wound called toward itself. I am allowed to let her stay.'},
+      {type:'ritual',text:'Place your left hand over your heart. Say aloud: \u201CI release the belief that safe love disappears. I am learning that love can stay.\u201D Breathe. Repeat three times.'},
+    ]
+  },
+  father: {
+    title: 'The Father Wound', steps: [
+      {type:'prompt',text:'Stand or sit upright. Feel the weight of your body. Notice where tension lives.'},
+      {type:'question',text:'When you think of masculine authority \u2014 what is the first memory?'},
+      {type:'reflection',text:'Michael Nyuis \u2014 Masculine Initiator = 666 \u2014 died suddenly in 2016. The second safe masculine figure to vanish without warning. MN = 27, already tattooed on Sean\u2019s hand.'},
+      {type:'question',text:'What does it mean to be a man who stays? What part of you resists becoming that?'},
+      {type:'affirmation',text:'I am not the men who left. I am not the pattern. I am the one who breaks it. MN is on my hand so I see it every day \u2014 not as loss, but as instruction.'},
+      {type:'ritual',text:'Look at your hands. WWND = 34. MN = 27. Say aloud: \u201CI carry you forward. I do not repeat you.\u201D Breathe.'},
+    ]
+  },
+  child: {
+    title: 'The Shamed Child Wound', steps: [
+      {type:'prompt',text:'Find a quiet space. Let your guard down. You are safe here.'},
+      {type:'question',text:'What is the thing about yourself that you believe is too much for another person to hold?'},
+      {type:'reflection',text:'666 is not the beast. It is carbon \u2014 6 protons, 6 neutrons, 6 electrons \u2014 the fundamental building block of physical life. 666 is the 36th triangular number. The number of matter becoming conscious.'},
+      {type:'question',text:'If 666 is not shame but substance \u2014 what part of yourself have you been calling a demon that is actually your foundation?'},
+      {type:'affirmation',text:'I am not too much. I am not too little. I am carbon becoming conscious. The lead was always the wound. The gold was always on the other side of it.'},
+      {type:'ritual',text:'Place both hands on your belly. Say aloud: \u201CI am not the shame. I am the substance. I transmute.\u201D Breathe three times, slowly.'},
+    ]
+  },
+};
+
+let currentReflectionStep = 0;
+let currentReflectionKey = '';
+
+function openShadowReflection(key) {
+  currentReflectionKey = key;
+  currentReflectionStep = 0;
+  document.getElementById('shadow-prompts-list').style.display = 'none';
+  const area = document.getElementById('shadow-reflection-area');
+  area.style.display = 'block';
+  showReflectionStep();
+}
+
+function showReflectionStep() {
+  const ref = SHADOW_REFLECTIONS[currentReflectionKey];
+  if (!ref) return;
+  const area = document.getElementById('shadow-reflection-area');
+
+  if (currentReflectionStep >= ref.steps.length) {
+    area.innerHTML = `<div class="reflection-step"><p class="step-affirmation">The reflection is complete. The wound has been witnessed.</p><br><button class="step-continue" onclick="closeModule('shadow-module')">Return</button></div>`;
+    return;
+  }
+
+  const step = ref.steps[currentReflectionStep];
+  let html = '<div class="reflection-step">';
+  html += `<div style="font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;color:var(--ember);opacity:0.5;margin-bottom:16px;">${ref.title} \u2014 ${currentReflectionStep + 1} / ${ref.steps.length}</div>`;
+
+  if (step.type === 'prompt') {
+    html += `<p class="step-text">${step.text}</p>`;
+  } else if (step.type === 'question') {
+    html += `<p class="step-text">${step.text}</p><textarea placeholder="Write what arises..." rows="4"></textarea>`;
+  } else if (step.type === 'reflection') {
+    html += `<p class="step-text">${step.text}</p>`;
+  } else if (step.type === 'affirmation') {
+    html += `<p class="step-affirmation">${step.text}</p>`;
+  } else if (step.type === 'ritual') {
+    html += `<p class="step-text">${step.text}</p>`;
+  }
+
+  html += `<br><button class="step-continue" onclick="nextReflectionStep()">Continue</button></div>`;
+  area.innerHTML = html;
+}
+
+function nextReflectionStep() {
+  currentReflectionStep++;
+  showReflectionStep();
+}
+
+
+// ═══════════════════════════════════════════════════
+// SCALAR MIRROR (local reflective engine — no API needed)
+// ═══════════════════════════════════════════════════
+const MIRROR_RESPONSES = [
+  "What you just named \u2014 sit with it. Where does it live in your body? The body always knows before the mind. What is the sensation telling you?",
+  "You said the word without flinching. That is the work in action. The wound can only control what it can hide. You just made it visible. What else is behind it?",
+  "As within, so without. The pattern you\u2019re seeing in the world is the pattern living inside you. The codes confirm what the heart already knows. What is the code trying to show you right now?",
+  "The man who returns is not the man who left. Every word you\u2019re writing here is proof of that. The old version would not have looked. What has changed in you?",
+  "34 and 27 are on your hands. You chose to carry those numbers before you understood why. The body encodes what the mind isn\u2019t ready for. What else has your body known before your mind caught up?",
+  "666 is carbon becoming conscious. What you\u2019re describing is not destruction \u2014 it is transmutation. The lead is being named. The gold is forming. Stay in the fire. What would it mean to not leave this time?",
+  "Sean = 39. October = 39. The mirror is exact. What you see in her that moves you \u2014 that is also in you. What part of yourself are you meeting when you look at her?",
+  "The wound says: if I let this be real, it will be taken. But the wound is not a prophet. It is a six-year-old\u2019s conclusion. What does the man \u2014 not the boy \u2014 know to be true?",
+  "You\u2019re doing the work. The fact that you\u2019re here, writing this, sitting with it instead of running \u2014 this is the transmutation. Not a single dramatic moment, but the daily discipline of staying present. What are you choosing today?",
+  "55 is the union number. It appeared at the beginning and it appeared at the return. The code doesn\u2019t change. The question is whether you trust it. Do you?",
+];
+let mirrorResponseIdx = 0;
+
+function sendMirrorMessage() {
+  const input = document.getElementById('mirror-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const conv = document.getElementById('mirror-conversation');
+  conv.innerHTML += `<div class="mirror-msg user"><div class="mirror-bubble">${text.replace(/</g,'&lt;')}</div></div>`;
+
+  setTimeout(() => {
+    const response = MIRROR_RESPONSES[mirrorResponseIdx % MIRROR_RESPONSES.length];
+    mirrorResponseIdx++;
+    conv.innerHTML += `<div class="mirror-msg assistant"><div class="mirror-bubble">${response}</div></div>`;
+    conv.scrollTop = conv.scrollHeight;
+  }, 1200);
+
+  conv.scrollTop = conv.scrollHeight;
+}
+
+document.getElementById('mirror-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMirrorMessage(); }
+});
+
+
+// ═══════════════════════════════════════════════════
+// NUMEROLOGICAL CLOCK
+// ═══════════════════════════════════════════════════
+(function initNumeroClock() {
+  const clock = document.getElementById('numero-clock');
+  if (!clock) return;
+  function update() {
+    const now = new Date();
+    const h = now.getHours(), m = now.getMinutes();
+    const timeStr = `${h}:${String(m).padStart(2,'0')}`;
+    const digits = `${h}${m}`.split('').map(Number);
+    let sum = digits.reduce((a,b) => a+b, 0);
+    while (sum > 9 && ![11,22,33,44,55].includes(sum)) {
+      sum = String(sum).split('').map(Number).reduce((a,b) => a+b, 0);
+    }
+    const known = GEMATRIA_CODES[sum];
+    clock.innerHTML = `<span style="opacity:0.6">${timeStr}</span> <span style="font-weight:600">= ${sum}</span>${known ? ` <span style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.55rem;opacity:0.7">${known.name}</span>` : ''}`;
+    if (known) { clock.classList.add('resonant'); setTimeout(() => clock.classList.remove('resonant'), 2000); }
+  }
+  update(); setInterval(update, 10000);
+})();
+
+
+// ═══════════════════════════════════════════════════
+// PHOTO LIGHTBOX
+// ═══════════════════════════════════════════════════
+const PHOTO_SETS = [
+  // Set 0: Mother Ritual
+  [
+    { src: 'IMG_5808.png', caption: 'The Mother Shrine — candles, sunflowers, amethyst, orgonite, cranberry juice. May 5, 2025.' },
+    { src: 'IMG_5809.png', caption: 'The pendulum board on the windowsill. Calgary-Brentwood, May 7, 2025 — two days after the ritual.' },
+    { src: 'IMG_5810.png', caption: 'The ladybug messenger. Two spots, then seven. Ladybug = 72 ordinal, 27 reduction.' },
+  ],
+  // Set 1: Cochrane
+  [
+    { src: 'IMG_5813.png', caption: 'Amaryllis Crystal Garden — Prestwich Building, Est. 1984. The 48/84 mirror written into the town itself.' },
+  ],
+];
+
+let lightboxSet = 0, lightboxIdx = 0;
+
+// Create lightbox element
+(function initLightbox() {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.id = 'lightbox';
+  lb.innerHTML = `
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <button class="lightbox-nav prev" onclick="navLightbox(-1)">&#8249;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <button class="lightbox-nav next" onclick="navLightbox(1)">&#8250;</button>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  `;
+  lb.addEventListener('click', function(e) {
+    if (e.target === lb) closeLightbox();
+  });
+  document.body.appendChild(lb);
+})();
+
+function openLightbox(setIdx, photoIdx) {
+  lightboxSet = setIdx;
+  lightboxIdx = photoIdx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function navLightbox(dir) {
+  const set = PHOTO_SETS[lightboxSet];
+  lightboxIdx = (lightboxIdx + dir + set.length) % set.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  const photo = PHOTO_SETS[lightboxSet][lightboxIdx];
+  document.getElementById('lightbox-img').src = photo.src;
+  document.getElementById('lightbox-img').alt = photo.caption;
+  document.getElementById('lightbox-caption').textContent = photo.caption;
+  // Hide nav if single photo
+  const set = PHOTO_SETS[lightboxSet];
+  document.querySelectorAll('.lightbox-nav').forEach(n => n.style.display = set.length > 1 ? '' : 'none');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+
+
+// ═══════════════════════════════════════════════════
+// SCROLL ANIMATION + PHASE TRANSITIONS + OVERSOUL
+// ═══════════════════════════════════════════════════
+const evEls = document.querySelectorAll('.ev');
+const oversoulEls = document.querySelectorAll('.oversoul-message');
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      en.target.classList.add('in');
+      if (en.target.classList.contains('sdw')) {
+        document.body.classList.add('dark');
+        setAmbient('shadow');
+      } else if (en.target.classList.contains('reu')) {
+        document.body.classList.remove('dark');
+        setAmbient('light');
+      } else {
+        document.body.classList.remove('dark');
+        const phase = en.target.dataset.phase;
+        if (phase === 'summer') setAmbient('nature');
+        else if (phase === 'origin' || phase === 'meeting') setAmbient('nature');
+        else setAmbient('light');
+      }
+    }
+  });
+}, { threshold: 0.25 });
+evEls.forEach(e => io.observe(e));
+
+// Oversoul reveal on scroll
+const osIO = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+oversoulEls.forEach(e => osIO.observe(e));
+
+// Also observe the interactive prompt wraps
+document.querySelectorAll('.oversoul-wrap').forEach(w => {
+  const inner = w.querySelector('.oversoul-message');
+  if (inner) osIO.observe(inner);
+});
+
+
+// ═══════════════════════════════════════════════════
+// AUDIO — Web Audio API Drones
+// ═══════════════════════════════════════════════════
+let audioCtx = null, audioOn = false, masterGain = null;
+let activeNodes = [], currentAmbient = null, lfoIntervals = [];
+
+function toggleAudio() {
+  audioOn = !audioOn;
+  document.querySelector('.abtn').textContent = audioOn ? '\u266B' : '\u266A';
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (audioOn) { setAmbient(currentAmbient || 'nature'); }
+  else { fadeOutAll(); }
+}
+
+function fadeOutAll() {
+  if (masterGain) { masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.8); setTimeout(() => { cleanupAudio(); }, 2000); }
+}
+
+function cleanupAudio() {
+  activeNodes.forEach(n => { try { n.stop(); } catch(e){} }); activeNodes = [];
+  lfoIntervals.forEach(id => clearInterval(id)); lfoIntervals = [];
+}
+
+function setAmbient(type) {
+  if (!audioOn || type === currentAmbient) return;
+  currentAmbient = type;
+  if (!audioCtx) return;
+  if (masterGain) masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.6);
+
+  setTimeout(() => {
+    cleanupAudio();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGain.gain.setTargetAtTime(0.06, audioCtx.currentTime, 3);
+
+    const delay = audioCtx.createDelay(1); delay.delayTime.value = 0.4;
+    const feedback = audioCtx.createGain(); feedback.gain.value = 0.25;
+    const reverbFilter = audioCtx.createBiquadFilter();
+    reverbFilter.type = 'lowpass'; reverbFilter.frequency.value = 2000;
+    delay.connect(feedback); feedback.connect(reverbFilter); reverbFilter.connect(delay);
+    delay.connect(masterGain); masterGain.connect(audioCtx.destination);
+
+    const configs = {
+      shadow: { fundamentals:[111,174,222], detunes:[-4,3,-6,5], types:['sine','triangle','sine'], filterFreq:800, lfoSpeed:0.008, lfoDepth:0.008 },
+      light: { fundamentals:[528,396,639], detunes:[-2,3,-3,2], types:['sine','sine','sine'], filterFreq:3000, lfoSpeed:0.012, lfoDepth:0.004 },
+      nature: { fundamentals:[432,528,324], detunes:[-3,2,-4,3], types:['sine','sine','triangle'], filterFreq:2200, lfoSpeed:0.01, lfoDepth:0.005 },
+    };
+    const cfg = configs[type] || configs.nature;
+
+    cfg.fundamentals.forEach((freq, i) => {
+      const mainFilter = audioCtx.createBiquadFilter();
+      mainFilter.type = 'lowpass'; mainFilter.frequency.value = cfg.filterFreq; mainFilter.Q.value = 0.5;
+      mainFilter.connect(delay); mainFilter.connect(masterGain);
+      const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
+      osc.frequency.value = freq; osc.type = cfg.types[i];
+      g.gain.value = i===0 ? 0.35 : i===1 ? 0.22 : 0.15;
+      osc.connect(g); g.connect(mainFilter); osc.start(); activeNodes.push(osc);
+      cfg.detunes.forEach((det, j) => {
+        const harm = audioCtx.createOscillator(); const hg = audioCtx.createGain();
+        harm.frequency.value = freq; harm.detune.value = det; harm.type = 'sine';
+        hg.gain.value = 0.06 - j * 0.012;
+        harm.connect(hg); hg.connect(mainFilter); harm.start(); activeNodes.push(harm);
+      });
+    });
+    const sub = audioCtx.createOscillator(); const subG = audioCtx.createGain();
+    sub.frequency.value = cfg.fundamentals[0]/2; sub.type = 'sine'; subG.gain.value = 0.08;
+    sub.connect(subG); subG.connect(masterGain); sub.start(); activeNodes.push(sub);
+
+    let lfoT = 0;
+    const lfoId = setInterval(() => {
+      if (!audioOn) { clearInterval(lfoId); return; }
+      lfoT += cfg.lfoSpeed;
+      if (activeNodes[0]) { try { activeNodes[0].frequency.value = cfg.fundamentals[0] * (1 + Math.sin(lfoT) * cfg.lfoDepth); } catch(e) { clearInterval(lfoId); } }
+    }, 50);
+    lfoIntervals.push(lfoId);
+  }, 1200);
+}
+
+
+// ═══════════════════════════════════════════════════
+// CONSTELLATION
+// ═══════════════════════════════════════════════════
+let constellationRAF = null;
+let constellationState = { hoverId: -1, lineProgress: 0, time: 0 };
+
+function initConstellation() {
+  if (constellationRAF) cancelAnimationFrame(constellationRAF);
+  constellationState = { hoverId: -1, lineProgress: 0, time: 0 };
+  drawConstellationLoop();
+}
+
+function drawConstellationLoop() {
+  const canvas = document.getElementById('ccanvas');
+  const container = document.getElementById('cs-view');
+  const size = Math.min(container.clientWidth - 32, 780);
+  canvas.width = size; canvas.height = Math.round(size * 0.85);
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const st = constellationState;
+  if (st.lineProgress < 1) st.lineProgress += 0.008;
+  st.time += 16;
+
+  const isDark = document.body.classList.contains('dark');
+  ctx.fillStyle = isDark ? '#141010' : '#f0ebe0';
+  ctx.fillRect(0, 0, W, H);
+
+  // Stars
+  for (let i = 0; i < 60; i++) {
+    const sx = ((42*(i+1)*7.31) % 1) * W, sy = ((42*(i+1)*3.71) % 1) * H;
+    const sr = 0.3 + ((i*17)%10) * 0.08;
+    const sa = 0.08 + 0.06 * Math.sin(st.time*0.001 + i);
+    ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI*2);
+    ctx.fillStyle = isDark ? `rgba(201,168,76,${sa})` : `rgba(160,140,100,${sa*0.6})`; ctx.fill();
+  }
+
+  const pos = [
+    [0.18,0.08],[0.52,0.05],[0.12,0.22],[0.58,0.18],
+    [0.22,0.38],[0.68,0.33],[0.32,0.50],[0.72,0.55],
+    [0.28,0.70],[0.58,0.76],[0.78,0.80],
+    [0.18,0.88],[0.50,0.92],[0.74,0.94],
+  ];
+  EVENTS.forEach((ev, i) => { ev.x = pos[i][0] * W; ev.y = pos[i][1] * H; });
+
+  const totalPairs = EVENTS.length * (EVENTS.length - 1) / 2;
+  let pairIdx = 0;
+  EVENTS.forEach((ev, i) => {
+    EVENTS.slice(i+1).forEach(ev2 => {
+      const shared = ev.codes.filter(c => ev2.codes.includes(c) && c !== 'shadow');
+      if (shared.length) {
+        const progress = Math.min(1, st.lineProgress * totalPairs / (pairIdx + 1));
+        if (progress > 0) {
+          const isHovered = st.hoverId === ev.id || st.hoverId === ev2.id;
+          const mx = ev.x + (ev2.x - ev.x) * progress, my = ev.y + (ev2.y - ev.y) * progress;
+          ctx.beginPath(); ctx.moveTo(ev.x, ev.y); ctx.lineTo(mx, my);
+          if (isHovered) {
+            ctx.strokeStyle = PCOLS[ev.phase] + 'cc'; ctx.lineWidth = shared.length * 2;
+            ctx.shadowColor = PCOLS[ev.phase]; ctx.shadowBlur = 8;
+          } else {
+            const ba = isDark ? 0.08 : 0.06;
+            ctx.strokeStyle = isDark ? `rgba(201,168,76,${ba + shared.length*0.04})` : `rgba(150,120,60,${ba + shared.length*0.04})`;
+            ctx.lineWidth = shared.length * 0.7;
+          }
+          ctx.stroke(); ctx.shadowBlur = 0;
+          if (isHovered && progress >= 1) {
+            const lx = (ev.x + ev2.x)/2, ly = (ev.y + ev2.y)/2;
+            ctx.fillStyle = PCOLS[st.hoverId === ev.id ? ev.phase : ev2.phase];
+            ctx.font = `bold ${Math.round(size*0.013)}px 'Cinzel', serif`;
+            ctx.textAlign = 'center'; ctx.fillText(shared.join(' \u00B7 '), lx, ly - 6);
+          }
+        }
+      }
+      pairIdx++;
+    });
+  });
+
+  EVENTS.forEach(ev => {
+    const col = PCOLS[ev.phase], isHov = st.hoverId === ev.id;
+    const pulseScale = 1 + 0.15 * Math.sin(st.time*0.002 + ev.id*0.7);
+    const nodeR = isHov ? 9 : 6 * pulseScale;
+    const glowR = isHov ? 28 : 18 * pulseScale;
+    const grd = ctx.createRadialGradient(ev.x, ev.y, 0, ev.x, ev.y, glowR);
+    grd.addColorStop(0, col + (isHov ? '66' : '33')); grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(ev.x, ev.y, glowR, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ev.x, ev.y, nodeR, 0, Math.PI*2);
+    ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = isHov ? 16 : 6; ctx.fill();
+    ctx.shadowBlur = 0; ctx.strokeStyle = isDark ? '#1a1210' : '#f0ebe0'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = isDark ? '#d4c4b8' : '#3a2a1a';
+    ctx.font = `${Math.round(size*0.019)}px 'Cormorant Garamond', serif`;
+    ctx.textAlign = 'center'; ctx.fillText(ev.title, ev.x, ev.y + (isHov ? 20 : 17));
+    if (!isHov) {
+      ctx.fillStyle = col + 'aa'; ctx.font = `${Math.round(size*0.012)}px 'Cinzel', serif`;
+      ctx.fillText(ev.codes.filter(c => c !== 'shadow').slice(0,3).join(' \u00B7 '), ev.x, ev.y + 27);
+    }
+  });
+
+  constellationRAF = requestAnimationFrame(drawConstellationLoop);
+}
+
+(function () {
+  const canvas = document.getElementById('ccanvas');
+  function getEC(e, c) {
+    const r = c.getBoundingClientRect();
+    const cX = e.touches ? e.touches[0].clientX : e.clientX;
+    const cY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: (cX-r.left)*(c.width/r.width), y: (cY-r.top)*(c.height/r.height) };
+  }
+  function findNode(mx,my) { return EVENTS.find(ev => ev.x !== undefined && Math.hypot(ev.x-mx,ev.y-my) < 18); }
+  canvas.addEventListener('mousemove', e => { const {x,y} = getEC(e,canvas); const f = findNode(x,y); constellationState.hoverId = f ? f.id : -1; canvas.style.cursor = f ? 'pointer' : 'default'; });
+  canvas.addEventListener('click', e => { const {x,y} = getEC(e,canvas); const f = findNode(x,y); if (f) openPanel(f.id); });
+  canvas.addEventListener('touchstart', e => { const {x,y} = getEC(e,canvas); const f = findNode(x,y); if (f) { constellationState.hoverId = f.id; openPanel(f.id); } }, {passive:true});
+})();
+
+
+// ═══════════════════════════════════════════════════
+// CONSTELLATION SIDE PANEL
+// ═══════════════════════════════════════════════════
+function openPanel(evId) {
+  const ev = EVENTS[evId]; if (!ev) return;
+  const body = document.getElementById('panel-body');
+  const tagsHtml = ev.codes.filter(c => c !== 'shadow').map(c =>
+    `<span class="tag" style="color:${PCOLS[ev.phase]};border-color:${PCOLS[ev.phase]}44" data-code="${c}">${c}</span>`
+  ).join('');
+  body.innerHTML = `
+    <div class="panel-phase" style="color:${PCOLS[ev.phase]}">${PHASE_NAMES[ev.phase]||ev.phase}</div>
+    <div class="panel-title">${ev.title}</div>
+    <div class="panel-date">${ev.date}</div>
+    <div class="panel-divider" style="background:linear-gradient(90deg,${PCOLS[ev.phase]},transparent)"></div>
+    <div class="panel-text">${ev.body}</div>
+    <div class="panel-detail">${ev.detail}</div>
+    <div class="panel-codes">${tagsHtml}</div>`;
+  document.getElementById('cs-panel').classList.add('open');
+}
+function closePanel() { document.getElementById('cs-panel').classList.remove('open'); }
+
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  evEls.forEach((el, i) => {
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      setTimeout(() => el.classList.add('in'), i * 80);
+    }
+  });
+});
+window.addEventListener('resize', () => {
+  if (document.getElementById('cs-view').style.display !== 'none') initConstellation();
+}, {passive:true});
+</script>
+</body>
+</html>
