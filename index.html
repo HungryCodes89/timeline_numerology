@@ -1042,22 +1042,28 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 }
 .intro-section summary::-webkit-details-marker { display: none; }
 .intro-body {
-  padding: 0 22px 24px;
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
+  padding: 4px 22px 24px;
   animation: introFadeIn 0.5s ease;
 }
 .intro-body p {
-  font-family: 'IM Fell English', serif !important;
-  font-style: italic !important;
-  font-size: 0.88rem !important;
-  line-height: 2.1 !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.95 !important;
+  color: #3a3028 !important;
+  letter-spacing: 0.01em !important;
 }
+body.dark .intro-body p { color: #c4b4a4 !important; }
 .intro-body strong {
   font-family: 'Cinzel', serif !important;
   font-style: normal !important;
-  font-size: 0.82rem !important;
+  font-size: 0.9rem !important;
   letter-spacing: 0.03em;
+}
+.intro-body em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
 }
 @keyframes introFadeIn {
   from { opacity: 0; transform: translateY(-8px); }
@@ -1516,29 +1522,36 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     </p>
   </div></details>
 
-  <!-- SECTION: CALCULATE YOUR CHART (last) -->
+  <!-- SECTION: FULL NUMEROLOGY CHART CALCULATOR -->
   <details class="intro-section">
-    <summary>Calculate Your Life Path Number</summary>
+    <summary>Calculate Your Full Numerology Chart</summary>
     <div class="intro-body">
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Your Life Path number is calculated by adding every digit of your full birth date and reducing to a single digit or master number (11, 22, 33). Enter your birthday below:
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.9;color:#3a3028;margin-bottom:18px;">
+      Enter your full birth name (as it appears on your birth certificate) and your date of birth. The calculator will compute your complete numerological chart.
     </p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
+
+    <div style="margin-bottom:14px;">
+      <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:6px;">FULL BIRTH NAME</label>
+      <input type="text" id="calc-name" placeholder="e.g. Sean Christopher Norgan" style="width:100%;max-width:400px;padding:10px 14px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;outline:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'" />
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px;">
       <div>
         <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:4px;">MONTH</label>
-        <input type="number" id="calc-month" min="1" max="12" placeholder="MM" style="width:60px;padding:8px;font-family:'Cormorant Garamond',serif;font-size:1rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
+        <input type="number" id="calc-month" min="1" max="12" placeholder="MM" style="width:60px;padding:10px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
       </div>
       <div>
         <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:4px;">DAY</label>
-        <input type="number" id="calc-day" min="1" max="31" placeholder="DD" style="width:60px;padding:8px;font-family:'Cormorant Garamond',serif;font-size:1rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
+        <input type="number" id="calc-day" min="1" max="31" placeholder="DD" style="width:60px;padding:10px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
       </div>
       <div>
         <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:4px;">YEAR</label>
-        <input type="number" id="calc-year" min="1900" max="2030" placeholder="YYYY" style="width:80px;padding:8px;font-family:'Cormorant Garamond',serif;font-size:1rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
+        <input type="number" id="calc-year" min="1900" max="2030" placeholder="YYYY" style="width:80px;padding:10px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
       </div>
-      <button onclick="calculateLifePath()" style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid rgba(201,168,76,0.3);padding:9px 20px;cursor:pointer;border-radius:20px;transition:all 0.3s;">Calculate</button>
+      <button onclick="calculateFullChart()" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#1a1210;background:var(--gold);border:none;padding:11px 24px;cursor:pointer;border-radius:20px;transition:all 0.3s;font-weight:600;">Calculate Chart</button>
     </div>
-    <div id="calc-result" style="display:none;padding:18px 22px;border:1px solid rgba(201,168,76,0.2);border-radius:4px;background:rgba(201,168,76,0.04);animation:fadeUp 0.5s ease;"></div>
+
+    <div id="chart-result" style="display:none;"></div>
   </div></details>
 
   <div class="div" style="margin:40px auto;"></div>
@@ -2851,7 +2864,7 @@ function toggleNumDef(el) {
 
 
 // ═══════════════════════════════════════════════════
-// LIFE PATH CALCULATOR
+// FULL NUMEROLOGY CHART CALCULATOR
 // ═══════════════════════════════════════════════════
 function reduceToSingle(n) {
   while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
@@ -2860,53 +2873,141 @@ function reduceToSingle(n) {
   return n;
 }
 
-function calculateLifePath() {
+const LETTER_VALUES = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8};
+const VOWELS = new Set(['a','e','i','o','u']);
+
+function nameToNumber(name, filter) {
+  let sum = 0;
+  for (const ch of name.toLowerCase()) {
+    if (!LETTER_VALUES[ch]) continue;
+    if (filter === 'vowels' && !VOWELS.has(ch)) continue;
+    if (filter === 'consonants' && VOWELS.has(ch)) continue;
+    sum += LETTER_VALUES[ch];
+  }
+  return reduceToSingle(sum);
+}
+
+const CHART_COLORS = {
+  lifePath: '#c9a84c',
+  expression: '#6a9460',
+  soulUrge: '#d4613a',
+  personality: '#4a7a9a',
+  birthday: '#b08040',
+};
+
+const CHART_LABELS = {
+  lifePath: 'Life Path',
+  expression: 'Expression / Destiny',
+  soulUrge: 'Soul Urge',
+  personality: 'Personality',
+  birthday: 'Birthday',
+};
+
+const CHART_DESC = {
+  lifePath: 'Your life\'s purpose and the path you walk. Calculated from your full birth date.',
+  expression: 'What you are here to build and express. Calculated from all letters of your birth name.',
+  soulUrge: 'Your deepest inner motivation and what your soul craves. Calculated from the vowels of your name.',
+  personality: 'The face you show the world and how others perceive you. Calculated from the consonants of your name.',
+  birthday: 'Your natural talents and gifts. The day of the month you were born, reduced.',
+};
+
+function calculateFullChart() {
+  const name = document.getElementById('calc-name').value.trim();
   const m = parseInt(document.getElementById('calc-month').value);
   const d = parseInt(document.getElementById('calc-day').value);
   const y = parseInt(document.getElementById('calc-year').value);
-  if (!m || !d || !y) return;
 
-  const mReduced = reduceToSingle(m);
-  const dReduced = reduceToSingle(d);
-  const yReduced = reduceToSingle(y);
-  let lifePath = mReduced + dReduced + yReduced;
-  lifePath = reduceToSingle(lifePath);
+  if (!m || !d || !y) { alert('Please enter your birth date.'); return; }
 
-  // Day of year calculation
+  // Life Path
+  const allDigits = `${m}${d}${y}`.split('').map(Number);
+  const lifePath = reduceToSingle(allDigits.reduce((a,b) => a+b, 0));
+
+  // Name-based numbers
+  const expression = name ? nameToNumber(name, 'all') : null;
+  const soulUrge = name ? nameToNumber(name, 'vowels') : null;
+  const personality = name ? nameToNumber(name, 'consonants') : null;
+
+  // Birthday
+  const birthday = reduceToSingle(d);
+
+  // Day of year
   const date = new Date(y, m - 1, d);
   const startOfYear = new Date(y, 0, 1);
   const dayOfYear = Math.floor((date - startOfYear) / 86400000) + 1;
 
-  // Date numerology (sum all digits)
-  const allDigits = `${m}${d}${y}`.split('').map(Number);
-  const dateNumero = allDigits.reduce((a,b) => a+b, 0);
-
-  // Multiply all digits
+  // Digit product
   const product = allDigits.reduce((a,b) => a * (b === 0 ? 1 : b), 1);
 
-  const meaning = NUM_DEFS[lifePath] || 'A unique vibration.';
+  // Date sum
+  const dateSum = allDigits.reduce((a,b) => a+b, 0);
 
-  const result = document.getElementById('calc-result');
+  const result = document.getElementById('chart-result');
   result.style.display = 'block';
-  result.innerHTML = `
-    <p style="font-family:'Cinzel Decorative',serif;font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px;">${lifePath}</p>
-    <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px;">Life Path Number</p>
-    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.9rem;line-height:1.85;color:#5a4e44;margin-bottom:16px;">${meaning}</p>
-    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:12px;">
+
+  let html = '<div style="animation:fadeUp 0.6s ease;">';
+
+  // Chart cards
+  const cards = [
+    { key: 'lifePath', num: lifePath },
+    { key: 'expression', num: expression },
+    { key: 'soulUrge', num: soulUrge },
+    { key: 'personality', num: personality },
+    { key: 'birthday', num: birthday },
+  ];
+
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;">';
+  cards.forEach(c => {
+    if (c.num === null) return;
+    const col = CHART_COLORS[c.key];
+    const meaning = NUM_DEFS[c.num] || '';
+    const shortMeaning = meaning.split('.').slice(0,2).join('.') + '.';
+    html += `
+      <div onclick="expandChartCard(this)" style="background:rgba(0,0,0,0.02);border:1px solid ${col}33;border-radius:6px;padding:18px 14px;text-align:center;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;" onmouseenter="this.style.borderColor='${col}88';this.style.boxShadow='0 0 20px ${col}15'" onmouseleave="this.style.borderColor='${col}33';this.style.boxShadow='none'">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${col};opacity:0.6;"></div>
+        <div style="font-family:'Cinzel Decorative',serif;font-size:2.2rem;color:${col};line-height:1;margin-bottom:6px;text-shadow:0 0 20px ${col}30;">${c.num}</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:${col};margin-bottom:8px;">${CHART_LABELS[c.key]}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:0.78rem;color:#6a5e54;line-height:1.6;">${CHART_DESC[c.key]}</div>
+        <div class="chart-card-detail" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s ease,margin 0.4s ease;opacity:0;">
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid ${col}22;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:#5a4e44;line-height:1.8;text-align:left;">${meaning}</div>
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+
+  // Stats row
+  html += `
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;padding:16px 0;border-top:1px solid rgba(201,168,76,0.1);">
       <div style="text-align:center;">
-        <span style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);">${dayOfYear}</span>
-        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:2px;">DAY OF YEAR</span>
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dayOfYear}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DAY OF YEAR</span>
       </div>
       <div style="text-align:center;">
-        <span style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);">${dateNumero}</span>
-        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:2px;">DATE SUM</span>
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dateSum}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DATE SUM</span>
       </div>
       <div style="text-align:center;">
-        <span style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);">${product.toLocaleString()}</span>
-        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:2px;">DIGIT PRODUCT</span>
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${product.toLocaleString()}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DIGIT PRODUCT</span>
       </div>
-    </div>
-  `;
+    </div>`;
+
+  html += '</div>';
+  result.innerHTML = html;
+}
+
+function expandChartCard(el) {
+  const detail = el.querySelector('.chart-card-detail');
+  if (!detail) return;
+  const isOpen = detail.style.maxHeight && detail.style.maxHeight !== '0px';
+  // Close all others
+  document.querySelectorAll('.chart-card-detail').forEach(d => {
+    d.style.maxHeight = '0px'; d.style.opacity = '0'; d.style.marginTop = '0';
+  });
+  if (!isOpen) {
+    detail.style.maxHeight = '300px';
+    detail.style.opacity = '1';
+  }
 }
 
 
