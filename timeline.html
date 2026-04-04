@@ -1843,6 +1843,28 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <div id="chart-result" style="display:none;"></div>
   </div></details>
 
+  <!-- SECTION: OCTOBER'S NUMEROLOGY CHART -->
+  <details class="intro-section">
+    <summary>October's Numerology Chart</summary>
+    <div class="intro-body">
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.9;color:#6b5d4f;margin-bottom:20px;">
+      October Eden Hoflin — born April 18, 2004. The mirror flame. Her name carries 666 in Sumerian, 33 in reduction, 39 in reverse reduction. Eden — the garden. Named after the month his mother died.
+    </p>
+    <div id="october-chart"></div>
+    </div>
+  </details>
+
+  <!-- SECTION: SEAN'S NUMEROLOGY CHART -->
+  <details class="intro-section">
+    <summary>Sean's Numerology Chart</summary>
+    <div class="intro-body">
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.9;color:#6b5d4f;margin-bottom:20px;">
+      Sean Christopher Norgan — born May 24, 1989. The 144th day of the year. 36th birthday. Sean = 39 = October. Hungry = 93 = Saturn = Norgan.
+    </p>
+    <div id="sean-chart"></div>
+    </div>
+  </details>
+
   <div class="div" style="margin:40px auto;"></div>
 
 </div>
@@ -3299,6 +3321,74 @@ function expandChartCard(el) {
     detail.style.opacity = '1';
   }
 }
+
+// ═══════════════════════════════════════════════════
+// PRE-BUILT CHARTS (October & Sean)
+// ═══════════════════════════════════════════════════
+function renderPrebuiltChart(targetId, name, month, day, year) {
+  const allDigits = `${month}${day}${year}`.split('').map(Number);
+  const lifePath = reduceToSingle(allDigits.reduce((a,b) => a+b, 0));
+  const expression = nameToNumber(name, 'all');
+  const soulUrge = nameToNumber(name, 'vowels');
+  const personality = nameToNumber(name, 'consonants');
+  const birthday = reduceToSingle(day);
+  const date = Date.UTC(year, month - 1, day);
+  const startOfYear = Date.UTC(year, 0, 1);
+  const dayOfYear = Math.floor((date - startOfYear) / 86400000) + 1;
+  const product = allDigits.reduce((a,b) => a * (b === 0 ? 1 : b), 1);
+  const dateSum = allDigits.reduce((a,b) => a+b, 0);
+
+  const cards = [
+    { key: 'lifePath', num: lifePath },
+    { key: 'expression', num: expression },
+    { key: 'soulUrge', num: soulUrge },
+    { key: 'personality', num: personality },
+    { key: 'birthday', num: birthday },
+  ];
+
+  let html = '<div style="animation:fadeUp 0.6s ease;">';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;">';
+  cards.forEach(c => {
+    const col = CHART_COLORS[c.key];
+    const meaning = NUM_DEFS[c.num] || '';
+    html += `
+      <div onclick="expandChartCard(this)" style="background:rgba(0,0,0,0.02);border:1px solid ${col}33;border-radius:6px;padding:18px 14px;text-align:center;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;" onmouseenter="this.style.borderColor='${col}88';this.style.boxShadow='0 0 20px ${col}15'" onmouseleave="this.style.borderColor='${col}33';this.style.boxShadow='none'">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${col};opacity:0.6;"></div>
+        <div style="font-family:'Cinzel Decorative',serif;font-size:2.2rem;color:${col};line-height:1;margin-bottom:6px;text-shadow:0 0 20px ${col}30;">${c.num}</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:${col};margin-bottom:8px;">${CHART_LABELS[c.key]}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:0.78rem;color:#6a5e54;line-height:1.6;">${CHART_DESC[c.key]}</div>
+        <div class="chart-card-detail" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s ease,margin 0.4s ease;opacity:0;">
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid ${col}22;font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:#5a4e44;line-height:1.8;text-align:left;">${meaning}</div>
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+
+  html += `
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;padding:16px 0;border-top:1px solid rgba(201,168,76,0.1);">
+      <div style="text-align:center;">
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dayOfYear}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DAY OF YEAR</span>
+      </div>
+      <div style="text-align:center;">
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dateSum}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DATE SUM</span>
+      </div>
+      <div style="text-align:center;">
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${product.toLocaleString()}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DIGIT PRODUCT</span>
+      </div>
+    </div>`;
+
+  html += '</div>';
+  document.getElementById(targetId).innerHTML = html;
+}
+
+// Render both charts on page load
+window.addEventListener('load', () => {
+  renderPrebuiltChart('october-chart', 'October Eden Hoflin', 4, 18, 2004);
+  renderPrebuiltChart('sean-chart', 'Sean Christopher Norgan', 5, 24, 1989);
+});
 
 
 // ═══════════════════════════════════════════════════
