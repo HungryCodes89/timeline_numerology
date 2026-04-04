@@ -1282,6 +1282,68 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 }
 
 /* ═══════════════════════════════
+   GEMATRIA WORD HIGHLIGHTS
+   ═══════════════════════════════ */
+.gw {
+  color: var(--gold); cursor: pointer;
+  border-bottom: 1px dotted rgba(201,168,76,0.4);
+  transition: border-color 0.2s, color 0.2s;
+  position: relative;
+}
+.gw:hover { border-bottom-color: var(--gold); }
+body.dark .gw { color: #d4a84c; }
+
+/* Calculation tooltip */
+.gw-tooltip {
+  position: fixed; z-index: 9500;
+  background: rgba(26,18,16,0.96);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 8px;
+  padding: 16px 20px;
+  max-width: 340px; width: max-content;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px rgba(201,168,76,0.08);
+  animation: fadeUp 0.3s ease;
+  pointer-events: auto;
+}
+.gw-tooltip-word {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.1rem; color: var(--gold);
+  letter-spacing: 0.08em; margin-bottom: 4px;
+}
+.gw-tooltip-cipher {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: #8a7a6a;
+  margin-bottom: 10px;
+}
+.gw-tooltip-calc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem; color: #d4c4b8;
+  line-height: 1.7; letter-spacing: 0.02em;
+}
+.gw-tooltip-calc .gw-letter {
+  color: var(--gold); font-weight: 600;
+}
+.gw-tooltip-calc .gw-plus {
+  color: #6a5e54; margin: 0 2px;
+}
+.gw-tooltip-sum {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.6rem; color: var(--gold);
+  margin-top: 8px; letter-spacing: 0.06em;
+  text-shadow: 0 0 20px rgba(201,168,76,0.3);
+}
+.gw-tooltip-close {
+  position: absolute; top: 8px; right: 12px;
+  background: none; border: none; color: #6a5e54;
+  font-size: 1.1rem; cursor: pointer; transition: color 0.2s;
+  min-width: 30px; min-height: 30px;
+  display: flex; align-items: center; justify-content: center;
+}
+.gw-tooltip-close:hover { color: var(--gold); }
+
+/* ═══════════════════════════════
    PHOTO GALLERY
    ═══════════════════════════════ */
 .ev-photos {
@@ -1589,7 +1651,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 <header>
   <div class="sigil">&#10022; &#11043; &#10022;</div>
   <h1>Sean <span>&</span> October</h1>
-  <p class="sub">A Sacred Chronicle &mdash; May 2025 to April 2026</p>
+  <p class="sub">May 2025 &mdash; ?</p>
   <div class="div"></div>
   <p class="motto">As within, so without. As above, so below.</p>
 </header>
@@ -1615,10 +1677,10 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
       The premise is simple: every letter is represented by a number. Every word, therefore, has a sum. And words that share the same sum share a hidden relationship, a resonance that exists beneath the surface of language. This is woven into the oldest texts humanity possesses.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Consider the Bible, the most printed, most translated, most studied text in human history. In English ordinal gematria (A=1, B=2, C=3...), the word "Adam" equals 26. Adam, the first man = 26. Made in the image = 26. Of God = 26. He first appears in Genesis 2:6, the 26th verse of the Bible. The human body contains 206 bones. "Anatomy" equals 26. The first man, his creator, and the structure of the body all converge on the same number, in the same verse.
+      Consider the Bible, the most printed, most translated, most studied text in human history. In reverse reduction gematria, <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26. <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26 in ordinal. The first man = 26. Made in the image = 26. He first appears in Genesis 2:6, the 26th verse of the Bible. The human body contains 206 bones. The first man, his creator, and the structure of the body all converge on the same number, in the same verse.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      It goes deeper. "Genesis," the book of origin, the beginning of all things, equals 666 in Sumerian gematria. So does "Humanity." The Book of Revelation, chapter 13, verse 18, is the passage that introduces 666 as "the number of a man." Look at the address of that verse: 13:18. The number 13 is the 6th prime number. 6 + 6 + 6 = 18. The verse that decodes the number is itself encoded by the number. The chapter and verse are themselves the code. The text is built from the very pattern it describes.
+      It goes deeper. <span class="gw" data-word="Genesis" data-cipher="Sumerian" data-calc="G(42) + E(30) + N(84) + E(30) + S(114) + I(54) + S(114) + (×6 ordinal)">Genesis</span>, the book of origin, the beginning of all things, equals 666 in Sumerian gematria. So does <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150) + (×6 ordinal)">Humanity</span>. The Book of Revelation, chapter 13, verse 18, is the passage that introduces 666 as "the number of a man." Look at the address of that verse: 13:18. The number 13 is the 6th prime number. 6 + 6 + 6 = 18. The verse that decodes the number is itself encoded by the number. The chapter and verse are themselves the code. The text is built from the very pattern it describes.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       666 has been profoundly misunderstood for centuries. Revelation calls it "the number of a man." Consider that literally. Carbon, the element that forms the basis of all organic life on Earth, has exactly 6 protons, 6 neutrons, and 6 electrons. 6, 6, 6. Every cell in your body, every strand of your DNA, every bone in your 206-bone frame is built on carbon. 666 may well be the atomic signature of physical existence itself.
@@ -1630,7 +1692,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
       Seen through this lens, 666 points toward spiritual alchemy: the number of the body, carbon, matter, flesh, becoming conscious. The dense material of human suffering, the wounds we carry, the shadows we inherit, the patterns we repeat, can be understood as raw material rather than punishment. The mother wound, the father wound, the shamed child, the addiction, the self-sabotage. The alchemists would call this the lead. And the work of a lifetime may be to recognize it, name it, sit in the fire with it, and transmute it into something sovereign. The wound may not be what destroys you. It may be what you are being asked to refine.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      666 is the 36th triangular number, the sum of every integer from 1 to 36. It contains within it every number that came before. A human being who has faced every wound, named every shadow, and chosen to remain conscious through the fire carries the sum of everything they have survived.
+      666 is the 36th triangular number, the sum of every integer from 1 to 36. It contains within it every number that came before. A human being who has faced every wound, named every shadow, and chosen to remain conscious through the fire carries the sum of everything they have survived. Whether that constitutes completion, or simply endurance, is a question worth sitting with.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       There are multiple cipher systems: Ordinal (A=1, B=2), Reverse Ordinal (A=26, B=25), Reduction (digits summed until single), Chaldean (an ancient Babylonian system), Sumerian (Ordinal multiplied by 6), Septenary, and dozens more. Each reveals a different layer. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence shrinks. What remains is pattern, and the question of what generates it.
@@ -1827,7 +1889,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <summary>October's Numerology Chart</summary>
     <div class="intro-body">
     <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.9;color:#6b5d4f;margin-bottom:20px;">
-      October Eden Hoflin — born April 18, 2004. The mirror flame. Her name carries 666 in Sumerian, 33 in reduction, 39 in reverse reduction. Eden — the garden. Named after the month his mother died.
+      <span class="gw" data-word="October" data-cipher="Sumerian" data-calc="O(90) + C(18) + T(120) + O(90) + B(12) + E(30) + R(108) + (×6 ordinal)">October</span> <span class="gw" data-word="Eden" data-cipher="Ordinal" data-calc="E(5) + D(4) + E(5) + N(14)">Eden</span> <span class="gw" data-word="Hoflin" data-cipher="Ordinal" data-calc="H(8) + O(15) + F(6) + L(12) + I(9) + N(14)">Hoflin</span> — born April 18, 2004. The mirror flame. Her name carries 666 in Sumerian, 33 in reduction, 39 in reverse reduction. <span class="gw" data-word="October" data-cipher="Reduction" data-calc="O(6) + C(3) + T(2) + O(6) + B(2) + E(5) + R(9)">October</span> = 33 reduction. <span class="gw" data-word="October" data-cipher="Reverse Reduction" data-calc="O(3) + C(6) + T(7) + O(3) + B(7) + E(4) + R(9)">October</span> = 39 reverse reduction. Eden — the garden. Named after the month his mother died.
     </p>
     <div id="october-chart"></div>
     </div>
@@ -1838,7 +1900,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <summary>How to Read This Timeline</summary>
     <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Every event in this chronicle is annotated with gematria codes, the numerical values of the names, places, dates, and words involved. These are calculations, verifiable by anyone with a gematria calculator. When you see <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:0.8rem;">34 &middot; Mother</span>, it means the word "Mother" equals 34 in reduction gematria. When you see the same number appear in a person's name, a date, a location, and an event within the same story, you are seeing the pattern this timeline was built to make visible.
+      Every event in this chronicle is annotated with gematria codes, the numerical values of the names, places, dates, and words involved. These are calculations, verifiable by anyone with a gematria calculator. When you see <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:0.8rem;">34 &middot; Mother</span>, it means <span class="gw" data-word="Mother" data-cipher="Reduction" data-calc="M(4) + O(6) + T(2) + H(8) + E(5) + R(9)">Mother</span> = 34 in reduction gematria. When you see the same number appear in a person's name, a date, a location, and an event within the same story, you are seeing the pattern this timeline was built to make visible.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Click any code tag to decode it. Click "Codes" in the navigation to filter events by number. Switch to "Constellation" view to see how events are connected by shared codes, a web of numerical relationships that spans the entire story.
@@ -3417,6 +3479,71 @@ function renderPrebuiltChart(targetId, name, month, day, year) {
 window.addEventListener('load', () => {
   renderPrebuiltChart('october-chart', 'October Eden Hoflin', 4, 18, 2004);
 });
+
+
+// ═══════════════════════════════════════════════════
+// GEMATRIA WORD TOOLTIPS
+// ═══════════════════════════════════════════════════
+(function initGematriaWords() {
+  let activeTooltip = null;
+
+  function closeTooltip() {
+    if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
+  }
+
+  function showTooltip(el) {
+    closeTooltip();
+    const word = el.dataset.word;
+    const cipher = el.dataset.cipher || 'Ordinal';
+    const calc = el.dataset.calc; // e.g. "A(1) + D(4) + A(1) + M(13)"
+
+    // Parse calculation to get sum
+    const nums = calc.match(/\((\d+)\)/g);
+    const sum = nums ? nums.reduce((s, n) => s + parseInt(n.replace(/[()]/g, '')), 0) : '?';
+
+    // Build formatted calculation display
+    const calcHtml = calc.replace(/([A-Za-z]+)\((\d+)\)/g,
+      '<span class="gw-letter">$1</span>(<span style="color:var(--gold);">$2</span>)')
+      .replace(/\+/g, '<span class="gw-plus">+</span>');
+
+    const tip = document.createElement('div');
+    tip.className = 'gw-tooltip';
+    tip.innerHTML = `
+      <button class="gw-tooltip-close" onclick="this.parentElement.remove()">&times;</button>
+      <div class="gw-tooltip-word">${word}</div>
+      <div class="gw-tooltip-cipher">${cipher} Gematria</div>
+      <div class="gw-tooltip-calc">${calcHtml}</div>
+      <div class="gw-tooltip-sum">= ${sum}</div>
+    `;
+    document.body.appendChild(tip);
+    activeTooltip = tip;
+
+    // Position near element
+    const rect = el.getBoundingClientRect();
+    const tipRect = tip.getBoundingClientRect();
+    let top = rect.bottom + 10;
+    let left = rect.left + (rect.width / 2) - (tipRect.width / 2);
+
+    // Keep in viewport
+    if (left < 10) left = 10;
+    if (left + tipRect.width > window.innerWidth - 10) left = window.innerWidth - tipRect.width - 10;
+    if (top + tipRect.height > window.innerHeight - 10) top = rect.top - tipRect.height - 10;
+
+    tip.style.top = top + 'px';
+    tip.style.left = left + 'px';
+  }
+
+  document.addEventListener('click', (e) => {
+    const gw = e.target.closest('.gw');
+    if (gw) {
+      e.preventDefault();
+      e.stopPropagation();
+      showTooltip(gw);
+    } else if (!e.target.closest('.gw-tooltip')) {
+      closeTooltip();
+    }
+  });
+})();
 
 
 // ═══════════════════════════════════════════════════
