@@ -2931,9 +2931,9 @@ function calculateFullChart() {
   // Birthday
   const birthday = reduceToSingle(d);
 
-  // Day of year
-  const date = new Date(y, m - 1, d);
-  const startOfYear = new Date(y, 0, 1);
+  // Day of year — use UTC to avoid timezone drift
+  const date = Date.UTC(y, m - 1, d);
+  const startOfYear = Date.UTC(y, 0, 1);
   const dayOfYear = Math.floor((date - startOfYear) / 86400000) + 1;
 
   // Digit product
