@@ -1153,10 +1153,30 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     right: 14px; width: 40px; height: 40px; font-size: 0.9rem;
   }
 
-  /* ── CHART CALCULATOR ── */
-  #chart-result div[style*="grid"] {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
-    gap: 8px !important;
+  /* ── CHART CARDS (calculator + pre-built) ── */
+  #chart-result div[style*="grid"],
+  #october-chart div[style*="grid"],
+  #sean-chart div[style*="grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  #chart-result div[style*="grid"] > div,
+  #october-chart div[style*="grid"] > div,
+  #sean-chart div[style*="grid"] > div {
+    padding: 16px 14px !important;
+  }
+  #chart-result .chart-card-detail > div,
+  #october-chart .chart-card-detail > div,
+  #sean-chart .chart-card-detail > div {
+    font-size: 0.85rem !important;
+    line-height: 1.85 !important;
+  }
+  /* Stats row */
+  #chart-result div[style*="flex-wrap"],
+  #october-chart div[style*="flex-wrap"],
+  #sean-chart div[style*="flex-wrap"] {
+    gap: 24px !important;
+    padding: 14px 0 !important;
   }
 
   /* ── PHASE BACKGROUNDS — simplify gradients for performance ── */
@@ -1667,51 +1687,6 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     </p>
   </div></details>
 
-  <!-- SECTION: THE CONVERGENCE -->
-  <details class="intro-section">
-    <summary>Where the Sciences Converge</summary>
-    <div class="intro-body">
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      What makes this moment in history unusual is that multiple scientific disciplines, developed independently, are arriving at overlapping conclusions that the ancient numerological traditions intuited thousands of years ago:
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Quantum physics</strong> has demonstrated that particles exist as probability waves until observed, at which point they collapse into definite states. The double-slit experiment, one of the most replicated experiments in science, shows that consciousness changes physical outcomes. The universe appears to respond to attention.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Quantum entanglement</strong>, proven by Alain Aspect in 1982 and awarded the Nobel Prize in Physics in 2022, shows that two particles can be instantaneously correlated regardless of distance. Einstein called this "spooky action at a distance." He could not accept it. But it has been confirmed repeatedly. Things that appear unrelated can be fundamentally connected through a mechanism that operates outside of space and time.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Mathematics itself</strong> appears to be discovered rather than invented. The Fibonacci sequence (1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89) appears in sunflower spirals, hurricane formations, galaxy arms, and DNA molecules. No one told nature to use this sequence. It is embedded in the structure of physical reality.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Cymatics</strong> demonstrates that sound frequencies create precise geometric patterns in physical matter. Ernst Chladni showed this in the 18th century; Hans Jenny expanded it in the 20th. Vibration organizes matter. Frequency creates structure.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Nikola Tesla</strong> said, "If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration." This was not metaphor. It anticipated what quantum mechanics would spend the next century confirming: that atoms are standing waves, that matter is vibration, and that numbers, which describe vibration, may be descriptions of what reality is actually doing.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      These fields, physics, mathematics, acoustics, biology, were developed by people who were not speaking to each other, in centuries that did not overlap, using methods that share no common lineage. And yet they converge on the same conclusion the Pythagoreans reached 2,500 years ago: number is woven into the fabric of existence. Whether that fabric is conscious, computational, holographic, or something else entirely remains an open question. But the convergence itself is difficult to dismiss.
-    </p>
-  </div></details>
-
-  <!-- SECTION: THE THEORETICAL -->
-  <details class="intro-section">
-    <summary>The Theoretical: What Remains Open</summary>
-    <div class="intro-body">
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Simulation theory.</strong> The idea that reality may be a computed information system, advanced by philosopher Nick Bostrom and discussed by physicists including Neil deGrasse Tyson, suggests that if the universe is computational, it would necessarily run on mathematical rules. Recurring numerical patterns in names, dates, and events would then be expected features of a system built on code, not anomalies to be explained away.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Morphic resonance.</strong> Biologist Rupert Sheldrake's hypothesis proposes that nature has a kind of memory, that patterns, once established, become easier to repeat through "morphic fields" that operate outside conventional space-time. If true, recurring numerical signatures in a person's life may be the expression of a morphic field, a pattern that, once activated, tends to replicate itself across events, relationships, and timelines.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Carl Jung's synchronicity.</strong> Jung defined synchronicity as "meaningful coincidence": events connected not by cause and effect but by meaning. He proposed that the psyche and the physical world are two expressions of a single underlying reality he called the <em>unus mundus</em>. In this view, the inner event and the outer event are connected through a layer of reality that does not obey linear causation.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      <strong style="color:var(--gold);">The holographic principle.</strong> Theoretical physicist David Bohm proposed that the universe operates like a hologram, where every part contains information about the whole. In a holographic universe, a name would not merely label a person; it would encode them. The letters of a name would be a compressed expression of everything that person is, was, and will become.
-    </p>
-  </div></details>
-
   <!-- SECTION: MY CHART — WHY I SEE CODES -->
   <details class="intro-section">
     <summary>Why I See Codes: My Numerological Blueprint</summary>
@@ -1794,16 +1769,50 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     </p>
   </div></details>
 
-  <!-- SECTION: OCTOBER'S NUMEROLOGY CHART -->
+  <!-- SECTION: THE CONVERGENCE -->
   <details class="intro-section">
-    <summary>October's Numerology Chart</summary>
+    <summary>Where the Sciences Converge</summary>
     <div class="intro-body">
-    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.9;color:#6b5d4f;margin-bottom:20px;">
-      October Eden Hoflin — born April 18, 2004. The mirror flame. Her name carries 666 in Sumerian, 33 in reduction, 39 in reverse reduction. Eden — the garden. Named after the month his mother died.
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      What makes this moment in history unusual is that multiple scientific disciplines, developed independently, are arriving at overlapping conclusions that the ancient numerological traditions intuited thousands of years ago:
     </p>
-    <div id="october-chart"></div>
-    </div>
-  </details>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Quantum physics</strong> has demonstrated that particles exist as probability waves until observed, at which point they collapse into definite states. The double-slit experiment, one of the most replicated experiments in science, shows that consciousness changes physical outcomes. The universe appears to respond to attention.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Quantum entanglement</strong>, proven by Alain Aspect in 1982 and awarded the Nobel Prize in Physics in 2022, shows that two particles can be instantaneously correlated regardless of distance. Einstein called this "spooky action at a distance." He could not accept it. But it has been confirmed repeatedly. Things that appear unrelated can be fundamentally connected through a mechanism that operates outside of space and time.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Mathematics itself</strong> appears to be discovered rather than invented. The Fibonacci sequence (1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89) appears in sunflower spirals, hurricane formations, galaxy arms, and DNA molecules. No one told nature to use this sequence. It is embedded in the structure of physical reality.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Cymatics</strong> demonstrates that sound frequencies create precise geometric patterns in physical matter. Ernst Chladni showed this in the 18th century; Hans Jenny expanded it in the 20th. Vibration organizes matter. Frequency creates structure.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Nikola Tesla</strong> said, "If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration." This was not metaphor. It anticipated what quantum mechanics would spend the next century confirming: that atoms are standing waves, that matter is vibration, and that numbers, which describe vibration, may be descriptions of what reality is actually doing.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      These fields, physics, mathematics, acoustics, biology, were developed by people who were not speaking to each other, in centuries that did not overlap, using methods that share no common lineage. And yet they converge on the same conclusion the Pythagoreans reached 2,500 years ago: number is woven into the fabric of existence. Whether that fabric is conscious, computational, holographic, or something else entirely remains an open question. But the convergence itself is difficult to dismiss.
+    </p>
+  </div></details>
+
+  <!-- SECTION: THE THEORETICAL -->
+  <details class="intro-section">
+    <summary>The Theoretical: What Remains Open</summary>
+    <div class="intro-body">
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Simulation theory.</strong> The idea that reality may be a computed information system, advanced by philosopher Nick Bostrom and discussed by physicists including Neil deGrasse Tyson, suggests that if the universe is computational, it would necessarily run on mathematical rules. Recurring numerical patterns in names, dates, and events would then be expected features of a system built on code, not anomalies to be explained away.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Morphic resonance.</strong> Biologist Rupert Sheldrake's hypothesis proposes that nature has a kind of memory, that patterns, once established, become easier to repeat through "morphic fields" that operate outside conventional space-time. If true, recurring numerical signatures in a person's life may be the expression of a morphic field, a pattern that, once activated, tends to replicate itself across events, relationships, and timelines.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Carl Jung's synchronicity.</strong> Jung defined synchronicity as "meaningful coincidence": events connected not by cause and effect but by meaning. He proposed that the psyche and the physical world are two expressions of a single underlying reality he called the <em>unus mundus</em>. In this view, the inner event and the outer event are connected through a layer of reality that does not obey linear causation.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      <strong style="color:var(--gold);">The holographic principle.</strong> Theoretical physicist David Bohm proposed that the universe operates like a hologram, where every part contains information about the whole. In a holographic universe, a name would not merely label a person; it would encode them. The letters of a name would be a compressed expression of everything that person is, was, and will become.
+    </p>
+  </div></details>
 
   <!-- SECTION: HOW TO READ THIS TIMELINE -->
   <details class="intro-section">
@@ -1853,6 +1862,17 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 
     <div id="chart-result" style="display:none;"></div>
   </div></details>
+
+  <!-- SECTION: OCTOBER'S NUMEROLOGY CHART -->
+  <details class="intro-section">
+    <summary>October's Numerology Chart</summary>
+    <div class="intro-body">
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.9;color:#6b5d4f;margin-bottom:20px;">
+      October Eden Hoflin — born April 18, 2004. The mirror flame. Her name carries 666 in Sumerian, 33 in reduction, 39 in reverse reduction. Eden — the garden. Named after the month his mother died.
+    </p>
+    <div id="october-chart"></div>
+    </div>
+  </details>
 
   <!-- SECTION: SEAN'S NUMEROLOGY CHART -->
   <details class="intro-section">
@@ -3317,7 +3337,7 @@ function expandChartCard(el) {
     d.style.maxHeight = '0px'; d.style.opacity = '0'; d.style.marginTop = '0';
   });
   if (!isOpen) {
-    detail.style.maxHeight = '300px';
+    detail.style.maxHeight = '500px';
     detail.style.opacity = '1';
   }
 }
