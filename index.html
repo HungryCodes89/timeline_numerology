@@ -972,10 +972,51 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;
 }
 .ev-photo {
-  width: 72px; height: 72px; border-radius: 3px;
-  object-fit: cover; cursor: pointer;
+  width: 80px; height: 80px; border-radius: 3px;
+  object-fit: cover; object-position: center;
+  cursor: pointer;
   border: 1px solid rgba(201,168,76,0.15);
   opacity: 0.85; transition: all 0.3s;
+}
+
+/* Collapsible intro sections */
+.intro-section {
+  margin-bottom: 8px;
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.intro-section summary {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 16px 22px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+}
+.intro-section summary:hover {
+  background: rgba(201,168,76,0.04);
+}
+.intro-section summary::after {
+  content: '+';
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  opacity: 0.5;
+  transition: transform 0.3s;
+}
+.intro-section[open] summary::after {
+  content: '\2212';
+}
+.intro-section summary::-webkit-details-marker { display: none; }
+.intro-body {
+  padding: 0 22px 24px;
 }
 .ev-photo:hover {
   opacity: 1; border-color: var(--gold);
@@ -1196,16 +1237,17 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 <!-- ═══════════════ INTRODUCTION: THE LANGUAGE OF NUMBER ═══════════════ -->
 <div style="max-width:720px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;">
 
-  <div style="text-align:center;margin-bottom:40px;">
+  <div style="text-align:center;margin-bottom:30px;">
     <div class="sigil" style="margin-bottom:16px;">&#10022;</div>
     <h2 style="font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:400;letter-spacing:0.12em;color:var(--gold);margin-bottom:12px;">Before You Read</h2>
-    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.95rem;color:#8a7a6a;line-height:1.9;">This timeline speaks in numbers. To understand what it is saying, you need to understand the language it speaks.</p>
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.95rem;color:#8a7a6a;line-height:1.9;">This timeline speaks in numbers. To understand what it is saying, you need to understand the language it speaks. Expand each section below.</p>
     <div class="div"></div>
   </div>
 
   <!-- SECTION: WHAT IS GEMATRIA -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">What Is Gematria</h3>
+  <details class="intro-section" open>
+    <summary>What Is Gematria</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Gematria is the practice of assigning numerical values to letters and words. It is one of the oldest analytical systems in human history, older than algebra, older than chemistry, older than the scientific method itself. The word comes from the Greek <em>geometria</em>, but the practice predates Greece. It was used in ancient Babylon, in Hebrew mysticism, in early Islamic scholarship, and in the esoteric traditions that ran beneath the surface of every major civilization.
     </p>
@@ -1231,13 +1273,14 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
       666 is the 36th triangular number, the sum of every integer from 1 to 36. It contains within it every number that came before. A human being who has faced every wound, named every shadow, and chosen to remain conscious through the fire carries the sum of everything they have survived. Whether that constitutes completion, or simply endurance, is for each person to determine.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      There are multiple cipher systems: Ordinal (A=1, B=2), Reverse Ordinal (A=26, B=25), Reduction (digits summed until single), Chaldean (an ancient Babylonian system), Sumerian (Ordinal multiplied by 6), and dozens more. Each reveals a different layer. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence shrinks. What remains is pattern, and the question of what generates it.
+      There are multiple cipher systems: Ordinal (A=1, B=2), Reverse Ordinal (A=26, B=25), Reduction (digits summed until single), Chaldean (an ancient Babylonian system), Sumerian (Ordinal multiplied by 6), Septenary, and dozens more. Each reveals a different layer. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence shrinks. What remains is pattern, and the question of what generates it.
     </p>
-  </div>
+  </div></details>
 
   <!-- SECTION: WHAT IS NUMEROLOGY -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">What Is Numerology</h3>
+  <details class="intro-section">
+    <summary>What Is Numerology</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Numerology is the study of the symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers may mean. It holds that the universe is fundamentally mathematical, that number may be more than a tool humans invented to count things; it may be a structural property of reality itself.
     </p>
@@ -1270,11 +1313,12 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       When master numbers (11, 22, 33) appear in a chart, they are not reduced further. Their doubled digit amplifies the frequency. Master numbers indicate a life that carries an intensified version of the single digit's energy, along with a heightened sensitivity to pattern, meaning, and the invisible architecture of events.
     </p>
-  </div>
+  </div></details>
 
   <!-- SECTION: CALCULATE YOUR CHART -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Calculate Your Life Path Number</h3>
+  <details class="intro-section">
+    <summary>Calculate Your Life Path Number</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Your Life Path number is calculated by reducing your full birth date to a single digit (or master number). Enter your birthday below:
     </p>
@@ -1294,11 +1338,24 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
       <button onclick="calculateLifePath()" style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid rgba(201,168,76,0.3);padding:9px 20px;cursor:pointer;border-radius:20px;transition:all 0.3s;">Calculate</button>
     </div>
     <div id="calc-result" style="display:none;padding:18px 22px;border:1px solid rgba(201,168,76,0.2);border-radius:4px;background:rgba(201,168,76,0.04);animation:fadeUp 0.5s ease;"></div>
-  </div>
+  </div></details>
+
+  <!-- SECTION: WHERE THEY COME FROM -->
+  <details class="intro-section">
+    <summary>Where Gematria and Numerology Come From</summary>
+    <div class="intro-body">
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      The roots are deep and cross-cultural. Ancient Hebrew scholars used gematria to find hidden connections between Torah passages; if two verses shared the same numerical value, they were understood to be spiritually linked. The Kabbalists built entire cosmological maps from the numerical values of divine names. In Islam, the <em>Abjad</em> system assigned values to Arabic letters and was used to encode meaning into architecture, poetry, and prayer. In ancient Greece, the practice was called <em>isopsephy</em> and was used to find the hidden names of gods.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      These traditions did not borrow from each other. They arose independently across thousands of miles and thousands of years, as if the same insight kept surfacing wherever humans paid close enough attention: that language and number are two expressions of the same underlying structure.
+    </p>
+  </div></details>
 
   <!-- SECTION: MY CHART — WHY I SEE CODES -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Why I See Codes: My Numerological Blueprint</h3>
+  <details class="intro-section">
+    <summary>Why I See Codes: My Numerological Blueprint</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       My name is Sean Norgan. I was born May 24, 1989 at 3:45 PM. Before I explain what happened to me, you need to understand why I was built to perceive it.
     </p>
@@ -1317,7 +1374,16 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
       <strong style="color:var(--gold);">Soul Urge: 33 &mdash; The Master Teacher</strong>
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      The Soul Urge is calculated from the vowels of the full birth name. It represents the deepest inner motivation, the thing your soul came here to do whether or not your personality agrees. My Soul Urge is 33, the rarest and most demanding of the master numbers. 33 is the vibration of someone whose life is structured around healing, truth-telling, and the transmission of wisdom that was earned through direct experience. The 33 does not teach from books. It teaches from what it survived. In my life, this has looked like losing my mother at six, losing my mentor at twenty-seven, destroying the most encoded relationship I have ever had, and then doing the work to come back from all of it. The suffering was the curriculum. The 33 requires you to live the lesson before you are allowed to teach it.
+      The Soul Urge is calculated from the vowels of the full birth name. It represents the deepest inner motivation, the thing your soul came here to do whether or not your personality agrees. My Soul Urge is 33, the rarest and most demanding of the master numbers. 33 is the vibration of someone whose life is structured around healing, truth-telling, and the transmission of wisdom that was earned through direct experience. The 33 does not teach from books. It teaches from what it survived.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      In my life, this is what the 33 has looked like. My mother, Kelly Ann Bryant, died on September 25, 1996 from lung cancer. I was six years old. "Lung Cancer" equals 34 in Septenary gematria. "Kelly Ann Bryant" equals 43 in Latin ordinal. "Kelly Bryant" equals 34 in ordinal. The 34/43 mirror was encoded in her name and in the disease that took her. She died five days before the month of October began.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Shortly after she died, I was sexually abused by an older family friend. I was still six. I did not tell anyone for decades. My father was a drug addict I never met. I was also lied to about the identity of my real father until I was twelve, when the truth surfaced and rearranged everything I thought I knew about who I was. Every foundation a child is supposed to stand on, mother, father, safety, identity, was removed or falsified before I reached adolescence.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Then at twenty-seven, my mentor Michael Nyuis died suddenly without goodbye. The second safe masculine figure to vanish. The pattern cemented itself: the people you love the most are the ones who disappear. And then I met October, and I destroyed the most encoded relationship I have ever had, because my nervous system could not distinguish between safe love and the prelude to annihilation. And then I did the work to come back from all of it. The suffering was the curriculum. The 33 requires you to live the lesson before you are allowed to teach it.
     </p>
 
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:6px;">
@@ -1347,7 +1413,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
       The Freemasons recognized this. The 47th Problem of Euclid, as they called it, became one of the most sacred symbols in Masonic tradition. It was the emblem of the Master Mason, the mark of someone who understood how to translate divine proportion into physical structure. The 3-4-5 triangle was the tool they used to ensure that temples were built on true right angles, that sacred geometry was embedded into the walls of every lodge, cathedral, and monument they constructed. They understood that the triangle was more than measurement. It was a bridge between the mathematical and the sacred.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      47 also encodes time. There are 47 degrees of separation between the solstices. The Tropic of Cancer sits at 23.5&deg; north and the Tropic of Capricorn at 23.5&deg; south: 23.5 + 23.5 = 47. The tilt of Earth's axis, the mechanism that creates seasons, that governs the rhythm of life on this planet, is structured around 47. Time itself, as we experience it through the cycle of seasons, is a 47-encoded phenomenon.
+      47 also encodes time. The word "Time" itself equals 47 in ordinal gematria. There are 47 degrees of separation between the solstices. The Tropic of Cancer sits at 23.5&deg; north and the Tropic of Capricorn at 23.5&deg; south: 23.5 + 23.5 = 47. The tilt of Earth's axis, the mechanism that creates seasons, that governs the rhythm of life on this planet, is structured around 47. Time itself, as we experience it through the cycle of seasons, is a 47-encoded phenomenon.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       So when 11, 33, and 47 converge in a single chart, what you are looking at is the Master Intuitive (11), the Master Teacher (33), and the Sacred Architect (47) occupying the same person. The perceiver, the transmitter, and the builder. The one who sees the code, the one who is compelled to share what it means, and the one whose birth time is literally the triangle the ancients used to build temples. Whether this constitutes a blueprint or a coincidence is for you to consider. I can only tell you what the numbers are.
@@ -1369,22 +1435,12 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       Life Path 11. Soul Urge 33. Personality 7. Destiny 4. Born at 3:45 PM on the 144th day. The 24th day of the 89th year, where 89 is the 24th prime. Date numerology 137. Birth digits multiplying to 25,920. I am not telling you this to impress you. I am telling you this so that when you read the codes in this timeline and wonder how one person could perceive all of this, you understand: the perceiver was encoded before the perception began. The instrument was built before the music started playing. Whether that means something cosmic or simply something interesting is for you to decide. But the numbers are there.
     </p>
-  </div>
-
-  <!-- SECTION: WHERE THEY COME FROM -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Where They Come From</h3>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      The roots are deep and cross-cultural. Ancient Hebrew scholars used gematria to find hidden connections between Torah passages; if two verses shared the same numerical value, they were understood to be spiritually linked. The Kabbalists built entire cosmological maps from the numerical values of divine names. In Islam, the <em>Abjad</em> system assigned values to Arabic letters and was used to encode meaning into architecture, poetry, and prayer. In ancient Greece, the practice was called <em>isopsephy</em> and was used to find the hidden names of gods.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      These traditions did not borrow from each other. They arose independently across thousands of miles and thousands of years, as if the same insight kept surfacing wherever humans paid close enough attention: that language and number are two expressions of the same underlying structure. Whether that structure is intentional or emergent is perhaps the deepest question any of these traditions asks.
-    </p>
-  </div>
+  </div></details>
 
   <!-- SECTION: THE CONVERGENCE -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Where the Sciences Converge</h3>
+  <details class="intro-section">
+    <summary>Where the Sciences Converge</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       What makes this moment in history unusual is that multiple scientific disciplines, developed independently, are arriving at overlapping conclusions that the ancient numerological traditions intuited thousands of years ago:
     </p>
@@ -1406,11 +1462,12 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       These fields, physics, mathematics, acoustics, biology, were developed by people who were not speaking to each other, in centuries that did not overlap, using methods that share no common lineage. And yet they converge on the same conclusion the Pythagoreans reached 2,500 years ago: number is woven into the fabric of existence. Whether that fabric is conscious, computational, holographic, or something else entirely remains an open question. But the convergence itself is difficult to dismiss.
     </p>
-  </div>
+  </div></details>
 
   <!-- SECTION: THE THEORETICAL -->
-  <div style="margin-bottom:44px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">The Theoretical: What Remains Open</h3>
+  <details class="intro-section">
+    <summary>The Theoretical: What Remains Open</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       <strong style="color:var(--gold);">Simulation theory.</strong> The idea that reality may be a computed information system, advanced by philosopher Nick Bostrom and discussed by physicists including Neil deGrasse Tyson, suggests that if the universe is computational, it would necessarily run on mathematical rules. Recurring numerical patterns in names, dates, and events would then be expected features of a system built on code, not anomalies to be explained away.
     </p>
@@ -1423,11 +1480,12 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       <strong style="color:var(--gold);">The holographic principle.</strong> Theoretical physicist David Bohm proposed that the universe operates like a hologram, where every part contains information about the whole. In a holographic universe, a name would not merely label a person; it would encode them. The letters of a name would be a compressed expression of everything that person is, was, and will become.
     </p>
-  </div>
+  </div></details>
 
   <!-- SECTION: HOW TO READ THIS TIMELINE -->
-  <div style="margin-bottom:20px;">
-    <h3 style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">How to Read This Timeline</h3>
+  <details class="intro-section">
+    <summary>How to Read This Timeline</summary>
+    <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Every event in this chronicle is annotated with gematria codes, the numerical values of the names, places, dates, and words involved. These are calculations, verifiable by anyone with a gematria calculator. When you see <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:0.8rem;">34 &middot; Mother</span>, it means the word "Mother" equals 34 in reduction gematria. When you see the same number appear in a person's name, a date, a location, and an event within the same story, you are seeing the pattern this timeline was built to make visible.
     </p>
@@ -1439,7 +1497,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
       You only need to follow the numbers and decide for yourself<br>
       whether what you are seeing could be random.
     </p>
-  </div>
+  </div></details>
 
   <div class="div" style="margin:40px auto;"></div>
 
@@ -2721,18 +2779,18 @@ document.getElementById('mirror-input').addEventListener('keydown', e => {
 // INTERACTIVE NUMBER DEFINITIONS
 // ═══════════════════════════════════════════════════
 const NUM_DEFS = {
-  1: "The Initiator. The spark. Leadership, independence, raw creative force. 1 is the beginning of everything, the singular impulse that sets all other numbers in motion. People who carry 1 prominently are pioneers, often walking paths no one has cleared for them.",
-  2: "The Diplomat. Sensitivity, partnership, duality, balance. 2 is the mirror, the relationship, the space between two poles. It carries deep intuition and emotional intelligence, but also vulnerability. 2 feels everything twice.",
-  3: "The Creator. Expression, joy, communication, art. 3 is the number of the storyteller, the one who transforms inner experience into something others can feel. It carries charisma and warmth, but can scatter its energy across too many directions.",
-  4: "The Builder. Structure, discipline, foundation, endurance. 4 is the number that shows up every day and does the work, especially when no one is watching. It builds things meant to last. It is the bones of the house, the frame that holds everything else up.",
-  5: "The Freedom Seeker. Change, adventure, sensory experience, restlessness. 5 is the number of the person who cannot be contained. It craves direct experience and resists routine. At its highest, 5 is adaptability. At its lowest, it is chaos.",
-  6: "The Nurturer. Responsibility, love, family, service, beauty. 6 carries the vibration of the caretaker, the healer, the one who feels the pain of others and moves toward it instead of away. It is deeply connected to home, to the body, and to the sacred in the domestic.",
-  7: "The Seeker. Analysis, introspection, mysticism, solitude. 7 is the number of the person who cannot stop looking beneath the surface. It drives a person to ask <em>why</em> when everyone else has accepted <em>what</em>. 7 lives in the space between the visible and the invisible, and it does not rest until it finds what is hidden.",
-  8: "The Powerhouse. Abundance, authority, mastery of the material world. 8 is the number of manifestation, of turning vision into tangible reality. It carries the energy of the executive, the strategist, the person who understands how power works and chooses to wield it consciously.",
-  9: "The Humanitarian. Compassion, completion, universal love, wisdom earned through suffering. 9 is the number of the old soul, the one who has lived enough to see the full arc of things. It carries endings, but not as loss; as harvest. 9 gives more than it takes.",
-  11: "The Master Intuitive. Heightened perception, spiritual sensitivity, visionary awareness. 11 is the first master number, a doubled 1 whose creative force is amplified into something that borders on prophetic. 11s perceive patterns, connections, and undercurrents that others walk past without noticing. The cost is that they feel everything at amplified volume. The gift is that they see what others cannot.",
-  22: "The Master Builder. The ability to turn spiritual vision into large-scale physical reality. 22 is the architect of the invisible, the person who can hold a blueprint in one hand and a hammer in the other. It is the rarest combination of practical skill and cosmic awareness.",
-  33: "The Master Teacher. The most demanding of the master numbers. 33 carries the vibration of someone whose life is structured around healing, truth-telling, and the transmission of wisdom that was earned, not read. The 33 does not teach from theory. It teaches from survival. It carries an enormous weight because it must first <em>live</em> what it will eventually teach. The suffering is the curriculum."
+  1: "The Initiator. The Monad. In the <em>Numerology and the Divine Triangle</em>, 1 is the point of origin, the undivided source from which all other numbers emerge. It governs leadership, independence, raw creative force, and the courage to walk paths no one has cleared. 1 is ruled by the Sun. It is the singular impulse, the first breath, the moment before everything else begins. People who carry 1 prominently are pioneers. They do not follow. They ignite.",
+  2: "The Diplomat. The Dyad. In the Divine Triangle, 2 is the first division, the moment unity becomes relationship. It governs sensitivity, partnership, duality, balance, and the ability to hold two truths simultaneously. 2 is ruled by the Moon. It carries deep intuition and emotional intelligence, but also vulnerability. 2 feels everything twice because it exists in the space between, always mediating, always absorbing from both sides.",
+  3: "The Creator. The Triad. The Divine Triangle teaches that 3 is the first number to contain beginning, middle, and end. It is the triangle, the first stable shape, the foundation of all geometry. It governs expression, joy, communication, art, and the transformation of inner experience into something others can feel. 3 is ruled by Jupiter. It carries charisma, warmth, and creative abundance, but can scatter its energy if the vessel is not disciplined.",
+  4: "The Builder. The Tetrad. In the Divine Triangle, 4 is the square, the first number to occupy space in all four directions. It governs structure, discipline, foundation, endurance, and the physical plane itself. 4 is ruled by Uranus. It is the bones of the house, the frame that holds everything else up. 4 shows up every day and does the work, especially when no one is watching. It builds things meant to last long after the builder is gone.",
+  5: "The Freedom Seeker. The Pentad. In the Divine Triangle, 5 is the number of the human being: two arms, two legs, one head. The five-pointed star, the vitruvian proportion. It governs change, adventure, sensory experience, and the restless need to learn through direct contact with life. 5 is ruled by Mercury. At its highest, 5 is adaptability, the ability to thrive anywhere. At its most challenging, it is chaos, the inability to remain still long enough for roots to form.",
+  6: "The Nurturer. The Hexad. The Divine Triangle teaches that 6 is the first perfect number (1+2+3=6), and it governs responsibility, love, family, service, beauty, and the sacred domestic. 6 is ruled by Venus. It carries the vibration of the caretaker, the healer, the one who feels the pain of others and moves toward it instead of away. 6 is deeply connected to home, to the body, and to the understanding that the most sacred work often happens in the quietest rooms.",
+  7: "The Seeker. The Heptad. In the Divine Triangle, 7 is the virgin number, indivisible, untouchable by any number below it. It governs analysis, introspection, mysticism, solitude, and the relentless drive to look beneath the surface. 7 is ruled by Neptune. It is the number of the mystic, the philosopher, the one who cannot stop asking <em>why</em> when everyone else has accepted <em>what</em>. 7 lives in the space between the visible and the invisible, and it does not rest until it finds what is hidden.",
+  8: "The Powerhouse. The Ogdoad. In the Divine Triangle, 8 is the number of karmic balance, of cause and consequence made visible. It governs abundance, authority, material mastery, and the understanding that power is a responsibility, not a reward. 8 is ruled by Saturn. It carries the energy of the executive, the strategist, the person who understands how the material world works and chooses to wield that knowledge consciously. 8 turned on its side is infinity.",
+  9: "The Humanitarian. The Ennead. The Divine Triangle teaches that 9 is the number of completion, the final single digit, the sum of all that came before. It governs compassion, universal love, wisdom earned through suffering, and the ability to see the full arc of things. 9 is ruled by Mars. It carries endings, but as harvest rather than loss. 9 gives more than it takes. Any number added to 9 reduces back to itself (9+5=14, 1+4=5). It absorbs without losing its own identity.",
+  11: "The Master Intuitive. The first master number. In the Divine Triangle, 11 is the channel between the conscious and the unconscious, the visible and the invisible. It is a doubled 1 whose creative force is amplified into something that borders on prophetic. 11s perceive patterns, connections, and undercurrents that others walk past without noticing. They are antennae, tuned to frequencies most people cannot hear. The cost is that they feel everything at amplified volume. The gift is that they see what others cannot. 11 is often called the number of the spiritual messenger.",
+  22: "The Master Builder. The second master number. In the Divine Triangle, 22 is the master architect, the one who turns spiritual vision into large-scale physical reality. It is a doubled 2 whose diplomatic sensitivity is scaled up to civilization-level building. 22 can hold a cosmic blueprint in one hand and a hammer in the other. It is the rarest combination of practical skill and transcendent awareness. The burden is proportional to the scope: 22 builds for generations, not for itself.",
+  33: "The Master Teacher. The third and final master number. In the Divine Triangle, 33 is the Master of Masters, the vibration of someone whose life is structured around healing, truth-telling, and the transmission of wisdom that was earned through living. The 33 does not teach from theory. It teaches from survival. It carries an enormous weight because it must first <em>live</em> what it will eventually teach. The suffering is the curriculum. 33 is a doubled 3 (the creative triad) operating at its highest octave: selfless service through art, healing, and truth, forged in the fire of personal experience."
 };
 
 function toggleNumDef(el) {
