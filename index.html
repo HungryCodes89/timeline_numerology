@@ -3274,6 +3274,9 @@ function calculateFullChart() {
   // Date sum
   const dateSum = allDigits.reduce((a,b) => a+b, 0);
 
+  // Primary Date Numerology (month + day + century + year-in-century)
+  const dateNumerology = m + d + Math.floor(y / 100) + (y % 100);
+
   const result = document.getElementById('chart-result');
   result.style.display = 'block';
 
@@ -3310,6 +3313,10 @@ function calculateFullChart() {
   // Stats row
   html += `
     <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;padding:16px 0;border-top:1px solid rgba(201,168,76,0.1);">
+      <div style="text-align:center;">
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dateNumerology}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DATE NUMEROLOGY</span>
+      </div>
       <div style="text-align:center;">
         <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dayOfYear}</span>
         <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DAY OF YEAR</span>
@@ -3357,6 +3364,7 @@ function renderPrebuiltChart(targetId, name, month, day, year) {
   const dayOfYear = Math.floor((date - startOfYear) / 86400000) + 1;
   const product = allDigits.reduce((a,b) => a * (b === 0 ? 1 : b), 1);
   const dateSum = allDigits.reduce((a,b) => a+b, 0);
+  const dateNumerology = month + day + Math.floor(year / 100) + (year % 100);
 
   const cards = [
     { key: 'lifePath', num: lifePath },
@@ -3386,6 +3394,10 @@ function renderPrebuiltChart(targetId, name, month, day, year) {
 
   html += `
     <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;padding:16px 0;border-top:1px solid rgba(201,168,76,0.1);">
+      <div style="text-align:center;">
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dateNumerology}</span>
+        <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DATE NUMEROLOGY</span>
+      </div>
       <div style="text-align:center;">
         <span style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);">${dayOfYear}</span>
         <span style="display:block;font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.15em;color:#8a7a6a;margin-top:4px;">DAY OF YEAR</span>
