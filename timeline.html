@@ -42,13 +42,20 @@ body.dark {
 }
 body.cover-active { overflow: hidden; }
 
-/* Parchment noise overlay */
+/* Parchment noise overlay — subtle with slow upward drift */
 body::after {
   content: '';
   position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 9999;
+  opacity: 0.15;
+  background-size: 256px 256px;
+  animation: noiseDrift 850s linear infinite;
+}
+@keyframes noiseDrift {
+  from { background-position: 0 0; }
+  to { background-position: 0 -25500px; }
 }
 
 /* ═══════════════════════════════
@@ -993,17 +1000,18 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 }
 .intro-section summary {
   font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold);
-  padding: 16px 22px;
+  padding: 18px 22px;
   cursor: pointer;
   list-style: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: background 0.3s;
+  position: relative;
 }
 .intro-section summary:hover {
   background: rgba(201,168,76,0.04);
@@ -1019,9 +1027,41 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 .intro-section[open] summary::after {
   content: '\2212';
 }
+/* Animated gold line on open */
+.intro-section[open] summary::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), rgba(201,168,76,0.1));
+  animation: goldLineReveal 0.6s ease forwards;
+}
+@keyframes goldLineReveal {
+  from { width: 0; }
+  to { width: 100%; }
+}
 .intro-section summary::-webkit-details-marker { display: none; }
 .intro-body {
   padding: 0 22px 24px;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  animation: introFadeIn 0.5s ease;
+}
+.intro-body p {
+  font-family: 'IM Fell English', serif !important;
+  font-style: italic !important;
+  font-size: 0.88rem !important;
+  line-height: 2.1 !important;
+}
+.intro-body strong {
+  font-family: 'Cinzel', serif !important;
+  font-style: normal !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.03em;
+}
+@keyframes introFadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .ev-photo:hover {
   opacity: 1; border-color: var(--gold);
@@ -1517,7 +1557,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   <div class="ec" onclick="expand(this)">
     <div class="edate">May 5, 2025 &mdash; 5/5 = 55</div>
     <div class="etitle">The Mother Ritual</div>
-    <div class="ebody">On what would have been her 72nd birthday, I built a shrine for my mother. I placed sunflowers in a glass jar, set amethyst and orgonite beside a photograph I barely remembered posing for, and poured cranberry juice into a small dish. Her favorite. I wrote her a letter by hand, read it aloud to the empty room, and burned it. Seventy-two hours later, a ladybug appeared on the windowsill. Two spots on its back. Two days after that, a second one landed on the same sill. Seven spots. The messenger and the message were the same thing, and both carried the numbers of a woman who had been dead for thirty years.</div>
+    <div class="ebody">My mother's name was Kelly Ann Bryant. Kelly Ann Bryant equals 43. Kelly Bryant equals 34. She was born on May 5th, 1953. 5/5. She passed away from lung cancer when she was 43 years old, in 1996. Lung Cancer equals 34 in Septenary gematria. The 34/43 mirror was encoded in her name and in the disease that took her. She died on September 25th, five days before the month of October began.<br><br>On what would have been her 72nd birthday, I built a shrine for her. I placed sunflowers in a glass jar, set amethyst and orgonite beside a photograph I barely remembered posing for, and poured cranberry juice into a small dish. Her favorite. I wrote her a letter by hand, read it aloud to the empty room, and burned it. Seventy-two hours later, a ladybug appeared on the windowsill. Two spots on its back. Two days after that, a second one landed on the same sill. Seven spots. The messenger and the message were the same thing, and both carried the numbers of a woman who had been gone for nearly thirty years.</div>
     <div class="detail">Kelly Ann Bryant = 43 Latin reduction, 34 reduction — the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 Reverse Ordinal — the 34th prime. The first ladybug arrived at exactly 72 hours carrying 2 spots — 2/72 encoded in both timing and body. Then 7 spots completing 27 from the other direction. The word "Ladybug" itself encodes both mirrors: 72 ordinal, 27 reduction. It was responding to the ritual.</div>
     <div class="tags">
       <span class="tag" data-code="34">Mother = 34</span>
