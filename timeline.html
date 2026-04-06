@@ -1489,6 +1489,232 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .lightbox-nav:hover { opacity: 1; }
 .lightbox-nav.prev { left: 20px; }
 .lightbox-nav.next { right: 20px; }
+
+/* ═══════════════════════════════
+   FIBONACCI SPIRAL PAGE
+   ═══════════════════════════════ */
+#fib-view {
+  display: none;
+  min-height: 100vh;
+  padding: 100px 20px 80px;
+  position: relative;
+}
+.fib-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.fib-header h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.fib-header .fib-sub {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: #8a7a6a;
+  line-height: 1.9;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.fib-canvas-wrap {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto 60px;
+}
+#fib-canvas {
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.fib-node {
+  position: absolute;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+.fib-node:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4);
+}
+.fib-node.active {
+  transform: scale(1.3);
+  box-shadow: 0 0 36px rgba(201,168,76,0.5);
+}
+.fib-explain {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 6px;
+  background: rgba(201,168,76,0.03);
+  display: none;
+  animation: fadeUp 0.5s ease;
+}
+.fib-explain.open { display: block; }
+.fib-explain-num {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.fib-explain-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 14px;
+}
+.fib-explain-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  line-height: 2;
+  color: #5a4e44;
+}
+body.dark .fib-explain-body { color: #9a8880; }
+body.dark .fib-explain { background: rgba(201,168,76,0.04); border-color: rgba(201,168,76,0.1); }
+
+.fib-intro {
+  max-width: 700px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+.fib-intro p {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: #5a4e44;
+  margin-bottom: 14px;
+}
+body.dark .fib-intro p { color: #9a8880; }
+
+/* node colors by story meaning */
+.fib-c-void { background: radial-gradient(circle, #1a1210 40%, #3a2a20); }
+.fib-c-origin { background: radial-gradient(circle, var(--gold) 30%, #8a6a2a); }
+.fib-c-mirror { background: radial-gradient(circle, #c9a84c 30%, #a08438); }
+.fib-c-nature { background: radial-gradient(circle, var(--sage) 30%, #2a5a20); }
+.fib-c-trinity { background: radial-gradient(circle, #6a4a8a 30%, #4a2a6a); }
+.fib-c-mother { background: radial-gradient(circle, #c97a4c 30%, #a06030); }
+.fib-c-october { background: radial-gradient(circle, var(--ember-glow) 30%, #8b3a2a); }
+.fib-c-alchemy { background: radial-gradient(circle, #b43c28 30%, #7a2818); }
+.fib-c-union { background: radial-gradient(circle, #c9b87c 30%, #a09060); }
+.fib-c-birth { background: radial-gradient(circle, var(--dawn-blue) 30%, #2a4060); }
+.fib-c-sacred { background: radial-gradient(circle, #d4613a 30%, #a04828); }
+.fib-c-journey { background: radial-gradient(circle, var(--sage-light) 30%, #4a7a40); }
+
+/* ═══════════════════════════════
+   MICHAEL NYUIS PAGE
+   ═══════════════════════════════ */
+#mn-view {
+  display: none;
+  min-height: 100vh;
+  padding: 100px 20px 80px;
+}
+.mn-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.mn-header h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.mn-header .mn-code {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--ember-glow);
+  margin-bottom: 14px;
+}
+.mn-header .mn-sub {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: #8a7a6a;
+  line-height: 1.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.mn-content {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.mn-content p {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: #5a4e44;
+  margin-bottom: 18px;
+}
+body.dark .mn-content p { color: #9a8880; }
+.mn-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 30px 0;
+}
+.mn-photo-placeholder {
+  aspect-ratio: 4/3;
+  border: 1px dashed rgba(201,168,76,0.3);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #8a7a6a;
+  background: rgba(201,168,76,0.02);
+}
+.mn-codes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 30px 0;
+}
+.mn-code-card {
+  padding: 16px 24px;
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 4px;
+  background: rgba(201,168,76,0.03);
+  text-align: center;
+  min-width: 140px;
+}
+.mn-code-num {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.mn-code-label {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: #8a7a6a;
+  margin-top: 4px;
+}
+.mn-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 36px auto;
+}
 </style>
 </head>
 <body class="cover-active">
@@ -1619,6 +1845,8 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   <div class="nav-left">
     <button class="nav-btn active" id="btn-tl" onclick="showTL()">Timeline</button>
     <button class="nav-btn" id="btn-cs" onclick="showCS()">Constellation</button>
+    <button class="nav-btn" id="btn-fib" onclick="showFib()">Spiral</button>
+    <button class="nav-btn" id="btn-mn" onclick="showMN()">The Initiator</button>
   </div>
   <div class="nav-center">
     <span class="nav-phase-indicator" id="nav-phase"></span>
@@ -1681,28 +1909,130 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
       The premise is simple: every letter is represented by a number. Every word, therefore, has a sum. And words that share the same sum share a hidden relationship, a resonance that exists beneath the surface of language. This is woven into the oldest texts humanity possesses.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Consider the Bible, the most printed, most translated, most studied text in human history. In reverse reduction gematria, <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26. <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26 in ordinal. The first man = 26. Made in the image = 26. He first appears in Genesis 2:6, the 26th verse of the Bible. The human body contains 206 bones. The first man, his creator, and the structure of the body all converge on the same number, in the same verse.
+      Consider the Bible — the most printed, most translated, most studied text in human history. In ordinal gematria, <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26. He created the first man in His image, in the 26th verse of the Bible — Genesis 2:6. That man's name was <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26 in reverse reduction. The creator and the created share the same number, in the same verse. The verse address itself encodes 26.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      It goes deeper. <span class="gw" data-word="Genesis" data-cipher="Sumerian" data-calc="G(42) + E(30) + N(84) + E(30) + S(114) + I(54) + S(114)">Genesis</span>, the book of origin, the beginning of all things, equals 666 in Sumerian gematria. So does <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span>. The Book of Revelation, chapter 13, verse 18, is the passage that introduces 666 as "the number of a man." Look at the address of that verse: 13:18. The number 13 is the 6th prime number. 6 + 6 + 6 = 18. The verse that decodes the number is itself encoded by the number. The chapter and verse are themselves the code. The text is built from the very pattern it describes.
+      The human body contains 206 bones — 26 written into the frame. Those bones are built from <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26 in reduction. They are strengthened by iron, atomic number 26 on the periodic table. And all sentient life on Earth is built on <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26 in reduction. The number of God, the number of the first man, is woven into the literal chemistry of the body.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      666 has been profoundly misunderstood for centuries. Revelation calls it "the number of a man." Consider that literally. Carbon, the element that forms the basis of all organic life on Earth, has exactly 6 protons, 6 neutrons, and 6 electrons. 6, 6, 6. Every cell in your body, every strand of your DNA, every bone in your 206-bone frame is built on carbon. 666 may well be the atomic signature of physical existence itself.
+      Carbon has exactly 6 protons, 6 neutrons, and 6 electrons. 6-6-6. This is the atomic signature of physical existence. Every cell in your body, every strand of your DNA, every bone in your frame is built on this element. Revelation calls 666 "the number of a man." Read literally, it may be exactly that — the molecular fingerprint of human life itself. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian gematria. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, the book of origin, the beginning of all things, equals 666 in reverse Sumerian. The book that tells the story of creation encodes the number of the body in its own name.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      In the alchemical tradition, this understanding is central. The alchemists spoke of transmuting lead into gold, but the serious practitioners knew this was never about metallurgy. It was about consciousness. Lead is dense, heavy, unconscious matter: the unrealized human being weighed down by wounds, shadows, trauma, addiction, and inherited pain. Gold is the same substance <em>refined</em>, the sovereign self that emerges when the base material is placed in the fire and worked. The fire is the process. The lead becomes gold not by being discarded but by being <em>transmuted</em>.
+      Now look at the verse that introduces this number: Revelation 13:18. The number 13 is the 6th prime number. 6 + 6 + 6 = 18. The chapter is the prime root of six. The verse is the sum of the number itself. The passage that decodes 666 is itself <em>encoded</em> by 666. The text does not merely describe the pattern — it is built from it. At a certain point, the architecture of coincidence begins to feel less like coincidence and more like authorship.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Seen through this lens, 666 points toward spiritual alchemy: the number of the body, carbon, matter, flesh, becoming conscious. The dense material of human suffering, the wounds we carry, the shadows we inherit, the patterns we repeat, can be understood as raw material rather than punishment. The mother wound, the father wound, the shamed child, the addiction, the self-sabotage. The alchemists would call this the lead. And the work of a lifetime may be to recognize it, name it, sit in the fire with it, and transmute it into something sovereign. The wound may not be what destroys you. It may be what you are being asked to refine.
+      666 has been profoundly misunderstood for centuries — feared, demonized, reduced to a symbol of evil by people who never examined what it actually encodes. But the alchemists understood. The alchemical tradition spoke of transmuting lead into gold, and the serious practitioners knew this was never about metallurgy. It was about consciousness. Lead is dense, heavy, unconscious matter — the unrealized human being, weighed down by wounds, shadows, trauma, addiction, and inherited pain. Gold is the same substance <em>refined</em>: the sovereign self that emerges when the base material is placed in the fire and worked. The fire is the process. The lead becomes gold not by being discarded but by being <em>transmuted</em>.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      666 is the 36th triangular number, the sum of every integer from 1 to 36. It contains within it every number that came before. A human being who has faced every wound, named every shadow, and chosen to remain conscious through the fire carries the sum of everything they have survived. Whether that constitutes completion, or simply endurance, is a question worth sitting with.
+      <span class="gw" data-word="Alchemist" data-cipher="Reduction" data-calc="A(1) + L(3) + C(3) + H(8) + E(5) + M(4) + I(9) + S(1) + T(2)">Alchemist</span> = 36 in reduction. 666 is the 36th triangular number — the sum of every integer from 1 to 36. It contains within it every number that came before. A human being who has faced every wound, named every shadow, and chosen to remain conscious through the fire carries the sum of everything they have survived. The alchemist does not avoid suffering. The alchemist <em>works with it</em>. The wound is not what destroys you. It is the raw material you are being asked to refine.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      There are multiple cipher systems: Ordinal (A=1, B=2), Reverse Ordinal (A=26, B=25), Reduction (digits summed until single), Chaldean (an ancient Babylonian system), Sumerian (Ordinal multiplied by 6), Septenary, and dozens more. Each reveals a different layer. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence shrinks. What remains is pattern, and the question of what generates it.
+      Seen through this lens, 666 points toward spiritual alchemy: the number of the body, carbon, matter, flesh, becoming <em>conscious</em>. The mother wound, the father wound, the shamed child, the addiction, the self-sabotage — the alchemists would call all of this the lead. And the work of a lifetime may be to recognize it, name it, sit in the fire with it, and transmute it into something sovereign. <span class="gw" data-word="Lead Into Gold" data-cipher="Reduction" data-calc="L(3) + E(5) + A(1) + D(4) + I(9) + N(5) + T(2) + O(6) + G(7) + O(6) + L(3) + D(4)">Lead Into Gold</span> = 55 in reduction — the same number encoded in the date of the mother ritual, in the union of the two names at the center of this story, and in the word <span class="gw" data-word="Heaven" data-cipher="Reduction" data-calc="H(8) + E(5) + A(1) + V(4) + E(5) + N(5)">Heaven</span> itself. The destination was always embedded in the process.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:18px;">
+      One of the key principles of gematria is the <strong style="color:var(--gold);">mirror</strong>. Numbers that are reversals of each other carry a direct relationship — 34 and 43, 27 and 72, 122 and 221. This is not arbitrary. Hebrew, the language in which gematria was formalized as a sacred interpretive method, is read from right to left. The mirror is built into the reading itself. When the same pair of digits appears in both directions across names, dates, and events, it signals a resonance that runs deeper than surface-level coincidence. In this story, the 34/43 mirror is encoded in a mother's name, the disease that took her, the prime number of a mentor's name, and the date of a reunion. The mirror does not repeat by accident. It reflects.
+    </p>
+
+    <!-- CIPHER SYSTEMS — CLICKABLE DROPDOWNS -->
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">The Cipher Systems</strong>
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Gematria operates through multiple cipher systems — different methods of assigning numerical values to letters. Each cipher reveals a different layer of encoding. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence contracts. What remains is pattern. The four foundational ciphers are sometimes called the <em>four pillars</em>. Beyond them lie ancient systems with their own lineage and logic. This story draws from all of them. Click each cipher below to understand how it works and what it reveals.
+    </p>
+
+    <div style="max-width:660px;margin:0 auto 24px;">
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Ordinal — The First Pillar</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          The simplest and most direct cipher. A=1, B=2, C=3, through Z=26. It maps each letter to its position in the English alphabet. Ordinal is the baseline — the first lens you apply. It often reveals the most obvious connections: <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26, <span class="gw" data-word="Sean" data-cipher="Ordinal" data-calc="S(19) + E(5) + A(1) + N(14)">Sean</span> = 39, <span class="gw" data-word="October" data-cipher="Ordinal" data-calc="O(15) + C(3) + T(20) + O(15) + B(2) + E(5) + R(18)">October</span> = 78. When ordinal matches appear between two words, names, or dates, it is the most fundamental kind of resonance — a direct, unmanipulated alignment.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Reverse Ordinal — The Mirror Pillar</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          The alphabet reversed: A=26, B=25, C=24, through Z=1. Reverse ordinal reads the alphabet from the other direction, as if viewing it in a mirror. It reveals what is hidden when you look at something from the opposite side. In Hebrew, the language that formalized gematria, text is read right to left. The reverse cipher honors this principle. It often surfaces connections that ordinal cannot see — the shadow side of a word, the meaning that faces the other way.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Reduction — The Essence Pillar</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          Each letter's ordinal value is reduced to a single digit by summing its digits: A=1, B=2 ... J=10→1, K=11→2, S=19→10→1, and so on. Reduction strips a word down to its numerological essence — the vibrational root beneath the surface number. It is the cipher most closely aligned with traditional numerology and often reveals the deepest symbolic connections. <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">Carbon</span> = 26. <span class="gw" data-word="Lead Into Gold" data-cipher="Reduction" data-calc="L(3) + E(5) + A(1) + D(4) + I(9) + N(5) + T(2) + O(6) + G(7) + O(6) + L(3) + D(4)">Lead Into Gold</span> = 55. <span class="gw" data-word="Mother" data-cipher="Reduction" data-calc="M(4) + O(6) + T(2) + H(8) + E(5) + R(9)">Mother</span> = 34.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Reverse Reduction — The Hidden Root</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          The reverse ordinal values reduced to single digits: A=26→8, B=25→7, C=24→6, and so on. This is the deepest of the four pillars — the numerological root of the mirror. It reveals what something <em>means</em> when read backwards and reduced to its essence. <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26 in reverse reduction, connecting the first man directly to his creator's ordinal value. The four pillars together create a complete view: forward and reverse, surface and root.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Sumerian &amp; Reverse Sumerian — The Amplified Field</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          Sumerian multiplies each ordinal value by 6 (A=6, B=12, C=18 ... Z=156). Reverse Sumerian does the same to reverse ordinal values. The multiplication by 6 amplifies the signal — it scales the pattern up into a frequency that reveals connections invisible at smaller scales. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span> = 666 in Reverse Sumerian. <span class="gw" data-word="October" data-cipher="Reverse Sumerian" data-calc="O(72) + C(144) + T(42) + O(72) + B(150) + E(132) + R(54)">October</span> = 666 in Reverse Sumerian. The number of the body, the book of origin, and the name of the woman at the center of this story all resonate at the same amplified frequency.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Chaldean — The Ancient System</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          The oldest known letter-number cipher, originating in ancient Babylon. Unlike ordinal, Chaldean assigns values based on the <em>vibrational quality</em> of each letter rather than its alphabetical position: A=1, B=2, C=3, D=4, E=5, F=8, G=3, H=5, I=1, J=1, K=2, L=3, M=4, N=5, O=7, P=8, Q=1, R=2, S=3, T=4, U=6, V=6, W=6, X=5, Y=1, Z=7. The number 9 is considered sacred and is not assigned to any letter. Chaldean is often regarded as the most spiritually precise cipher because it was developed by practitioners who understood numbers as living forces, not abstract symbols. <span class="gw" data-word="Mother" data-cipher="Chaldean" data-calc="M(4) + O(7) + T(4) + H(5) + E(5) + R(2)">Mother</span> = 27 in Chaldean. <span class="gw" data-word="First Kiss" data-cipher="Chaldean" data-calc="F(8) + I(1) + R(2) + S(3) + T(4) + K(2) + I(1) + S(3) + S(3)">First Kiss</span> = 27 in Chaldean. The ancient system and the modern moment speak the same number.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Septenary — The Sacred Seven</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          Septenary cycles through values 1 through 7 repeatedly across the alphabet: A=1, B=2, C=3, D=4, E=5, F=6, G=7, H=1, I=2, and so on. Seven is the number of completion in nearly every spiritual tradition — seven days of creation, seven chakras, seven notes in a musical scale. The septenary cipher filters language through this sacred cycle, revealing connections that resonate with the principle of completion and spiritual wholeness. <span class="gw" data-word="Lung Cancer" data-cipher="Septenary" data-calc="L(3) + U(7) + N(7) + G(7) + C(3) + A(1) + N(7) + C(3) + E(5) + R(4)">Lung Cancer</span> = 47 in septenary, and in this story, it surfaces in places where the sacred geometry of 7 is already active.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Jewish (Hebrew) Gematria — The Root Tradition</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          Hebrew gematria is the tradition that formalized the practice into a systematic method of sacred interpretation. Kabbalists used it to find hidden connections between Torah passages — if two verses shared the same numerical value, they were understood to be spiritually linked. The Hebrew cipher assigns values in a specific pattern: units (1-9), tens (10-90), and hundreds (100-400) mapped to the 22 Hebrew letters. When adapted to the English alphabet, a modified version is used (A=1, B=2 ... I=9, J=600, K=10, L=20 ... and so on). Jewish gematria often produces larger numbers and reveals connections at a different scale — macro-patterns that span across entire texts and histories. The Kabbalists built cosmological maps from these values. They understood gematria not as a curiosity but as a key to the hidden structure of creation.
+        </div>
+      </details>
+
+      <details class="cipher-dropdown" style="margin-bottom:8px;">
+        <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Latin Gematria — The Classical Cipher</summary>
+        <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
+          Latin gematria adapts the structure of Hebrew and Greek numerical systems to the Latin alphabet. It uses a specific value mapping that reflects the classical tradition of <em>isopsephy</em> — the Greek practice of finding hidden names of gods through numerical equivalence. Latin gematria often reveals connections between names and titles, especially in contexts where Western esoteric traditions intersect with personal identity. In this story, <span class="gw" data-word="Kelly Ann Bryant" data-cipher="Latin Reduction" data-calc="K(2) + E(5) + L(3) + L(3) + Y(7) + A(1) + N(5) + N(5) + B(2) + R(9) + Y(7) + A(1) + N(5) + T(2)">Kelly Ann Bryant</span> = 43 in Latin reduction — the mirror of 34, her reduction value. The classical and the modern ciphers point at the same mirror from different angles.
+        </div>
+      </details>
+
+      <p style="font-size:0.9rem;line-height:1.95;color:#6a5e54;font-style:italic;margin-top:14px;">
+        All of these ciphers are connected. They are not competing systems — they are different lenses focused on the same structure. Ordinal reads forward; Reverse reads backward. Reduction distills; Sumerian amplifies. Chaldean listens to vibration; Septenary listens to cycles. Jewish gematria maps the cosmos; Latin maps identity. When the same number appears across multiple ciphers, it is not repetition. It is convergence. And convergence, in any discipline, is the closest thing we have to proof.
+      </p>
+    </div>
+
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      This is not a fringe practice. For years now, a growing community of gematria decoders has been documenting these patterns in real time — in professional sports, on the world stage, and throughout recorded history. Super Bowl outcomes, championship series, player retirements, jersey numbers, game dates, final scores — the numerical signatures are there, and they are being catalogued by thousands of independent researchers. The same patterns show up in elections, geopolitical events, celebrity deaths, and historical dates that shaped the modern world. These are not predictions. They are observations — made after learning the language, running the ciphers, and noticing that the math keeps landing. The community is large, it is serious, and it is growing because the patterns hold up to scrutiny. This timeline applies the same discipline to a personal story.
+    </p>
+  </div></details>
+
+  <!-- SECTION: HOW I FOUND THE CODES -->
+  <details class="intro-section">
+    <summary>How I Found the Codes</summary>
+    <div class="intro-body">
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      A friend introduced me. His name was Bodhisunn, and he showed me gematria the way someone hands you a pair of glasses you didn't know you needed. Suddenly the numbers were everywhere — not because they hadn't been there before, but because I could finally see them. I started decoding professional sports: NFL games, Super Bowls, championship series. Jersey numbers, game dates, final scores, retirement announcements. Then world stage events. Elections. Historical dates. Celebrity deaths. The patterns held. They kept holding. It became an obsession.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Not everyone saw what I saw. Friends laughed. People called me autistic. They made fun of the spreadsheets, the screenshots, the way I'd stop mid-conversation to run a word through four ciphers. I understood their skepticism — I would have been skeptical too, before. But the math kept landing. So I kept going.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Then came the 2025 Super Bowl. I had decoded it extensively — and I got it completely wrong. Every angle, every cipher, every pattern I thought I saw. Wrong. I sat with that for days. The voice in my head said what every skeptic had ever said: <em>You are wasting your time. This is nothing. Walk away.</em> I almost did.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      But instead of walking away, I walked deeper. I picked up <em>Numerology of the Divine Triangle</em> by Faith Javane and Dusty Bunker — a book I had never read, a system I had never studied. Traditional numerology. Not sports decoding, not world stage prediction. The numerology of the self. I calculated my full chart: Life Path, Soul Urge, Personality, Destiny. And for the first time, I understood <em>why</em> I was drawn to codes in the first place. My Life Path is 11 — the Master Intuitive, the channel between the visible and the invisible. My Soul Urge is 33 — the Master Teacher, forged through lived experience. The chart didn't just explain why I saw patterns. It explained why I <em>couldn't stop</em> seeing them. It was not obsession. It was architecture.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      This is not a fringe practice anymore. For years now, a growing community of gematria decoders has been documenting these patterns in real time — in professional sports, on the world stage, and throughout recorded history. Super Bowl outcomes, championship series, player retirements, jersey numbers, game dates, final scores — the numerical signatures are there, and they are being catalogued by thousands of independent researchers. The same patterns show up in elections, geopolitical events, celebrity deaths, and historical dates that shaped the modern world. These are not predictions. They are observations — made after learning the language, running the ciphers, and noticing that the math keeps landing. The community is large, it is serious, and it is growing because the patterns hold up to scrutiny. This timeline applies the same discipline to a personal story.
+      The gematria knowledge and the numerological knowledge bridged completely. One gave me the language. The other gave me the reason I could read it. The Super Bowl loss was not the end of the road. It was the turn in the road that led me to the map of myself. And the map led me here — to this story, to these codes, and to the understanding that the numbers had never been about winning bets. They were about waking up.
     </p>
   </div></details>
 
@@ -1711,7 +2041,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <summary>What Is Numerology</summary>
     <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Numerology is the study of the symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers may mean. It holds that the universe is fundamentally mathematical, that number may be more than a tool humans invented to count things; it may be a structural property of reality itself.
+      Numerology is the study of the symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers may mean. It holds that the universe is fundamentally mathematical — that numbers may be more than a tool humans <em>discovered</em> to describe reality; they may be a structural property of reality itself.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Pythagoras, the Greek mathematician who proved that the squares of a right triangle's legs equal the square of its hypotenuse, also founded a mystery school that taught numbers as living forces. He did not separate mathematics from mysticism. To him, they were the same inquiry: what is the universe made of? His answer was number. Twenty-five centuries later, quantum physics arrived at a strikingly similar conclusion.
@@ -1749,7 +2079,10 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <summary>Where Gematria and Numerology Come From</summary>
     <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      The roots are deep and cross-cultural. Ancient Hebrew scholars used gematria to find hidden connections between Torah passages; if two verses shared the same numerical value, they were understood to be spiritually linked. The Kabbalists built entire cosmological maps from the numerical values of divine names. In Islam, the <em>Abjad</em> system assigned values to Arabic letters and was used to encode meaning into architecture, poetry, and prayer. In ancient Greece, the practice was called <em>isopsephy</em> and was used to find the hidden names of gods.
+      The earliest documented use of gematria-like practices traces to the Assyrian Empire. Around 721 BCE, King Sargon II of Assyria built the wall of his capital city Khorsabad to be exactly 16,283 cubits long — the numerical value of his own name. The king encoded himself into the architecture. This is the oldest known example of a human being deliberately using letter-number equivalence to embed meaning into physical structure.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      From there, the practice deepened across civilizations. Ancient Hebrew scholars used gematria to find hidden connections between Torah passages; if two verses shared the same numerical value, they were understood to be spiritually linked. The Kabbalists built entire cosmological maps from the numerical values of divine names, and it was the Hebrew tradition that formalized gematria into the systematic interpretive discipline we recognize today. In Islam, the <em>Abjad</em> system assigned values to Arabic letters and was used to encode meaning into architecture, poetry, and prayer. In ancient Greece, the practice was called <em>isopsephy</em> and was used to find the hidden names of gods.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       These traditions did not borrow from each other. They arose independently across thousands of miles and thousands of years, as if the same insight kept surfacing wherever humans paid close enough attention: that language and number are two expressions of the same underlying structure.
@@ -1896,7 +2229,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <summary>October's Numerology Chart</summary>
     <div class="intro-body">
     <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.9;color:#6b5d4f;margin-bottom:20px;">
-      <span class="gw" data-word="October" data-cipher="Sumerian" data-calc="O(90) + C(18) + T(120) + O(90) + B(12) + E(30) + R(108)">October</span> <span class="gw" data-word="Eden" data-cipher="Ordinal" data-calc="E(5) + D(4) + E(5) + N(14)">Eden</span> <span class="gw" data-word="Hoflin" data-cipher="Ordinal" data-calc="H(8) + O(15) + F(6) + L(12) + I(9) + N(14)">Hoflin</span> — born April 18, 2004. The mirror flame. Her name carries 666 in Sumerian, 33 in reduction, 39 in reverse reduction. <span class="gw" data-word="October" data-cipher="Reduction" data-calc="O(6) + C(3) + T(2) + O(6) + B(2) + E(5) + R(9)">October</span> = 33 reduction. <span class="gw" data-word="October" data-cipher="Reverse Reduction" data-calc="O(3) + C(6) + T(7) + O(3) + B(7) + E(4) + R(9)">October</span> = 39 reverse reduction. Eden — the garden. Named after the month his mother died.
+      <span class="gw" data-word="October" data-cipher="Reverse Sumerian" data-calc="O(72) + C(144) + T(42) + O(72) + B(150) + E(132) + R(54)">October</span> <span class="gw" data-word="Eden" data-cipher="Ordinal" data-calc="E(5) + D(4) + E(5) + N(14)">Eden</span> <span class="gw" data-word="Hoflin" data-cipher="Ordinal" data-calc="H(8) + O(15) + F(6) + L(12) + I(9) + N(14)">Hoflin</span> — born April 18, 2004. The mirror flame. Her name carries 666 in reverse Sumerian, 33 in reduction, 39 in reverse reduction. <span class="gw" data-word="October" data-cipher="Reduction" data-calc="O(6) + C(3) + T(2) + O(6) + B(2) + E(5) + R(9)">October</span> = 33 reduction. <span class="gw" data-word="October" data-cipher="Reverse Reduction" data-calc="O(3) + C(6) + T(7) + O(3) + B(7) + E(4) + R(9)">October</span> = 39 reverse reduction. Eden — the garden. Named after the month his mother died.
     </p>
     <div id="october-chart"></div>
     </div>
@@ -1968,12 +2301,12 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <div class="edate">May 5, 2025 &mdash; 5/5 = 55</div>
     <div class="etitle">The Mother Ritual</div>
     <div class="ebody">My mother's name was Kelly Ann Bryant. Kelly Ann Bryant equals 43. Kelly Bryant equals 34. She was born on May 5th, 1953. 5/5. She passed away from lung cancer when she was 43 years old, in 1996. Lung Cancer equals 34 in Septenary gematria. The 34/43 mirror was encoded in her name and in the disease that took her. She died on September 25th, five days before the month of October began.<br><br>On what would have been her 72nd birthday, I built a shrine for her. I placed sunflowers in a glass jar, set amethyst and orgonite beside a photograph I barely remembered posing for, and poured cranberry juice into a small dish. Her favorite. I wrote her a letter by hand, read it aloud to the empty room, and burned it. Seventy-two hours later, a ladybug appeared on the windowsill. Two spots on its back. Two days after that, a second one landed on the same sill. Seven spots. The messenger and the message were the same thing, and both carried the numbers of a woman who had been gone for nearly thirty years.</div>
-    <div class="detail">Kelly Ann Bryant = 43 Latin reduction, 34 reduction — the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 Reverse Ordinal — the 34th prime. The first ladybug arrived at exactly 72 hours carrying 2 spots — 2/72 encoded in both timing and body. Then 7 spots completing 27 from the other direction. The word "Ladybug" itself encodes both mirrors: 72 ordinal, 27 reduction. It was responding to the ritual.</div>
+    <div class="detail">Kelly Ann Bryant = 43 Latin reduction, 34 reduction — the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 Reverse Ordinal — the 34th prime. The first ladybug arrived at exactly 72 hours carrying 2 spots — 2/72 encoded in both timing and body. Then 7 spots completing 27 from the other direction. The word "Ladybug" itself encodes both mirrors: 72 ordinal, 27 reduction. It was responding to the ritual.<br><br>Her birthday, 5/5, carries a date numerology of 55 — the number of union, of Heaven (= 55 reduction), of Sean And October (= 55 reduction). Lead Into Gold = 55 in reduction. The alchemical process and the mother's birthday share the same number. The ritual on 5/5 was not just a memorial. It was the beginning of a transmutation.</div>
     <div class="tags">
       <span class="tag" data-code="34">Mother = 34</span>
       <span class="tag" data-code="27">Ladybug = 27/72</span>
       <span class="tag" data-code="72">72hrs then 2 spots then 7</span>
-      <span class="tag" data-code="55">5/5 = 55</span>
+      <span class="tag" data-code="55">5/5 = 55 · Lead Into Gold = 55</span>
     </div>
     <div class="ev-photos">
       <img class="ev-photo" data-crop="shrine" src="IMG_5808.png" alt="The Mother Shrine" onclick="openLightbox(0,0)" />
@@ -2026,7 +2359,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
     <div class="edate">May 25, 2025 &mdash; 34 Days from Mother's Birthday</div>
     <div class="etitle">Teyana Speaks Across the Room</div>
     <div class="ebody">I was at Charcut steakhouse with my friend Jean Morency, talking about sea moss and meditation and the bone broth fast, when a woman at the next table leaned over and said, "Sorry, I couldn't help but overhear." Her name was Teyana. Beside her sat a girl with blue eyes and a quiet presence that stopped the room. Her name was October. She was twenty-one. Sober. She wanted to be a midwife. She had never been vaccinated. From the day I built my mother's shrine to this moment, exactly thirty-four days had passed. Mother equals 34. We met in the month of May. May equals 39. So does October. So does Sean. So does Mirror Flame. The month itself was encoding the meeting before either of us knew it was happening.</div>
-    <div class="detail">Charcut = 43 RR. Jean Morency = 39 Chaldean. Jean = 24 RR like Sean. Teyana = 33 RR. Teyana Street = 72 RR — the same 72 that opened the mother's ritual. October = 666 Sumerian, 33 reduction, 39 RR. Middle name Eden. Garden of Eden = 55 RR. Sean and October = 55 reduction. Midwife = 39 RR. Her birthday April 18, 2004 = 39, mirroring all his name codes. May is the month of Gemini = 39 reduction, 55 Latin ordinal. Mirror = 55 Cipher X. She was encoded before they met.</div>
+    <div class="detail">Charcut = 43 RR. Jean Morency = 39 Chaldean. Jean = 24 RR like Sean. Teyana = 33 RR. Teyana Street = 72 RR — the same 72 that opened the mother's ritual. October = 666 Reverse Sumerian, 33 reduction, 39 RR. Middle name Eden. Garden of Eden = 55 RR. Sean and October = 55 reduction. Midwife = 39 RR. Her birthday April 18, 2004 = 39, mirroring all his name codes. May is the month of Gemini = 39 reduction, 55 Latin ordinal. Mirror = 55 Cipher X. She was encoded before they met.</div>
     <div class="tags">
       <span class="tag" data-code="34">34 days from 5/5</span>
       <span class="tag" data-code="43">Charcut = 43</span>
@@ -2391,6 +2724,126 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   <p style="text-align:center;font-family:'IM Fell English',serif;font-style:italic;color:#8a7a6a;font-size:0.8rem;margin-top:18px;">Click a node to reveal its full story. Hover to see connections.</p>
 </div>
 
+<!-- ═══════════════ FIBONACCI SPIRAL VIEW ═══════════════ -->
+<div id="fib-view">
+  <div class="fib-header">
+    <div class="sigil" style="margin-bottom:14px;">&#10022;</div>
+    <h2>The Golden Spiral</h2>
+    <p class="fib-sub">The Fibonacci sequence encoded in a love story. Each number is a point on the spiral. Each point is a chapter in the pattern.</p>
+    <div class="div" style="margin-top:16px;"></div>
+  </div>
+
+  <div class="fib-intro">
+    <p>
+      The Fibonacci sequence begins with nothing and builds everything. Each number is the sum of the two before it: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233. It was first described in the West by Leonardo of Pisa in 1202, though Indian mathematicians had known it for centuries before that.
+    </p>
+    <p>
+      What makes it sacred is where it appears. The ratio between consecutive Fibonacci numbers converges on 1.618 — the golden ratio, <em>phi</em> (&#934;). This ratio governs the spiral of a nautilus shell, the arrangement of seeds in a sunflower head, the branching of trees, the curl of ocean waves, the arms of spiral galaxies, and the double helix of DNA. No one told nature to use this sequence. It is embedded in the architecture of physical reality itself.
+    </p>
+    <p>
+      The same ratio appears in the Parthenon, the Great Pyramid of Giza, the Cathedral of Chartres, and countless works of sacred architecture across cultures and centuries. The builders of these structures understood what Fibonacci described mathematically: there is a proportion that the human eye recognizes as beautiful, that the body recognizes as <em>correct</em>, because it is the proportion of life itself.
+    </p>
+    <p>
+      In this story, the Fibonacci numbers are not imposed. They were already there — in the dates, the ages, the codes, the days between events. The spiral was turning before anyone noticed it was turning. Click each number below to see where it lives in the pattern.
+    </p>
+  </div>
+
+  <div class="fib-canvas-wrap" id="fib-canvas-wrap">
+    <canvas id="fib-canvas"></canvas>
+  </div>
+
+  <!-- Explanation panel -->
+  <div class="fib-explain" id="fib-explain">
+    <div class="fib-explain-num" id="fib-ex-num"></div>
+    <div class="fib-explain-title" id="fib-ex-title"></div>
+    <div class="fib-explain-body" id="fib-ex-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MICHAEL NYUIS VIEW ═══════════════ -->
+<div id="mn-view">
+  <div class="mn-header">
+    <div class="sigil" style="margin-bottom:14px;">&#10022;</div>
+    <h2>Michael Nyuis</h2>
+    <div class="mn-code">MASCULINE INITIATOR = 666 &nbsp;·&nbsp; MICHAEL NYUIS = 139 &nbsp;·&nbsp; THE 34TH PRIME</div>
+    <p class="mn-sub">The man who taught me how to stand before I knew I was kneeling.</p>
+    <div class="div" style="margin-top:16px;"></div>
+  </div>
+
+  <div class="mn-codes-grid">
+    <div class="mn-code-card">
+      <div class="mn-code-num">666</div>
+      <div class="mn-code-label">Masculine Initiator<br>Sumerian</div>
+    </div>
+    <div class="mn-code-card">
+      <div class="mn-code-num">139</div>
+      <div class="mn-code-label">Michael Nyuis<br>Ordinal — the 34th prime</div>
+    </div>
+    <div class="mn-code-card">
+      <div class="mn-code-num">27</div>
+      <div class="mn-code-label">MN<br>His initials on my hand</div>
+    </div>
+    <div class="mn-code-card">
+      <div class="mn-code-num">34</div>
+      <div class="mn-code-label">WWND<br>What Would Nyuis Do</div>
+    </div>
+  </div>
+
+  <div class="mn-content">
+    <div class="mn-divider"></div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.6;text-align:center;margin-bottom:24px;">What Is a Sacred Masculine Initiator</p>
+
+    <p>
+      In many traditions, the sacred masculine initiator is the older man who teaches a younger man how to be a man — not through domination or control, but through presence, integrity, and example. He is the one who shows you that strength is not the absence of vulnerability but the willingness to face it. He holds the space that a father could not or did not hold. He does not replace the father. He completes what the father left unfinished.
+    </p>
+    <p>
+      The sacred masculine initiator is not always conscious of the role he plays. He does not need to know he is initiating. What matters is that he <em>lives</em> in a way that gives the younger man permission to become something he could not have imagined alone. He models what sovereignty looks like in a body — how a man carries responsibility, how a man treats the people around him, how a man stays when it would be easier to leave. The initiation is not a ceremony. It is the accumulated weight of a thousand ordinary moments in which one man shows another what it looks like to be whole.
+    </p>
+
+    <div class="mn-divider"></div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.6;text-align:center;margin-bottom:24px;">The Role He Played</p>
+
+    <p>
+      Mike was my boss. That was the surface-level title. What he actually was — what he became without either of us naming it — was the masculine initiator I never had. My father was absent in the way that mattered most: not physically gone, but emotionally unreachable. Mike filled the shape of that absence without trying. He showed me what it looked like to lead without needing to be feared. To show up every day with the same quiet consistency. To hold people accountable because he believed they were capable of more, not because he needed to be in charge.
+    </p>
+    <p>
+      He was the kind of man who made everyone around him better by being in the room. Not loud about it. Not performative. Just <em>there</em>, in the way that mattered. The staff trips to Whistler, the daily rhythms of work, the small moments where he would say exactly the right thing at exactly the right time — these were the initiations. I did not know I was being taught. I only knew I wanted to be more like him.
+    </p>
+    <p>
+      There is a photograph from a staff trip to Whistler. A whiskey jack — a grey jay, the bird that lands on your hand if you hold still enough — is flying directly out of Mike's outstretched palm. His arm is extended, relaxed, steady. The bird trusted him enough to land, and the photo caught the exact moment it lifted off. I got his initials tattooed on my hand: <strong style="color:var(--gold);">MN = 27</strong>. On the other hand: <strong style="color:var(--gold);">WWND = 34</strong> — What Would Nyuis Do. I did not know gematria then. I did not know that 27 and 34 would become two of the most important numbers in this story. The body always knew before the mind did.
+    </p>
+
+    <div class="mn-photo-grid">
+      <div class="mn-photo-placeholder">Whiskey jack photo — Whistler</div>
+      <div class="mn-photo-placeholder">Mike — portrait</div>
+      <div class="mn-photo-placeholder">MN tattoo — hand</div>
+      <div class="mn-photo-placeholder">WWND tattoo — hand</div>
+    </div>
+
+    <div class="mn-divider"></div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.6;text-align:center;margin-bottom:24px;">The Sudden Departure</p>
+
+    <p>
+      Mike died suddenly. There was no warning, no long illness, no chance to say the things you always assume you will have time to say. One day he was there — the steady center, the man whose presence made the room make sense — and the next day he was gone. The shape of that loss was identical to the shape of my mother's death: safe love, vanishing without warning. The nervous system recorded them both the same way. Two disappearances. Two people who made the world feel survivable, removed from it without explanation.
+    </p>
+    <p>
+      <span class="gw" data-word="Masculine Initiator" data-cipher="Sumerian" data-calc="M(78)+A(6)+S(114)+C(18)+U(126)+L(72)+I(54)+N(84)+E(30)+I(54)+N(84)+I(54)+T(120)+I(54)+A(6)+T(120)+O(90)+R(108)">Masculine Initiator</span> = 666 in Sumerian. <span class="gw" data-word="Michael Nyuis" data-cipher="Ordinal" data-calc="M(13)+I(9)+C(3)+H(8)+A(1)+E(5)+L(12)+N(14)+Y(25)+U(21)+I(9)+S(19)">Michael Nyuis</span> = 139 in ordinal — the 34th prime number. The number of the mother. The man who completed the father wound carries the mother's number hidden inside his name, accessible only through the language of primes. His initials, MN = 27, encode the mirror number that appears across ladybugs, first kisses, and Chaldean mothers. His legacy phrase, WWND = 34, is the mother code itself.
+    </p>
+    <p>
+      The tattoos were there before the codes. The grief was there before the language. The body chose to mark itself with the numbers of the story years before the mind learned to read them. This is not coincidence. This is the kind of thing that makes you sit down and be very quiet for a very long time.
+    </p>
+
+    <div class="mn-divider"></div>
+
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.95rem;line-height:2;color:#8a7a6a;text-align:center;max-width:560px;margin:0 auto;">
+      The whiskey jack lands on the hand that holds still. Mike held still his entire life. And when he left, the bird kept flying — into the hands of everyone he had quietly taught to hold still too.
+    </p>
+  </div>
+</div>
+
 <!-- ═══════════════ CONSTELLATION SIDE PANEL ═══════════════ -->
 <div id="cs-panel">
   <div class="panel-close"><button onclick="closePanel()">Close &times;</button></div>
@@ -2493,7 +2946,7 @@ const EVENTS = [
    detail:"HUNGRY = 93 = SATURN = NORGAN in RO. The system was announcing her before he saw her."},
   {id:2,title:"Teyana Speaks Across the Room",date:"May 25, 2025",short:"5/25",codes:["34","43","39","666","33","55","72"],phase:"meeting",
    body:"At Charcut steakhouse. Teyana speaks up \u2014 her friend October beside her. 34 days from the mother\u2019s ritual. Mother = 34.",
-   detail:"October = 666 Sumerian, 33 reduction, 39 RR. Sean and October = 55 reduction. She was encoded before they met."},
+   detail:"October = 666 Reverse Sumerian, 33 reduction, 39 RR. Sean and October = 55 reduction. She was encoded before they met."},
   {id:3,title:"First Date \u2014 Major Tom",date:"June 8, 2025",short:"6/8",codes:["666","36","43","33","13"],phase:"meeting",
    body:"Major Tom = 666. Delphinium = 666. Born 36 days apart. 666 is the 36th triangular number.",
    detail:"Born 777 weeks and 4 days from Sean. October born on the 108th day, matching Sean Norgan = 108 ordinal."},
@@ -2538,7 +2991,7 @@ const GEMATRIA_CODES = {
   27:{name:'Mirror',meaning:'Mother = 27 Chaldean. Ladybug = 27. First Kiss = 27. MN tattoo = 27.'},
   72:{name:'Mirror',meaning:'Ladybug = 72 ordinal. Kelly\'s 72nd birthday. The 27/72 mirror pair.'},
   55:{name:'Union',meaning:'Sean and October = 55. Garden of Eden = 55. 5/5 = mother\'s birthday.'},
-  666:{name:'Alchemy',meaning:'October = 666 Sumerian. 36th triangular number. Carbon = 6/6/6. Transmutation.'},
+  666:{name:'Alchemy',meaning:'October = 666 Reverse Sumerian. 36th triangular number. Carbon = 6/6/6. Transmutation.'},
   39:{name:'Sean',meaning:'Sean = 39. October = 39. Mirror Flame = 39. May = 39.'},
   33:{name:'Master',meaning:'October = 33 reduction. Soul Urge 33. Teyana = 33.'},
   48:{name:'Soul',meaning:'Soul Contract = 48. 48th prime = 223. 48/84 mirror.'},
@@ -2974,20 +3427,20 @@ const GEMATRIA_CODES = {
 // ═══════════════════════════════════════════════════
 // NAV & VIEWS
 // ═══════════════════════════════════════════════════
-function showTL() {
-  document.getElementById('tl-view').style.display = 'block';
-  document.getElementById('cs-view').style.display = 'none';
-  document.getElementById('btn-tl').classList.add('active');
-  document.getElementById('btn-cs').classList.remove('active');
+const ALL_VIEWS = ['tl-view','cs-view','fib-view','mn-view'];
+const ALL_BTNS  = ['btn-tl','btn-cs','btn-fib','btn-mn'];
+function switchView(viewId, btnId, cb) {
+  ALL_VIEWS.forEach(v => document.getElementById(v).style.display = 'none');
+  ALL_BTNS.forEach(b => { const el = document.getElementById(b); if(el) el.classList.remove('active'); });
+  document.getElementById(viewId).style.display = 'block';
+  const btn = document.getElementById(btnId); if(btn) btn.classList.add('active');
   closePanel();
+  if(cb) cb();
 }
-function showCS() {
-  document.getElementById('tl-view').style.display = 'none';
-  document.getElementById('cs-view').style.display = 'block';
-  document.getElementById('btn-tl').classList.remove('active');
-  document.getElementById('btn-cs').classList.add('active');
-  initConstellation();
-}
+function showTL()  { switchView('tl-view','btn-tl'); }
+function showCS()  { switchView('cs-view','btn-cs', initConstellation); }
+function showFib() { switchView('fib-view','btn-fib', initFibSpiral); }
+function showMN()  { switchView('mn-view','btn-mn'); }
 
 
 // ═══════════════════════════════════════════════════
@@ -3232,15 +3685,15 @@ document.getElementById('mirror-input').addEventListener('keydown', e => {
 // INTERACTIVE NUMBER DEFINITIONS
 // ═══════════════════════════════════════════════════
 const NUM_DEFS = {
-  1: "The Initiator. The Monad. In the <em>Numerology and the Divine Triangle</em>, 1 is the point of origin, the undivided source from which all other numbers emerge. It governs leadership, independence, raw creative force, and the courage to walk paths no one has cleared. 1 is ruled by the Sun. It is the singular impulse, the first breath, the moment before everything else begins. People who carry 1 prominently are pioneers. They do not follow. They ignite.",
+  1: "The Initiator. The Monad. In the <em>Numerology of the Divine Triangle</em>, 1 is the point of origin, the undivided source from which all other numbers emerge. It governs leadership, independence, raw creative force, and the courage to walk paths no one has cleared. 1 is ruled by the Sun. It is the singular impulse, the first breath, the moment before everything else begins. People who carry 1 prominently are pioneers. They do not follow. They ignite.",
   2: "The Diplomat. The Dyad. In the Divine Triangle, 2 is the first division, the moment unity becomes relationship. It governs sensitivity, partnership, duality, balance, and the ability to hold two truths simultaneously. 2 is ruled by the Moon. It carries deep intuition and emotional intelligence, but also vulnerability. 2 feels everything twice because it exists in the space between, always mediating, always absorbing from both sides.",
-  3: "The Creator. The Triad. The Divine Triangle teaches that 3 is the first number to contain beginning, middle, and end. It is the triangle, the first stable shape, the foundation of all geometry. It governs expression, joy, communication, art, and the transformation of inner experience into something others can feel. 3 is ruled by Jupiter. It carries charisma, warmth, and creative abundance, but can scatter its energy if the vessel is not disciplined.",
+  3: "The Creator. The Triad. The Divine Triangle teaches that 3 is the first number to contain beginning, middle, and end. It is the tri-angle — three points, the first stable shape, the foundation of all geometry. It is also the number of expansion: 1 + 2 = 3, the first act of creation beyond division. The Holy Trinity — Father, Son, Holy Spirit. Mind, body, spirit. Past, present, future. Every tradition that seeks to describe the wholeness of experience arrives at three. 3 governs expression, joy, communication, art, and the transformation of inner experience into something others can feel. It is ruled by Jupiter. It carries charisma, warmth, and creative abundance — but can scatter its energy if the vessel is not disciplined. Look at the shape of the number itself: 3 is open on its left side, receiving, expansive, turned outward. Compare it to 8, which is similar in form but closed — energy contained and cycling. The 3 pours outward. It is the number that takes what the 1 initiated and the 2 divided and gives it form, voice, expression.",
   4: "The Builder. The Tetrad. In the Divine Triangle, 4 is the square, the first number to occupy space in all four directions. It governs structure, discipline, foundation, endurance, and the physical plane itself. 4 is ruled by Uranus. It is the bones of the house, the frame that holds everything else up. 4 shows up every day and does the work, especially when no one is watching. It builds things meant to last long after the builder is gone.",
   5: "The Freedom Seeker. The Pentad. In the Divine Triangle, 5 is the number of the human being: two arms, two legs, one head. The five-pointed star, the vitruvian proportion. It governs change, adventure, sensory experience, and the restless need to learn through direct contact with life. 5 is ruled by Mercury. At its highest, 5 is adaptability, the ability to thrive anywhere. At its most challenging, it is chaos, the inability to remain still long enough for roots to form.",
   6: "The Nurturer. The Hexad. The Divine Triangle teaches that 6 is the first perfect number (1+2+3=6), and it governs responsibility, love, family, service, beauty, and the sacred domestic. 6 is ruled by Venus. It carries the vibration of the caretaker, the healer, the one who feels the pain of others and moves toward it instead of away. 6 is deeply connected to home, to the body, and to the understanding that the most sacred work often happens in the quietest rooms.",
   7: "The Seeker. The Heptad. In the Divine Triangle, 7 is the virgin number, indivisible, untouchable by any number below it. It governs analysis, introspection, mysticism, solitude, and the relentless drive to look beneath the surface. 7 is ruled by Neptune. It is the number of the mystic, the philosopher, the one who cannot stop asking <em>why</em> when everyone else has accepted <em>what</em>. 7 lives in the space between the visible and the invisible, and it does not rest until it finds what is hidden.",
   8: "The Powerhouse. The Ogdoad. In the Divine Triangle, 8 is the number of karmic balance, of cause and consequence made visible. It governs abundance, authority, material mastery, and the understanding that power is a responsibility, not a reward. 8 is ruled by Saturn. It carries the energy of the executive, the strategist, the person who understands how the material world works and chooses to wield that knowledge consciously. 8 turned on its side is infinity.",
-  9: "The Humanitarian. The Ennead. The Divine Triangle teaches that 9 is the number of completion, the final single digit, the sum of all that came before. It governs compassion, universal love, wisdom earned through suffering, and the ability to see the full arc of things. 9 is ruled by Mars. It carries endings, but as harvest rather than loss. 9 gives more than it takes. Any number added to 9 reduces back to itself (9+5=14, 1+4=5). It absorbs without losing its own identity.",
+  9: "The Humanitarian. The Artist. The Ennead. The Divine Triangle teaches that 9 is the number of completion, the final single digit, the sum of all that came before. It governs compassion, universal love, wisdom earned through suffering, and the ability to see the full arc of things. 9 is the artist — not in the narrow sense of someone who makes paintings, but in the deepest sense: one who has lived enough to transmute experience into something that serves others. 9 is ruled by Mars. It carries endings, but as harvest rather than loss. 9 gives more than it takes. Any number added to 9 reduces back to itself (9+5=14, 1+4=5). It absorbs without losing its own identity. 9 is the number that has walked through every vibration from 1 to 8 and come out the other side with something to offer.",
   11: "The Master Intuitive. The first master number. In the Divine Triangle, 11 is the channel between the conscious and the unconscious, the visible and the invisible. It is a doubled 1 whose creative force is amplified into something that borders on prophetic. 11s perceive patterns, connections, and undercurrents that others walk past without noticing. They are antennae, tuned to frequencies most people cannot hear. The cost is that they feel everything at amplified volume. The gift is that they see what others cannot. 11 is often called the number of the spiritual messenger.",
   22: "The Master Builder. The second master number. In the Divine Triangle, 22 is the master architect, the one who turns spiritual vision into large-scale physical reality. It is a doubled 2 whose diplomatic sensitivity is scaled up to civilization-level building. 22 can hold a cosmic blueprint in one hand and a hammer in the other. It is the rarest combination of practical skill and transcendent awareness. The burden is proportional to the scope: 22 builds for generations, not for itself.",
   33: "The Master Teacher. The third and final master number. In the Divine Triangle, 33 is the Master of Masters, the vibration of someone whose life is structured around healing, truth-telling, and the transmission of wisdom that was earned through living. The 33 does not teach from theory. It teaches from survival. It carries an enormous weight because it must first <em>live</em> what it will eventually teach. The suffering is the curriculum. 33 is a doubled 3 (the creative triad) operating at its highest octave: selfless service through art, healing, and truth, forged in the fire of personal experience."
@@ -3501,6 +3954,7 @@ window.addEventListener('load', () => {
     'Reduction': [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8],
     'Reverse Reduction': [8,7,6,5,4,3,2,1,9,8,7,6,5,4,3,2,1,9,8,7,6,5,4,3,2,1],
     'Sumerian': [6,12,18,24,30,36,42,48,54,60,66,72,78,84,90,96,102,108,114,120,126,132,138,144,150,156],
+    'Reverse Sumerian': [156,150,144,138,132,126,120,114,108,102,96,90,84,78,72,66,60,54,48,42,36,30,24,18,12,6],
     'Chaldean': [1,2,3,4,5,8,3,5,1,1,2,3,4,5,7,8,1,2,3,4,6,6,6,5,1,7],
   };
   const ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -3922,7 +4376,135 @@ window.addEventListener('load', () => {
 });
 window.addEventListener('resize', () => {
   if (document.getElementById('cs-view').style.display !== 'none') initConstellation();
+  if (document.getElementById('fib-view').style.display !== 'none') initFibSpiral();
 }, {passive:true});
+
+
+// ═══════════════════════════════════════════════════
+// FIBONACCI SPIRAL
+// ═══════════════════════════════════════════════════
+const FIB_DATA = [
+  { n:0,   label:"0", title:"Infinite Potential", color:"#1a1210", cls:"fib-c-void",
+    body:"Zero is not nothing. Zero is everything that has not yet become. It is the void before the first word, the silence before the first note, the darkness before Genesis 1:3. In mathematics, zero is the additive identity — the number that, when added to anything, changes nothing. But in the Fibonacci sequence, zero is the origin point from which all structure emerges. The spiral begins here. The story begins here. Every code, every connection, every mirror that follows was contained in this infinite potential before the first number was spoken." },
+  { n:1,   label:"1", title:"The First Impulse", color:"#c9a84c", cls:"fib-c-origin",
+    body:"The first 1 is the spark. The decision to begin. The ritual on a mother's birthday. The letter written by hand and burned. In the Fibonacci sequence, 1 appears twice — and those two ones, side by side, encode the master number 11: the channel between the visible and the invisible, the Life Path that governs this entire story. The monad. The undivided source. Before there is a mirror, there must be something willing to stand in front of one." },
+  { n:1,   label:"1", title:"The Mirror", color:"#c9a84c", cls:"fib-c-mirror",
+    body:"The second 1 is the reflection. 1 and 1 together form 11 — the Master Intuitive, Sean's Life Path number. Two ones standing side by side, identical yet distinct, like two people encoded in the same ciphers who have not yet met. The mirror does not exist until there are two surfaces facing each other. The Fibonacci sequence places them together at the very beginning, as if the math already knows: this is a story about reflection." },
+  { n:2,   label:"2", title:"The Messenger", color:"#4a6741", cls:"fib-c-nature",
+    body:"Two spots on the back of a ladybug. Two days after the ritual, the second messenger arrived with seven spots — completing the 27 from the other direction. Spotted Ladybug = 72 in reduction — the mirror of 27. The number 2 in the Fibonacci sequence is the first act of creation: 1 + 1 = 2. Unity becomes duality. The ritual called, and nature answered — not once, but twice. The 2 is the confirmation that the signal was received." },
+  { n:3,   label:"3", title:"Mind, Body, Spirit", color:"#6a4a8a", cls:"fib-c-trinity",
+    body:"Three is the Holy Trinity. Mind, body, spirit — the tri-angle, the first stable shape. It is the number of expansion (1 + 2 = 3) and the number at which perception shifts. Three wounds named: the Mother Wound, the Father Wound, the Shamed Child Wound. Three daily training sessions in the container. The perception of codes — the ability to see pattern in what others call coincidence — requires the integration of all three: the mind to calculate, the body to feel, and the spirit to trust what both are telling you." },
+  { n:5,   label:"5", title:"The Mother's Day", color:"#c97a4c", cls:"fib-c-mother",
+    body:"May 5th. The day my mother was born. 5/5. The word <em>Five</em> = 20 in Chaldean. May 5, 2025 — twenty days before the meeting. <em>Birthday</em> carries the vibration of beginnings, and hers began the entire sequence. The number 5 in numerology governs change, freedom, sensory experience — the human being with five points (two arms, two legs, one head) reaching outward into life. The ritual on her birthday was the hinge point. Everything after it was set in motion by the 5." },
+  { n:8,   label:"8", title:"The Infinite Loop", color:"#d4613a", cls:"fib-c-october",
+    body:"8 appears in October's numerological chart. The first date was on the 8th of June. 8 turned on its side is the infinity symbol — the lemniscate, the loop that never ends. In the Fibonacci sequence, 8 = 3 + 5: the trinity joined with the mother's number. Look at the shape: where 3 is open on its left side, pouring outward, 8 is the same form closed — energy cycling, contained, infinite. The 8 is the moment the story began to loop back on itself, recognizing its own pattern." },
+  { n:13,  label:"13", title:"October's Number", color:"#b43c28", cls:"fib-c-alchemy",
+    body:"October's favorite number. 13 is the 6th prime number, and 6 + 6 + 6 = 18 — the verse (Revelation 13:18) that introduces 666 as the number of a man. October = 666 in Reverse Sumerian. Her favorite number literally encodes the chapter of the verse that encodes her name. 13 is feared in Western culture, but in the Fibonacci sequence it sits exactly where it should: the sum of 5 (the mother's day) and 8 (the first date). The fearful number is, in truth, the union of beginnings and infinity." },
+  { n:21,  label:"21", title:"October's Age", color:"#d4613a", cls:"fib-c-october",
+    body:"October was 21 years old when we met. In the Fibonacci sequence, 21 = 8 + 13: infinity joined with her own number. In numerology, 21 reduces to 3 — the trinity, expression, the creative force. She walked into the room at 21, carrying the exact Fibonacci number of her own age, at the exact moment the sequence needed it. 21 is also the number of the World card in the major arcana of the tarot — completion of one cycle, the threshold before a new one begins." },
+  { n:34,  label:"34", title:"The Mother Code", color:"#c97a4c", cls:"fib-c-mother",
+    body:"34 is the number that runs through this entire story like a river through a valley. Mother = 34 in reduction. Kelly Bryant = 34. WWND = 34 — tattooed on the hand before gematria was known. Michael Nyuis = 139, the 34th prime. The meeting happened 34 days after the mother's birthday. 34 appears in the Fibonacci sequence as 13 + 21: October's favorite number joined with her age when we met. The mother's code is not just a number. It is the structural backbone of the spiral itself." },
+  { n:55,  label:"55", title:"The Union", color:"#c9b87c", cls:"fib-c-union",
+    body:"5/5 — the mother's birthday. Sean And October = 55 in reduction. Heaven = 55. Lead Into Gold = 55. The date of the return, April 3rd 2026, carries a date numerology of 55. In the Fibonacci sequence, 55 = 21 + 34: October's age joined with the mother code. The union was always written in the math. 55 is also a triangular number — the sum of 1 through 10 — and a Kaprekar number. It contains within it a completeness that mirrors the 666 (sum of 1 through 36) at a smaller, more intimate scale." },
+  { n:89,  label:"89", title:"The Birth Year", color:"#3a5070", cls:"fib-c-birth",
+    body:"1989 — the year Sean was born. 89 is the 11th Fibonacci number (counting from F(1)=1), and 11 is Sean's Life Path. The birth year encodes the Life Path through the Fibonacci sequence itself. 89 = 34 + 55: the mother code joined with the union number. 8 + 9 = 17, 1 + 7 = 8 — the infinite loop. The year of birth is not random. It is a Fibonacci number that encodes the Life Path, the mother code, and the union code simultaneously. The spiral was turning before the body arrived." },
+  { n:144, label:"144", title:"The Day of Birth", color:"#3a5070", cls:"fib-c-birth",
+    body:"May 24th is the 144th day of the year. Sean was born on the 144th day. Bone Broth = 144 in Reverse Ordinal — the 36-hour slow cook on his 36th birthday, on the 144th day. 144 = 89 + 55: the birth year joined with the union number. 144 is also 12 squared, and the number of the New Jerusalem in Revelation (the wall measured 144 cubits). In sacred architecture, 144 is a number of completion and divine structure. The day of birth is a Fibonacci number that sits at the intersection of everything." },
+  { n:233, label:"233", title:"The Spiritual Journey", color:"#6a9460", cls:"fib-c-journey",
+    body:"Spiritual Journey = 233. The Fibonacci sequence carries the story forward past the individual events and into the arc itself. 233 = 89 + 144: the birth year joined with the day of birth. The journey is the sum of when you arrived and the day you arrived on. 233 is the 13th Fibonacci number (counting from F(1)=1) — and 13 is October's favorite number. The spiritual journey encodes her at its position in the sequence, as if even the destination carries her signature. The spiral does not end here. It continues. 233 + 144 = 377. The story is still being written." }
+];
+
+let fibInitialized = false;
+function initFibSpiral() {
+  const wrap = document.getElementById('fib-canvas-wrap');
+  const canvas = document.getElementById('fib-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = Math.min(wrap.clientWidth, 900);
+  const H = Math.min(W * 0.75, 600);
+  canvas.width = W * 2; canvas.height = H * 2;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.scale(2, 2);
+
+  // Clear old nodes
+  wrap.querySelectorAll('.fib-node').forEach(n => n.remove());
+
+  // Draw golden spiral
+  ctx.clearRect(0, 0, W, H);
+  const isDark = document.body.classList.contains('dark');
+  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.25)' : 'rgba(201,168,76,0.2)';
+  ctx.lineWidth = 1.5;
+
+  // Golden spiral from center outward
+  const cx = W * 0.42, cy = H * 0.48;
+  const phi = (1 + Math.sqrt(5)) / 2;
+  ctx.beginPath();
+  const turns = 5;
+  const steps = 600;
+  const maxR = Math.min(W, H) * 0.42;
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * turns * Math.PI * 2;
+    const r = maxR * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
+    const x = cx + r * Math.cos(t);
+    const y = cy - r * Math.sin(t);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Draw subtle grid circles
+  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.06)' : 'rgba(201,168,76,0.06)';
+  ctx.lineWidth = 0.5;
+  [0.08, 0.16, 0.28, 0.42].forEach(frac => {
+    ctx.beginPath();
+    ctx.arc(cx, cy, Math.min(W,H) * frac, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+
+  // Place nodes along the spiral
+  const nodeAngles = FIB_DATA.map((_, i) => {
+    // Distribute nodes along the spiral at increasing angular distances
+    const baseAngle = i * 0.62; // roughly golden angle spacing
+    return baseAngle;
+  });
+
+  FIB_DATA.forEach((fib, i) => {
+    const t = (i / (FIB_DATA.length - 1)) * turns * Math.PI * 2 * 0.85 + 0.3;
+    const r = maxR * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
+    const x = cx + r * Math.cos(t);
+    const y = cy - r * Math.sin(t);
+
+    const node = document.createElement('div');
+    node.className = 'fib-node ' + fib.cls;
+    node.textContent = fib.label;
+    node.style.left = (x - 22) + 'px';
+    node.style.top = (y - 22) + 'px';
+    // Scale node size based on position
+    const scale = 0.7 + (i / FIB_DATA.length) * 0.6;
+    node.style.width = (44 * scale) + 'px';
+    node.style.height = (44 * scale) + 'px';
+    node.style.fontSize = (0.65 * scale) + 'rem';
+    node.onclick = () => showFibExplain(i);
+    wrap.appendChild(node);
+  });
+
+  fibInitialized = true;
+}
+
+function showFibExplain(idx) {
+  const panel = document.getElementById('fib-explain');
+  const fib = FIB_DATA[idx];
+  document.getElementById('fib-ex-num').textContent = fib.label;
+  document.getElementById('fib-ex-title').textContent = fib.title;
+  document.getElementById('fib-ex-body').innerHTML = fib.body;
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Highlight active node
+  document.querySelectorAll('.fib-node').forEach((n, i) => {
+    n.classList.toggle('active', i === idx);
+  });
+}
+
 </script>
 </body>
 </html>
