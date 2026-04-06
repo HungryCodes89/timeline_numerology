@@ -1912,7 +1912,7 @@ body.dark .mn-content p { color: #9a8880; }
       Consider the Bible — the most printed, most translated, most studied text in human history. In ordinal gematria, <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26. He created the first man in His image, in the 26th verse of the Bible — Genesis 2:6. That man's name was <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26 in reverse reduction. The creator and the created share the same number, in the same verse. The verse address itself encodes 26.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      The human body contains 206 bones — 26 written into the frame. Those bones are built from <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26 in reduction. They are strengthened by iron, atomic number 26 on the periodic table. And all sentient life on Earth is built on <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26 in reduction. The number of God, the number of the first man, is woven into the literal chemistry of the body.
+      The human body contains 206 bones — 26 written into the frame. The word <span class="gw" data-word="Bones" data-cipher="Reverse Reduction" data-calc="B(7) + O(3) + N(4) + E(4) + S(8)">Bones</span> = 26 in reverse reduction. Those bones are built from <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26 in reduction. They are strengthened by iron, atomic number 26 on the periodic table. And all sentient life on Earth is built on <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26 in reduction. The number of God, the number of the first man, is woven into the literal chemistry of the body.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Carbon has exactly 6 protons, 6 neutrons, and 6 electrons. 6-6-6. This is the atomic signature of physical existence. Every cell in your body, every strand of your DNA, every bone in your frame is built on this element. Revelation calls 666 "the number of a man." Read literally, it may be exactly that — the molecular fingerprint of human life itself. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian gematria. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, the book of origin, the beginning of all things, equals 666 in reverse Sumerian. The book that tells the story of creation encodes the number of the body in its own name.
@@ -3439,7 +3439,7 @@ function switchView(viewId, btnId, cb) {
 }
 function showTL()  { switchView('tl-view','btn-tl'); }
 function showCS()  { switchView('cs-view','btn-cs', initConstellation); }
-function showFib() { switchView('fib-view','btn-fib', initFibSpiral); }
+function showFib() { switchView('fib-view','btn-fib', function(){ setTimeout(initFibSpiral, 80); }); }
 function showMN()  { switchView('mn-view','btn-mn'); }
 
 
@@ -4418,71 +4418,104 @@ let fibInitialized = false;
 function initFibSpiral() {
   const wrap = document.getElementById('fib-canvas-wrap');
   const canvas = document.getElementById('fib-canvas');
+  if (!wrap || !canvas) return;
   const ctx = canvas.getContext('2d');
-  const W = Math.min(wrap.clientWidth, 900);
-  const H = Math.min(W * 0.75, 600);
-  canvas.width = W * 2; canvas.height = H * 2;
+  const wrapW = wrap.offsetWidth || wrap.parentElement.offsetWidth || 800;
+  const W = Math.min(wrapW, 900);
+  const H = Math.min(W * 0.78, 620);
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
   canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-  ctx.scale(2, 2);
+  ctx.scale(dpr, dpr);
 
   // Clear old nodes
   wrap.querySelectorAll('.fib-node').forEach(n => n.remove());
+  wrap.style.width = W + 'px';
+  wrap.style.height = H + 'px';
+  wrap.style.position = 'relative';
+  wrap.style.margin = '0 auto';
 
-  // Draw golden spiral
   ctx.clearRect(0, 0, W, H);
   const isDark = document.body.classList.contains('dark');
-  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.25)' : 'rgba(201,168,76,0.2)';
-  ctx.lineWidth = 1.5;
-
-  // Golden spiral from center outward
-  const cx = W * 0.42, cy = H * 0.48;
   const phi = (1 + Math.sqrt(5)) / 2;
-  ctx.beginPath();
+  const cx = W * 0.42, cy = H * 0.48;
   const turns = 5;
-  const steps = 600;
+  const steps = 800;
   const maxR = Math.min(W, H) * 0.42;
+
+  // Draw subtle golden ratio rectangles
+  ctx.save();
+  ctx.translate(cx, cy);
+  let rectSize = maxR * 0.55;
+  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.06)' : 'rgba(201,168,76,0.05)';
+  ctx.lineWidth = 0.5;
+  for (let j = 0; j < 8; j++) {
+    ctx.strokeRect(-rectSize/2, -rectSize/2, rectSize, rectSize);
+    rectSize /= phi;
+    ctx.rotate(-Math.PI / 2);
+  }
+  ctx.restore();
+
+  // Draw golden spiral
+  ctx.beginPath();
   for (let i = 0; i <= steps; i++) {
     const t = (i / steps) * turns * Math.PI * 2;
     const r = maxR * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
     const x = cx + r * Math.cos(t);
     const y = cy - r * Math.sin(t);
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }
+  const spiralGrad = ctx.createLinearGradient(0, 0, W, H);
+  spiralGrad.addColorStop(0, isDark ? 'rgba(201,168,76,0.08)' : 'rgba(201,168,76,0.1)');
+  spiralGrad.addColorStop(0.5, isDark ? 'rgba(201,168,76,0.22)' : 'rgba(201,168,76,0.2)');
+  spiralGrad.addColorStop(1, isDark ? 'rgba(201,168,76,0.14)' : 'rgba(201,168,76,0.12)');
+  ctx.strokeStyle = spiralGrad;
+  ctx.lineWidth = 1.8;
   ctx.stroke();
 
-  // Draw subtle grid circles
-  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.06)' : 'rgba(201,168,76,0.06)';
-  ctx.lineWidth = 0.5;
-  [0.08, 0.16, 0.28, 0.42].forEach(frac => {
-    ctx.beginPath();
-    ctx.arc(cx, cy, Math.min(W,H) * frac, 0, Math.PI * 2);
-    ctx.stroke();
-  });
+  // Second trace (offset, dimmer)
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * turns * Math.PI * 2 + 0.1;
+    const r = maxR * 0.98 * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
+    const x = cx + r * Math.cos(t);
+    const y = cy - r * Math.sin(t);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.05)' : 'rgba(201,168,76,0.04)';
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
 
-  // Place nodes along the spiral
-  const nodeAngles = FIB_DATA.map((_, i) => {
-    // Distribute nodes along the spiral at increasing angular distances
-    const baseAngle = i * 0.62; // roughly golden angle spacing
-    return baseAngle;
-  });
+  // Center glow
+  const cGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * 0.25);
+  cGrad.addColorStop(0, 'rgba(201,168,76,0.06)');
+  cGrad.addColorStop(1, 'rgba(201,168,76,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, maxR * 0.25, 0, Math.PI * 2);
+  ctx.fillStyle = cGrad;
+  ctx.fill();
 
+  // Place nodes along spiral
   FIB_DATA.forEach((fib, i) => {
-    const t = (i / (FIB_DATA.length - 1)) * turns * Math.PI * 2 * 0.85 + 0.3;
+    const frac = (i + 0.5) / FIB_DATA.length;
+    const t = frac * turns * Math.PI * 2 * 0.85 + 0.4;
     const r = maxR * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
     const x = cx + r * Math.cos(t);
     const y = cy - r * Math.sin(t);
 
+    const baseSize = 36;
+    const scale = 0.6 + (i / FIB_DATA.length) * 0.7;
+    const size = Math.round(baseSize * scale);
+    const fontSize = (0.58 * scale).toFixed(2);
+
     const node = document.createElement('div');
     node.className = 'fib-node ' + fib.cls;
     node.textContent = fib.label;
-    node.style.left = (x - 22) + 'px';
-    node.style.top = (y - 22) + 'px';
-    // Scale node size based on position
-    const scale = 0.7 + (i / FIB_DATA.length) * 0.6;
-    node.style.width = (44 * scale) + 'px';
-    node.style.height = (44 * scale) + 'px';
-    node.style.fontSize = (0.65 * scale) + 'rem';
+    node.style.width = size + 'px';
+    node.style.height = size + 'px';
+    node.style.fontSize = fontSize + 'rem';
+    node.style.left = (x - size/2) + 'px';
+    node.style.top = (y - size/2) + 'px';
     node.onclick = () => showFibExplain(i);
     wrap.appendChild(node);
   });
