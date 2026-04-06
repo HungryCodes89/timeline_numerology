@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Golden Spiral — Sacred Mirrors</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow-x: hidden; background: #000; }
+body {
+  font-family: 'Cormorant Garamond', serif;
+  color: #d4c4b8;
+  cursor: default;
+}
+
+/* ═══════════════════════════════
+   NATURE BACKGROUND SYSTEM
+   ═══════════════════════════════ */
+#bg-layer {
+  position: fixed; inset: 0; z-index: 0;
+  overflow: hidden;
+}
+.bg-scene {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bg-scene.active { opacity: 1; }
+
+/* Each scene is a layered gradient/pattern that evokes a natural Fibonacci form */
+.bg-nautilus {
+  background:
+    radial-gradient(ellipse at 38% 45%, rgba(201,168,76,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 62% 55%, rgba(64,180,180,0.06) 0%, transparent 40%),
+    conic-gradient(from 200deg at 40% 48%, rgba(201,168,76,0.04) 0deg, transparent 60deg, rgba(40,80,100,0.05) 120deg, transparent 180deg, rgba(201,168,76,0.03) 240deg, transparent 300deg),
+    radial-gradient(ellipse at 50% 50%, #0a1520 0%, #050a10 100%);
+}
+.bg-sunflower {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(201,168,76,0.12) 0%, rgba(180,140,40,0.04) 30%, transparent 55%),
+    radial-gradient(ellipse at 50% 40%, rgba(120,80,20,0.06) 0%, transparent 40%),
+    repeating-conic-gradient(from 0deg at 50% 40%, rgba(201,168,76,0.015) 0deg, transparent 2.5deg, rgba(201,168,76,0.015) 5deg),
+    radial-gradient(ellipse at 50% 50%, #0d0d08 0%, #050505 100%);
+}
+.bg-galaxy {
+  background:
+    radial-gradient(ellipse at 45% 50%, rgba(80,60,160,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 55% 45%, rgba(40,120,180,0.08) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 25%),
+    conic-gradient(from 160deg at 48% 50%, rgba(80,60,160,0.05) 0deg, transparent 40deg, rgba(40,120,180,0.04) 80deg, transparent 160deg, rgba(201,168,76,0.03) 240deg, transparent 320deg),
+    radial-gradient(ellipse at 50% 50%, #08060e 0%, #020108 100%);
+}
+.bg-hurricane {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(200,200,220,0.05) 0%, transparent 15%),
+    conic-gradient(from 90deg at 50% 50%, rgba(60,80,120,0.08) 0deg, rgba(40,60,100,0.04) 90deg, rgba(80,100,140,0.06) 180deg, rgba(40,60,100,0.04) 270deg),
+    radial-gradient(ellipse at 50% 50%, rgba(40,60,100,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, #060810 0%, #020308 100%);
+}
+.bg-pinecone {
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(120,80,30,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 45%, rgba(201,168,76,0.06) 0%, transparent 30%),
+    repeating-conic-gradient(from 137.5deg at 50% 50%, rgba(120,80,30,0.02) 0deg, transparent 3deg),
+    radial-gradient(ellipse at 50% 50%, #0a0804 0%, #050402 100%);
+}
+.bg-romanesco {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(40,120,50,0.08) 0%, transparent 35%),
+    radial-gradient(ellipse at 48% 48%, rgba(80,160,60,0.05) 0%, transparent 25%),
+    conic-gradient(from 0deg at 50% 50%, rgba(60,140,50,0.03) 0deg, transparent 20deg, rgba(60,140,50,0.03) 40deg, transparent 60deg, rgba(60,140,50,0.03) 80deg, transparent 100deg, rgba(60,140,50,0.03) 120deg, transparent 360deg),
+    radial-gradient(ellipse at 50% 50%, #040a04 0%, #020502 100%);
+}
+.bg-fern {
+  background:
+    radial-gradient(ellipse at 35% 50%, rgba(40,100,50,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 65% 40%, rgba(30,80,40,0.06) 0%, transparent 30%),
+    linear-gradient(140deg, rgba(20,60,30,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, #030804 0%, #010402 100%);
+}
+
+/* Cosmic dust overlay */
+#bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 512px 512px;
+  pointer-events: none;
+  opacity: 0.3;
+  animation: dustDrift 300s linear infinite;
+}
+@keyframes dustDrift {
+  from { background-position: 0 0; }
+  to { background-position: -5120px -5120px; }
+}
+
+/* Star field canvas */
+#stars-canvas {
+  position: fixed; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════
+   MAIN SPIRAL CANVAS
+   ═══════════════════════════════ */
+#spiral-canvas {
+  position: fixed; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════
+   CONTENT LAYER
+   ═══════════════════════════════ */
+#content {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px 100px;
+}
+
+/* Title */
+.title-block {
+  text-align: center;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: titleReveal 3s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+}
+@keyframes titleReveal {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.title-sigil {
+  font-size: 1.4rem;
+  color: rgba(201,168,76,0.4);
+  letter-spacing: 0.5em;
+  margin-bottom: 20px;
+}
+.title-main {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.6rem, 5vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #c9a84c;
+  text-shadow: 0 0 60px rgba(201,168,76,0.15), 0 0 120px rgba(201,168,76,0.05);
+  margin-bottom: 14px;
+}
+.title-sub {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  color: rgba(180,160,130,0.6);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.title-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+  margin: 24px auto;
+}
+
+/* Intro text */
+.fib-intro-text {
+  max-width: 680px;
+  text-align: center;
+  margin-bottom: 50px;
+  opacity: 0;
+  animation: titleReveal 2.5s ease 1.5s forwards;
+}
+.fib-intro-text p {
+  font-size: 0.95rem;
+  line-height: 2.1;
+  color: rgba(180,165,145,0.75);
+  margin-bottom: 16px;
+}
+.fib-intro-text em { color: rgba(201,168,76,0.7); }
+
+/* ═══════════════════════════════
+   SPIRAL CONTAINER
+   ═══════════════════════════════ */
+.spiral-wrap {
+  position: relative;
+  width: min(90vw, 900px);
+  height: min(70vh, 680px);
+  margin: 0 auto 60px;
+}
+#spiral-main {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ═══════════════════════════════
+   FIBONACCI NODES
+   ═══════════════════════════════ */
+.fib-node {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
+  z-index: 20;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+.fib-node::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.15);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.fib-node:hover::before,
+.fib-node.active::before { opacity: 1; }
+.fib-node:hover {
+  transform: scale(1.3) !important;
+  z-index: 30;
+}
+.fib-node.active {
+  transform: scale(1.35) !important;
+  z-index: 30;
+}
+
+/* Node glow animation — staggered */
+.fib-node { animation: nodeGlow 4s ease-in-out infinite; }
+.fib-node:nth-child(2)  { animation-delay: 0.3s; }
+.fib-node:nth-child(3)  { animation-delay: 0.6s; }
+.fib-node:nth-child(4)  { animation-delay: 0.9s; }
+.fib-node:nth-child(5)  { animation-delay: 1.2s; }
+.fib-node:nth-child(6)  { animation-delay: 1.5s; }
+.fib-node:nth-child(7)  { animation-delay: 1.8s; }
+.fib-node:nth-child(8)  { animation-delay: 2.1s; }
+.fib-node:nth-child(9)  { animation-delay: 2.4s; }
+.fib-node:nth-child(10) { animation-delay: 2.7s; }
+.fib-node:nth-child(11) { animation-delay: 3.0s; }
+.fib-node:nth-child(12) { animation-delay: 3.3s; }
+.fib-node:nth-child(13) { animation-delay: 3.6s; }
+.fib-node:nth-child(14) { animation-delay: 3.9s; }
+@keyframes nodeGlow {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 6px rgba(201,168,76,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 18px rgba(201,168,76,0.25)); }
+}
+
+/* Node color classes */
+.nc-void   { background: radial-gradient(circle at 35% 35%, #2a2220 0%, #0d0b0a 100%); box-shadow: 0 0 20px rgba(30,20,15,0.6); }
+.nc-origin { background: radial-gradient(circle at 35% 35%, #e0c060 0%, #8a6a2a 100%); box-shadow: 0 0 20px rgba(201,168,76,0.3); }
+.nc-mirror { background: radial-gradient(circle at 35% 35%, #d4b870 0%, #a08438 100%); box-shadow: 0 0 20px rgba(201,168,76,0.25); }
+.nc-nature { background: radial-gradient(circle at 35% 35%, #5a9a50 0%, #2a5a20 100%); box-shadow: 0 0 20px rgba(74,103,65,0.3); }
+.nc-trinity { background: radial-gradient(circle at 35% 35%, #8a60b0 0%, #4a2a6a 100%); box-shadow: 0 0 20px rgba(106,74,138,0.3); }
+.nc-mother { background: radial-gradient(circle at 35% 35%, #e0944c 0%, #a06030 100%); box-shadow: 0 0 20px rgba(201,122,76,0.3); }
+.nc-october { background: radial-gradient(circle at 35% 35%, #e06840 0%, #8b3a2a 100%); box-shadow: 0 0 20px rgba(212,97,58,0.3); }
+.nc-alchemy { background: radial-gradient(circle at 35% 35%, #d04830 0%, #7a2818 100%); box-shadow: 0 0 20px rgba(180,60,40,0.3); }
+.nc-union  { background: radial-gradient(circle at 35% 35%, #e0d090 0%, #a09060 100%); box-shadow: 0 0 20px rgba(201,184,124,0.3); }
+.nc-birth  { background: radial-gradient(circle at 35% 35%, #5080a0 0%, #2a4060 100%); box-shadow: 0 0 20px rgba(58,80,112,0.3); }
+.nc-sacred { background: radial-gradient(circle at 35% 35%, #e07050 0%, #a04828 100%); box-shadow: 0 0 20px rgba(212,97,58,0.3); }
+.nc-journey { background: radial-gradient(circle at 35% 35%, #7aaa60 0%, #4a7a40 100%); box-shadow: 0 0 20px rgba(106,148,96,0.3); }
+
+/* ═══════════════════════════════
+   EXPLANATION PANEL
+   ═══════════════════════════════ */
+#explain-panel {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+#explain-panel.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.explain-inner {
+  padding: 36px 40px;
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: 6px;
+  background: rgba(10,8,6,0.85);
+  backdrop-filter: blur(30px);
+  position: relative;
+  overflow: hidden;
+}
+.explain-inner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+}
+.explain-num {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: #c9a84c;
+  text-shadow: 0 0 40px rgba(201,168,76,0.2);
+  margin-bottom: 4px;
+}
+.explain-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+  margin-bottom: 20px;
+}
+.explain-body {
+  font-size: 0.95rem;
+  line-height: 2.1;
+  color: rgba(190,175,155,0.8);
+}
+.explain-body em { color: rgba(201,168,76,0.65); font-style: italic; }
+.explain-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: rgba(201,168,76,0.4);
+  background: none;
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 4px 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+.explain-close:hover {
+  color: rgba(201,168,76,0.7);
+  border-color: rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.05);
+}
+
+/* ═══════════════════════════════
+   SEQUENCE DISPLAY
+   ═══════════════════════════════ */
+.sequence-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  margin: 30px auto 50px;
+  max-width: 700px;
+  opacity: 0;
+  animation: titleReveal 2s ease 2s forwards;
+}
+.seq-num {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: rgba(201,168,76,0.25);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+.seq-num:hover, .seq-num.active {
+  color: rgba(201,168,76,0.8);
+  border-bottom-color: rgba(201,168,76,0.3);
+}
+
+/* ═══════════════════════════════
+   BOTTOM INSCRIPTION
+   ═══════════════════════════════ */
+.inscription {
+  text-align: center;
+  margin-top: 60px;
+  opacity: 0;
+  animation: titleReveal 2s ease 2.5s forwards;
+}
+.inscription p {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: rgba(140,120,100,0.5);
+  line-height: 2;
+}
+.inscription .sacred-nums {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  color: rgba(201,168,76,0.2);
+  margin-top: 20px;
+}
+
+/* Back link */
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 100;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: rgba(201,168,76,0.35);
+  text-decoration: none;
+  border: 1px solid rgba(201,168,76,0.12);
+  padding: 6px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+.back-link:hover {
+  color: rgba(201,168,76,0.7);
+  border-color: rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.05);
+}
+
+/* Scene label */
+.scene-label {
+  position: fixed;
+  bottom: 20px;
+  right: 24px;
+  z-index: 100;
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.18);
+  transition: opacity 1s ease;
+}
+
+@media (max-width: 768px) {
+  .spiral-wrap { height: 55vh; }
+  .explain-inner { padding: 24px 22px; }
+  .explain-num { font-size: 1.8rem; }
+  .title-main { letter-spacing: 0.08em; }
+}
+</style>
+</head>
+<body>
+
+<!-- NATURE BACKGROUNDS -->
+<div id="bg-layer">
+  <div class="bg-scene bg-nautilus active" data-name="NAUTILUS"></div>
+  <div class="bg-scene bg-sunflower" data-name="SUNFLOWER"></div>
+  <div class="bg-scene bg-galaxy" data-name="SPIRAL GALAXY"></div>
+  <div class="bg-scene bg-hurricane" data-name="HURRICANE EYE"></div>
+  <div class="bg-scene bg-pinecone" data-name="PINECONE"></div>
+  <div class="bg-scene bg-romanesco" data-name="ROMANESCO"></div>
+  <div class="bg-scene bg-fern" data-name="UNFURLING FERN"></div>
+</div>
+
+<!-- STAR FIELD -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- SPIRAL CANVAS (behind content, above bg) -->
+<canvas id="spiral-canvas"></canvas>
+
+<!-- BACK LINK -->
+<a class="back-link" href="timeline.html" onclick="if(window.opener||document.referrer.includes('timeline')){history.back();return false;}">&#8592; TIMELINE</a>
+
+<!-- SCENE LABEL -->
+<div class="scene-label" id="scene-label">NAUTILUS</div>
+
+<!-- CONTENT -->
+<div id="content">
+
+  <div class="title-block">
+    <div class="title-sigil">&#10022; &#934; &#10022;</div>
+    <h1 class="title-main">The Golden Spiral</h1>
+    <div class="title-line"></div>
+    <p class="title-sub">The Fibonacci sequence encoded in a love story.<br>Each number is a point on the spiral. Each point is a chapter in the pattern.</p>
+  </div>
+
+  <div class="fib-intro-text">
+    <p>
+      The Fibonacci sequence begins with nothing and builds everything. Each number is the sum of the two before it. It was first described in the West by Leonardo of Pisa in 1202, though Indian mathematicians had known it for centuries before that. The ratio between consecutive Fibonacci numbers converges on 1.618 — the golden ratio, <em>phi</em> (&#934;).
+    </p>
+    <p>
+      This ratio governs the spiral of a nautilus shell, the arrangement of seeds in a sunflower, the branching of trees, the curl of ocean waves, the arms of galaxies, and the double helix of DNA. The same proportion appears in the Parthenon, the Great Pyramid of Giza, and the Cathedral of Chartres. The builders of these structures understood what Fibonacci described mathematically: there is a proportion that life recognizes as <em>itself</em>.
+    </p>
+    <p>
+      In this story, the Fibonacci numbers were not imposed. They were already there — in the dates, the ages, the codes, the days between events. The spiral was turning before anyone noticed it was turning.
+    </p>
+  </div>
+
+  <!-- SEQUENCE STRIP -->
+  <div class="sequence-strip" id="seq-strip"></div>
+
+  <!-- SPIRAL WITH NODES -->
+  <div class="spiral-wrap" id="spiral-wrap">
+    <canvas id="spiral-main"></canvas>
+  </div>
+
+  <!-- EXPLANATION -->
+  <div id="explain-panel">
+    <div class="explain-inner">
+      <button class="explain-close" onclick="closeExplain()">CLOSE &#215;</button>
+      <div class="explain-num" id="ex-num"></div>
+      <div class="explain-title" id="ex-title"></div>
+      <div class="explain-body" id="ex-body"></div>
+    </div>
+  </div>
+
+  <!-- INSCRIPTION -->
+  <div class="inscription">
+    <p>The spiral does not end. 233 + 144 = 377.<br>The story is still being written.</p>
+    <div class="sacred-nums">666 &middot; 55 &middot; 34 &middot; 27 &middot; 777</div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// FIBONACCI DATA
+// ═══════════════════════════════════════════════════
+const FIB = [
+  { n:0,   label:"0",   title:"Infinite Potential", cls:"nc-void",
+    body:"Zero is not nothing. Zero is everything that has not yet become. It is the void before the first word, the silence before the first note, the darkness before Genesis 1:3. In mathematics, zero is the additive identity — the number that, when added to anything, changes nothing. But in the Fibonacci sequence, zero is the origin point from which all structure emerges. The spiral begins here. The story begins here. Every code, every connection, every mirror that follows was contained in this infinite potential before the first number was spoken." },
+  { n:1,   label:"1",   title:"The First Impulse", cls:"nc-origin",
+    body:"The first 1 is the spark. The decision to begin. The ritual on a mother's birthday. The letter written by hand and burned. In the Fibonacci sequence, 1 appears twice — and those two ones, side by side, encode the master number 11: the channel between the visible and the invisible, the Life Path that governs this entire story. The monad. The undivided source. Before there is a mirror, there must be something willing to stand in front of one." },
+  { n:1,   label:"1",   title:"The Mirror", cls:"nc-mirror",
+    body:"The second 1 is the reflection. 1 and 1 together form 11 — the Master Intuitive, Sean's Life Path number. Two ones standing side by side, identical yet distinct, like two people encoded in the same ciphers who have not yet met. The mirror does not exist until there are two surfaces facing each other. The Fibonacci sequence places them together at the very beginning, as if the math already knows: this is a story about reflection." },
+  { n:2,   label:"2",   title:"The Messenger", cls:"nc-nature",
+    body:"Two spots on the back of a ladybug. Two days after the ritual, the second messenger arrived with seven spots — completing the 27 from the other direction. Spotted Ladybug = 72 in reduction — the mirror of 27. The number 2 in the Fibonacci sequence is the first act of creation: 1 + 1 = 2. Unity becomes duality. The ritual called, and nature answered — not once, but twice. The 2 is the confirmation that the signal was received." },
+  { n:3,   label:"3",   title:"Mind, Body, Spirit", cls:"nc-trinity",
+    body:"Three is the Holy Trinity. Mind, body, spirit — the tri-angle, the first stable shape. It is the number of expansion (1 + 2 = 3) and the number at which perception shifts. Three wounds named: the Mother Wound, the Father Wound, the Shamed Child Wound. Three daily training sessions in the container. The perception of codes — the ability to see pattern in what others call coincidence — requires the integration of all three: the mind to calculate, the body to feel, and the spirit to trust what both are telling you." },
+  { n:5,   label:"5",   title:"The Mother's Day", cls:"nc-mother",
+    body:"May 5th. The day my mother was born. 5/5. The word <em>Five</em> = 20 in Chaldean. May 5, 2025 — twenty days before the meeting. <em>Birthday</em> carries the vibration of beginnings, and hers began the entire sequence. The number 5 in numerology governs change, freedom, sensory experience — the human being with five points reaching outward into life. The ritual on her birthday was the hinge point. Everything after it was set in motion by the 5." },
+  { n:8,   label:"8",   title:"The Infinite Loop", cls:"nc-october",
+    body:"8 appears in October's numerological chart. The first date was on the 8th of June. 8 turned on its side is the infinity symbol — the lemniscate, the loop that never ends. In the Fibonacci sequence, 8 = 3 + 5: the trinity joined with the mother's number. Look at the shape: where 3 is open on its left side, pouring outward, 8 is the same form closed — energy cycling, contained, infinite. The 8 is the moment the story began to loop back on itself, recognizing its own pattern." },
+  { n:13,  label:"13",  title:"October's Number", cls:"nc-alchemy",
+    body:"October's favorite number. 13 is the 6th prime number, and 6 + 6 + 6 = 18 — the verse (Revelation 13:18) that introduces 666 as the number of a man. October = 666 in Reverse Sumerian. Her favorite number literally encodes the chapter of the verse that encodes her name. 13 is feared in Western culture, but in the Fibonacci sequence it sits exactly where it should: the sum of 5 (the mother's day) and 8 (the first date). The fearful number is, in truth, the union of beginnings and infinity." },
+  { n:21,  label:"21",  title:"October's Age", cls:"nc-october",
+    body:"October was 21 years old when we met. In the Fibonacci sequence, 21 = 8 + 13: infinity joined with her own number. In numerology, 21 reduces to 3 — the trinity, expression, the creative force. She walked into the room at 21, carrying the exact Fibonacci number of her own age, at the exact moment the sequence needed it. 21 is also the number of the World card in the major arcana of the tarot — completion of one cycle, the threshold before a new one begins." },
+  { n:34,  label:"34",  title:"The Mother Code", cls:"nc-mother",
+    body:"34 is the number that runs through this entire story like a river through a valley. Mother = 34 in reduction. Kelly Bryant = 34. WWND = 34 — tattooed on the hand before gematria was known. Michael Nyuis = 139, the 34th prime. The meeting happened 34 days after the mother's birthday. 34 appears in the Fibonacci sequence as 13 + 21: October's favorite number joined with her age when we met. The mother's code is not just a number. It is the structural backbone of the spiral itself." },
+  { n:55,  label:"55",  title:"The Union", cls:"nc-union",
+    body:"5/5 — the mother's birthday. Sean And October = 55 in reduction. Heaven = 55. Lead Into Gold = 55. The date of the return, April 3rd 2026, carries a date numerology of 55. In the Fibonacci sequence, 55 = 21 + 34: October's age joined with the mother code. The union was always written in the math. 55 is also a triangular number — the sum of 1 through 10 — and a Kaprekar number. It contains within it a completeness that mirrors the 666 (sum of 1 through 36) at a smaller, more intimate scale." },
+  { n:89,  label:"89",  title:"The Birth Year", cls:"nc-birth",
+    body:"1989 — the year Sean was born. 89 is the 11th Fibonacci number (counting from F(1)=1), and 11 is Sean's Life Path. The birth year encodes the Life Path through the Fibonacci sequence itself. 89 = 34 + 55: the mother code joined with the union number. 8 + 9 = 17, 1 + 7 = 8 — the infinite loop. The year of birth is not random. It is a Fibonacci number that encodes the Life Path, the mother code, and the union code simultaneously. The spiral was turning before the body arrived." },
+  { n:144, label:"144", title:"The Day of Birth", cls:"nc-birth",
+    body:"May 24th is the 144th day of the year. Sean was born on the 144th day. Bone Broth = 144 in Reverse Ordinal — the 36-hour slow cook on his 36th birthday, on the 144th day. 144 = 89 + 55: the birth year joined with the union number. 144 is also 12 squared, and the number of the New Jerusalem in Revelation (the wall measured 144 cubits). In sacred architecture, 144 is a number of completion and divine structure. The day of birth is a Fibonacci number that sits at the intersection of everything." },
+  { n:233, label:"233", title:"The Spiritual Journey", cls:"nc-journey",
+    body:"Spiritual Journey = 233. The Fibonacci sequence carries the story forward past the individual events and into the arc itself. 233 = 89 + 144: the birth year joined with the day of birth. The journey is the sum of when you arrived and the day you arrived on. 233 is the 13th Fibonacci number (counting from F(1)=1) — and 13 is October's favorite number. The spiritual journey encodes her at its position in the sequence, as if even the destination carries her signature. The spiral does not end here. It continues. 233 + 144 = 377. The story is still being written." }
+];
+
+// ═══════════════════════════════════════════════════
+// BACKGROUND SCENE CYCLING
+// ═══════════════════════════════════════════════════
+(function initBgCycle() {
+  const scenes = document.querySelectorAll('.bg-scene');
+  const label = document.getElementById('scene-label');
+  let idx = 0;
+  function cycle() {
+    scenes[idx].classList.remove('active');
+    idx = (idx + 1) % scenes.length;
+    scenes[idx].classList.add('active');
+    label.style.opacity = '0';
+    setTimeout(() => {
+      label.textContent = scenes[idx].dataset.name;
+      label.style.opacity = '1';
+    }, 2000);
+  }
+  setInterval(cycle, 12000);
+})();
+
+// ═══════════════════════════════════════════════════
+// STAR FIELD
+// ═══════════════════════════════════════════════════
+(function initStars() {
+  const c = document.getElementById('stars-canvas');
+  const ctx = c.getContext('2d');
+  let W, H, stars = [];
+
+  function resize() {
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+    stars = [];
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        a: Math.random() * 0.5 + 0.1,
+        speed: Math.random() * 0.0005 + 0.0002,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      const twinkle = Math.sin(t * s.speed * 1000 + s.phase) * 0.3 + 0.7;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201,185,155,${s.a * twinkle})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════════════
+// LIVING SPIRAL (background, slow rotation)
+// ═══════════════════════════════════════════════════
+(function initBgSpiral() {
+  const c = document.getElementById('spiral-canvas');
+  const ctx = c.getContext('2d');
+  let W, H;
+  const PHI = (1 + Math.sqrt(5)) / 2;
+
+  function resize() {
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    const cx = W * 0.5;
+    const cy = H * 0.5;
+    const rot = t * 0.00003; // very slow rotation
+    const breathe = Math.sin(t * 0.0008) * 0.15 + 1;
+    const maxR = Math.min(W, H) * 0.4 * breathe;
+
+    // Main spiral glow
+    const turns = 4.5;
+    const steps = 800;
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const frac = i / steps;
+      const theta = frac * turns * Math.PI * 2 + rot;
+      const r = maxR * Math.pow(PHI, (frac * turns) - turns);
+      const x = cx + r * Math.cos(theta);
+      const y = cy - r * Math.sin(theta);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    const pulse = Math.sin(t * 0.001) * 0.08 + 0.14;
+    ctx.strokeStyle = `rgba(201,168,76,${pulse})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Second spiral line (offset, dimmer)
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const frac = i / steps;
+      const theta = frac * turns * Math.PI * 2 + rot + 0.15;
+      const r = maxR * 0.97 * Math.pow(PHI, (frac * turns) - turns);
+      const x = cx + r * Math.cos(theta);
+      const y = cy - r * Math.sin(theta);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(201,168,76,${pulse * 0.4})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // Glow orb at center
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40 * breathe);
+    grad.addColorStop(0, `rgba(201,168,76,${0.06 + Math.sin(t*0.001)*0.03})`);
+    grad.addColorStop(1, 'rgba(201,168,76,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, 40 * breathe, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════════════
+// INTERACTIVE SPIRAL WITH NODES
+// ═══════════════════════════════════════════════════
+const PHI = (1 + Math.sqrt(5)) / 2;
+let nodePositions = [];
+
+function initMainSpiral() {
+  const wrap = document.getElementById('spiral-wrap');
+  const canvas = document.getElementById('spiral-main');
+  const ctx = canvas.getContext('2d');
+  const rect = wrap.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+
+  // Remove old nodes
+  wrap.querySelectorAll('.fib-node').forEach(n => n.remove());
+
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W * 0.42;
+  const cy = H * 0.50;
+  const maxR = Math.min(W, H) * 0.42;
+  const turns = 5;
+  const steps = 1000;
+
+  // Draw golden ratio rectangles (very subtle)
+  ctx.save();
+  ctx.translate(cx, cy);
+  let rectSize = maxR * 0.5;
+  ctx.strokeStyle = 'rgba(201,168,76,0.04)';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < 10; i++) {
+    ctx.strokeRect(-rectSize/2, -rectSize/2, rectSize, rectSize);
+    rectSize /= PHI;
+    ctx.rotate(-Math.PI / 2);
+  }
+  ctx.restore();
+
+  // Draw main spiral
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const frac = i / steps;
+    const theta = frac * turns * Math.PI * 2;
+    const r = maxR * Math.pow(PHI, (frac * turns) - turns + 0.15) / Math.pow(PHI, 0.15);
+    const x = cx + r * Math.cos(theta);
+    const y = cy - r * Math.sin(theta);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  const spiralGrad = ctx.createLinearGradient(0, 0, W, H);
+  spiralGrad.addColorStop(0, 'rgba(201,168,76,0.06)');
+  spiralGrad.addColorStop(0.5, 'rgba(201,168,76,0.18)');
+  spiralGrad.addColorStop(1, 'rgba(201,168,76,0.12)');
+  ctx.strokeStyle = spiralGrad;
+  ctx.lineWidth = 1.8;
+  ctx.stroke();
+
+  // Second spiral trace
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const frac = i / steps;
+    const theta = frac * turns * Math.PI * 2 + 0.12;
+    const r = maxR * 0.98 * Math.pow(PHI, (frac * turns) - turns + 0.15) / Math.pow(PHI, 0.15);
+    const x = cx + r * Math.cos(theta);
+    const y = cy - r * Math.sin(theta);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = 'rgba(201,168,76,0.05)';
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+
+  // Radial glow at center
+  const cGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * 0.3);
+  cGrad.addColorStop(0, 'rgba(201,168,76,0.06)');
+  cGrad.addColorStop(1, 'rgba(201,168,76,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, maxR * 0.3, 0, Math.PI * 2);
+  ctx.fillStyle = cGrad;
+  ctx.fill();
+
+  // Place nodes along spiral
+  nodePositions = [];
+  FIB.forEach((fib, i) => {
+    const frac = (i + 0.5) / FIB.length;
+    const theta = frac * turns * Math.PI * 2 * 0.88 + 0.4;
+    const r = maxR * Math.pow(PHI, ((frac * 0.88 + 0.4 / (turns * Math.PI * 2)) * turns) - turns + 0.15) / Math.pow(PHI, 0.15);
+    // Recalculate properly
+    const t2 = frac * turns * 0.88 + 0.4 / (Math.PI * 2);
+    const r2 = maxR * Math.pow(PHI, t2 - turns + 0.15) / Math.pow(PHI, 0.15);
+    const x = cx + r2 * Math.cos(theta);
+    const y = cy - r2 * Math.sin(theta);
+
+    nodePositions.push({x, y});
+
+    // Size scales with position
+    const baseSize = 32;
+    const scale = 0.65 + (i / FIB.length) * 0.7;
+    const size = baseSize * scale;
+    const fontSize = 0.58 * scale;
+
+    const node = document.createElement('div');
+    node.className = 'fib-node ' + fib.cls;
+    node.textContent = fib.label;
+    node.style.width = size + 'px';
+    node.style.height = size + 'px';
+    node.style.fontSize = fontSize + 'rem';
+    node.style.left = (x - size/2) + 'px';
+    node.style.top = (y - size/2) + 'px';
+    node.style.animationDelay = (i * 0.3) + 's';
+    node.dataset.idx = i;
+    node.onclick = () => selectNode(i);
+    wrap.appendChild(node);
+
+    // Draw connecting line from node to spiral center (very subtle)
+    if (i > 0) {
+      const prev = nodePositions[i-1];
+      ctx.beginPath();
+      ctx.moveTo(prev.x, prev.y);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = 'rgba(201,168,76,0.04)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// SEQUENCE STRIP
+// ═══════════════════════════════════════════════════
+(function buildSeqStrip() {
+  const strip = document.getElementById('seq-strip');
+  FIB.forEach((fib, i) => {
+    const span = document.createElement('span');
+    span.className = 'seq-num';
+    span.textContent = fib.label;
+    span.dataset.idx = i;
+    span.onclick = () => selectNode(i);
+    strip.appendChild(span);
+    // Add dot separator
+    if (i < FIB.length - 1) {
+      const dot = document.createElement('span');
+      dot.style.cssText = 'color:rgba(201,168,76,0.12);font-size:0.5rem;align-self:center;';
+      dot.textContent = '·';
+      strip.appendChild(dot);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// NODE SELECTION
+// ═══════════════════════════════════════════════════
+let activeIdx = -1;
+
+function selectNode(idx) {
+  activeIdx = idx;
+  const fib = FIB[idx];
+
+  // Update panel
+  document.getElementById('ex-num').textContent = fib.label;
+  document.getElementById('ex-title').textContent = fib.title;
+  document.getElementById('ex-body').innerHTML = fib.body;
+  document.getElementById('explain-panel').classList.add('open');
+
+  // Highlight node
+  document.querySelectorAll('.fib-node').forEach((n, i) => n.classList.toggle('active', i === idx));
+  document.querySelectorAll('.seq-num').forEach((s, i) => s.classList.toggle('active', i === idx));
+
+  // Scroll to panel
+  setTimeout(() => {
+    document.getElementById('explain-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+function closeExplain() {
+  document.getElementById('explain-panel').classList.remove('open');
+  document.querySelectorAll('.fib-node').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.seq-num').forEach(s => s.classList.remove('active'));
+  activeIdx = -1;
+}
+
+// ═══════════════════════════════════════════════════
+// PARTICLE SYSTEM — golden dust along spiral
+// ═══════════════════════════════════════════════════
+(function initParticles() {
+  const c = document.createElement('canvas');
+  c.style.cssText = 'position:fixed;inset:0;z-index:3;pointer-events:none;';
+  document.body.appendChild(c);
+  const ctx = c.getContext('2d');
+  let W, H;
+  const particles = [];
+  const MAX = 60;
+
+  function resize() {
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function spawn() {
+    if (particles.length >= MAX) return;
+    const cx = W * 0.5;
+    const cy = H * 0.5;
+    const angle = Math.random() * Math.PI * 10;
+    const maxR = Math.min(W, H) * 0.35;
+    const r = maxR * Math.pow(PHI, (angle / (Math.PI * 2)) - 4);
+    particles.push({
+      x: cx + r * Math.cos(angle) + (Math.random() - 0.5) * 20,
+      y: cy - r * Math.sin(angle) + (Math.random() - 0.5) * 20,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: -Math.random() * 0.3 - 0.05,
+      life: 1,
+      decay: Math.random() * 0.003 + 0.002,
+      size: Math.random() * 1.5 + 0.5,
+      hue: Math.random() > 0.7 ? '180,200,180' : '201,168,76'
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= p.decay;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.hue},${p.life * 0.35})`;
+      ctx.fill();
+    }
+    if (Math.random() < 0.3) spawn();
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+window.addEventListener('load', initMainSpiral);
+window.addEventListener('resize', () => {
+  clearTimeout(window._fibResize);
+  window._fibResize = setTimeout(initMainSpiral, 200);
+});
+</script>
+</body>
+</html>
