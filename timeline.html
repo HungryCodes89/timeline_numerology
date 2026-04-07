@@ -25,6 +25,15 @@
   --storm-red: #5a2018;
   --blood-moon: #b43c28;
   --moonlight: #e0ddd2;
+  /* Landscape palette */
+  --ash-grey: #6a6058;
+  --wolf-amber: #b4a03c;
+  --deer-brown: #8c643c;
+  /* UI interaction pulses */
+  --mirror-pulse: rgba(201, 168, 76, 0.25);
+  --shadow-pulse: rgba(139, 58, 42, 0.25);
+  --heal-pulse: rgba(74, 103, 65, 0.25);
+  --numerology-glow: rgba(201, 168, 76, 0.4);
 }
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -50,10 +59,11 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.15;
+  opacity: 0.09;
   background-size: 256px 256px;
   animation: noiseDrift 850s linear infinite;
 }
+body.dark::after { opacity: 0.13; }
 @keyframes noiseDrift {
   from { background-position: 0 0; }
   to { background-position: 0 -25500px; }
@@ -128,14 +138,22 @@ body::after {
   from { opacity: 0; transform: translateY(16px); letter-spacing: 0.3em; }
   to { opacity: 1; transform: translateY(0); letter-spacing: 0.12em; }
 }
+.cover-title {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  letter-spacing: 0.2em; color: #fff;
+  font-weight: 400; margin-bottom: 6px;
+  opacity: 0; animation: coverTextIn 2s ease 0.8s forwards;
+}
+.cover-title span { color: var(--gold); }
 .cover-sub {
   font-family: 'IM Fell English', serif; font-style: italic;
-  font-size: 1.4rem; color: #b8a888;
+  font-size: 1.6rem; color: #d4c9a8;
   margin-bottom: 4px; opacity: 0;
   animation: coverTextIn 2s ease 1.8s forwards;
 }
 .cover-sub-code {
-  font-family: 'Cinzel', serif; font-size: 0.75rem;
+  font-family: 'Cinzel', serif; font-size: 0.85rem;
   letter-spacing: 0.18em; color: #c9a84c;
   opacity: 0; margin-bottom: 36px;
   animation: coverTextIn 2s ease 2.1s forwards;
@@ -148,12 +166,13 @@ body::after {
 }
 .cover-invocation {
   font-family: 'IM Fell English', serif; font-style: italic;
-  font-size: 0.92rem; color: #6b5d4f;
-  line-height: 2; margin-bottom: 56px; opacity: 0;
+  font-size: 1.08rem; color: #c0b090;
+  line-height: 2.1; margin-bottom: 56px; opacity: 0;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.6);
   animation: coverTextIn 2.5s ease 2.6s forwards;
 }
 .cover-begin {
-  font-family: 'Cinzel', serif; font-size: 0.72rem;
+  font-family: 'Cinzel', serif; font-size: 0.82rem;
   letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--gold); background: transparent;
   border: 1px solid rgba(201,168,76,0.4);
@@ -253,12 +272,17 @@ body.dark nav {
   position: absolute; left: 50%; transform: translateX(-50%);
 }
 .nav-phase-indicator {
-  font-family: 'Cinzel', serif; font-size: 0.55rem;
+  font-family: 'Cinzel', serif; font-size: 0.68rem;
   letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); opacity: 0.6; transition: all 0.8s ease;
+  color: var(--gold); opacity: 0.85; transition: all 0.8s ease;
 }
-nav[data-phase="shadow"] .nav-phase-indicator { color: var(--ember); }
+.nav-phase-indicator::before {
+  content: '◆ '; font-size: 0.5rem; opacity: 0.7;
+}
+nav[data-phase="shadow"] .nav-phase-indicator { color: var(--ember); text-shadow: 0 0 12px rgba(139,58,42,0.4); }
 nav[data-phase="transmutation"] .nav-phase-indicator { color: var(--sage); }
+nav[data-phase="shadow"] .nav-phase-indicator::before { color: var(--ember); }
+nav[data-phase="transmutation"] .nav-phase-indicator::before { color: var(--sage); }
 
 .nav-btn {
   font-family: 'Cinzel', serif;
@@ -335,6 +359,10 @@ body.dark .motto { color: #7a6a5a; }
   max-width: 820px; margin: 0 auto;
   padding: 10px 24px 80px; position: relative; z-index: 1;
 }
+@keyframes spinePulse {
+  0%, 100% { opacity: 0.7; filter: none; }
+  50% { opacity: 1; filter: drop-shadow(0 0 2px rgba(201,168,76,0.3)); }
+}
 .tl::before {
   content: ''; position: absolute;
   left: 50%; top: 0; bottom: 0; width: 1px;
@@ -344,23 +372,31 @@ body.dark .motto { color: #7a6a5a; }
     var(--gold) 96%, transparent 100%
   );
   transform: translateX(-50%);
+  animation: spinePulse 4s ease-in-out infinite;
 }
 
 /* Phase Labels */
 .plabel {
   text-align: center;
   font-family: 'Cinzel Decorative', 'Cinzel', serif;
-  font-size: 1rem; font-weight: 700;
-  letter-spacing: 0.32em; text-transform: uppercase;
+  font-size: 1.2rem; font-weight: 700;
+  letter-spacing: 0.45em; text-transform: uppercase;
   color: var(--gold); margin: 60px 0 40px;
   position: relative; z-index: 2; line-height: 1;
 }
 .plabel::before, .plabel::after {
   content: ''; display: inline-block;
-  width: 40px; height: 1px;
+  width: 80px; height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold));
-  vertical-align: middle; margin: 0 14px; opacity: 0.5;
+  vertical-align: middle; margin: 0 14px; opacity: 0.7;
 }
+.plg {
+  color: var(--gold); font-size: 0.5rem;
+  opacity: 0.8; margin: 0 6px;
+  vertical-align: middle; display: inline-block;
+}
+.plabel.sdw .plg { color: var(--ember); }
+.plabel.trs .plg { color: var(--sage); }
 .plabel::after { background: linear-gradient(90deg, var(--gold), transparent); }
 .plabel .drop-cap {
   font-family: 'Cinzel Decorative', serif;
@@ -409,15 +445,17 @@ body.dark .motto { color: #7a6a5a; }
   width: calc(50% - 44px);
   padding: 24px 28px;
   background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border-radius: 3px; position: relative; cursor: pointer;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 0 rgba(201,168,76,0.08);
   border: 1px solid rgba(201,168,76,0.06);
+  border-top: 1px solid rgba(255,255,255,0.6);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+body.dark .ec { border-top: 1px solid rgba(255,255,255,0.06); }
 .ec:hover {
-  box-shadow: 0 8px 40px rgba(201,168,76,0.1), 0 0 0 1px rgba(201,168,76,0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 16px 60px rgba(201,168,76,0.14);
+  transform: translateY(-6px);
 }
 .ec.open {
   box-shadow: 0 12px 50px rgba(201,168,76,0.12), 0 0 0 1px rgba(201,168,76,0.2);
@@ -493,34 +531,44 @@ body.dark .ebody { color: #9a8880; }
   box-shadow: 0 0 0 3px var(--gold), 0 0 20px rgba(201,168,76,0.4);
 }
 .dot.o {
-  background: white;
-  box-shadow: 0 0 0 2px var(--gold), 0 0 14px rgba(201,168,76,0.4);
+  background: var(--gold);
+  box-shadow: none;
+  filter: drop-shadow(0 0 5px rgba(201,168,76,0.5));
   width: 16px; height: 16px;
+  border-radius: 2px;
+  transform: rotate(45deg);
   animation: dotPulseOrigin 3s ease-in-out infinite;
 }
 @keyframes dotPulseOrigin {
-  0%, 100% { box-shadow: 0 0 0 2px var(--gold), 0 0 8px rgba(201,168,76,0.2); }
-  50% { box-shadow: 0 0 0 3px var(--gold), 0 0 20px rgba(201,168,76,0.5); }
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(201,168,76,0.3)); }
+  50% { filter: drop-shadow(0 0 8px rgba(201,168,76,0.7)); }
 }
 .dot.s {
   background: var(--ember);
-  box-shadow: 0 0 0 2px var(--ember);
-  border-color: var(--dark-bg);
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  filter: drop-shadow(0 0 4px rgba(139,58,42,0.5));
   animation: dotPulseShadow 2.5s ease-in-out infinite;
 }
 @keyframes dotPulseShadow {
-  0%, 100% { box-shadow: 0 0 0 2px var(--ember); }
-  50% { box-shadow: 0 0 0 3px var(--ember), 0 0 14px rgba(139,58,42,0.4); }
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(139,58,42,0.4)); }
+  50% { filter: drop-shadow(0 0 8px rgba(139,58,42,0.7)); }
 }
 .dot.r {
   background: var(--sage);
-  box-shadow: 0 0 0 2px var(--sage);
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+  filter: drop-shadow(0 0 4px rgba(74,103,65,0.5));
   width: 18px; height: 18px;
   animation: pg 2.5s ease-in-out infinite;
 }
 @keyframes pg {
-  0%, 100% { box-shadow: 0 0 0 2px var(--sage); }
-  50% { box-shadow: 0 0 0 5px var(--sage), 0 0 20px rgba(74,103,65,0.35); }
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(74,103,65,0.4)); }
+  50% { filter: drop-shadow(0 0 8px rgba(74,103,65,0.6)); }
 }
 
 /* Tags */
@@ -1185,6 +1233,16 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 }
 
 /* ═══════════════════════════════
+   CARD LAYOUT — 640px breakpoint
+   ═══════════════════════════════ */
+@media (max-width: 640px) {
+  .ev, .ev:nth-child(odd) { flex-direction: column; align-items: flex-start; }
+  .ec { width: calc(100% - 32px); margin-left: 32px; }
+  .ec::after, .ev:nth-child(odd) .ec::after { display: none; }
+  .tl::before { left: 16px; }
+}
+
+/* ═══════════════════════════════
    SMALL PHONES (420px)
    ═══════════════════════════════ */
 @media (max-width: 420px) {
@@ -1273,8 +1331,120 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 /* ═══════════════════════════════
    REDUCED MOTION
    ═══════════════════════════════ */
+/* ═══ DOT TOOLTIPS ═══ */
+.dot[data-title]::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+.dot[data-title]:hover::after { opacity: 1; }
+.en { position: relative; }
+
+/* ═══ REFLECT BUTTON ═══ */
+.reflect-btn {
+  display: none;
+  margin-top: 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage);
+  background: transparent;
+  border: 1px solid rgba(74,103,65,0.28);
+  padding: 7px 18px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+.ec.open .reflect-btn { display: inline-block; }
+.reflect-btn:hover { background: rgba(74,103,65,0.08); border-color: var(--sage); }
+
+/* ═══ GUIDED VISUALIZATION OVERLAY ═══ */
+#viz-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(5,4,3,0.96);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+#viz-overlay.open { opacity: 1; pointer-events: auto; }
+#viz-text {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: #d4c4a8;
+  text-align: center;
+  max-width: 580px;
+  line-height: 2;
+  padding: 0 32px;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  text-shadow: 0 0 40px rgba(201,168,76,0.12);
+}
+#viz-text.visible { opacity: 1; }
+#viz-progress {
+  position: absolute; bottom: 32px;
+  font-family: 'Cinzel', serif; font-size: 0.5rem;
+  letter-spacing: 0.25em; color: rgba(201,168,76,0.35);
+}
+#viz-skip {
+  position: absolute; top: 20px; right: 24px;
+  font-family: 'Cinzel', serif; font-size: 0.55rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(201,168,76,0.3); background: none; border: none;
+  cursor: pointer; transition: color 0.3s;
+}
+#viz-skip:hover { color: rgba(201,168,76,0.7); }
+
+/* ═══ JOURNAL MODE ═══ */
+.journal-wrap {
+  display: none;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+.ec.open .journal-wrap { display: block; }
+.journal-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold);
+  opacity: 0.45; margin-bottom: 6px;
+}
+.journal-notes {
+  width: 100%; min-height: 72px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.88rem; line-height: 1.7;
+  color: #5a4e44; background: rgba(201,168,76,0.02);
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: 3px; padding: 10px 12px;
+  resize: vertical; outline: none;
+  transition: border-color 0.3s;
+}
+.journal-notes:focus { border-color: rgba(201,168,76,0.3); }
+body.dark .journal-notes { color: #9a8880; background: rgba(0,0,0,0.2); }
+.journal-saved {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-size: 0.7rem; color: var(--sage); opacity: 0;
+  margin-top: 4px; transition: opacity 0.4s;
+  float: right;
+}
+.journal-saved.show { opacity: 0.7; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01s !important; transition-duration: 0.1s !important; }
+  body::after { animation: none; background-position: 0 0; }
 }
 
 @keyframes fadeUp {
@@ -1510,7 +1680,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  transition: opacity 1s ease;
+  transition: none;
 }
 #fib-bg-video { opacity: 1; }
 #fib-bg-video-b { opacity: 0; }
@@ -2040,6 +2210,7 @@ body.dark .mn-content p { color: #9a8880; }
         <text x="160" y="325" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="16" letter-spacing="8" fill="#c9a84c" opacity="0.7" filter="url(#lotusGlow)">55 &middot; 34 &middot; 27 &middot; 777</text>
       </svg>
     </div>
+    <h2 class="cover-title"><span>Sacred</span> Mirrors</h2>
     <p class="cover-sub">Timeline: Numerology of the Heart</p>
     <div class="cover-divider"></div>
     <p class="cover-invocation">
@@ -2722,6 +2893,21 @@ body.dark .mn-content p { color: #9a8880; }
 
 </div>
 
+<!-- ═══ SACRED UNION INSIGHT: THE UNION ENCODING ═══ -->
+<div class="oversoul-wrap" style="max-width:680px;">
+  <div class="oversoul-message always-visible" style="border-color:rgba(74,103,65,0.2);">
+    <div class="oversoul-sigil" style="color:var(--sage);">&#934;</div>
+    <p style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sage);opacity:0.7;margin-bottom:14px;">The Union Encoding</p>
+    <p>Sean and October = 55 in reduction. Garden of Eden = 55. Her middle name is Eden.<br><br>
+    The union was encoded in both their names before they met.<br>
+    55 is the 10th Fibonacci number — the number of completion returning to unity.<br>
+    5/5 is the mother's birthday. The mother's love did not end — it redirected.<br>
+    It redirected toward a woman named after the month the mother left.<br><br>
+    This is not coincidence. This is the soul's precision.</p>
+    <div class="oversoul-code" style="color:var(--sage);">55</div>
+  </div>
+</div>
+
 <!-- ═══ PHASE: SHADOW ═══ -->
 <div class="phase-section phase-shadow" data-phase="shadow">
 <div class="phase-bg"></div>
@@ -2826,9 +3012,9 @@ body.dark .mn-content p { color: #9a8880; }
     <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sage);opacity:0.6;margin-bottom:10px;">Guided Healing</p>
     <p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--sage-light);font-size:0.95rem;margin-bottom:18px;">Three wounds. Three rituals. The work is not reading — it is doing.</p>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
-      <button class="ritual-btn" onclick="openModule('shadow-module')" style="font-size:0.6rem;padding:10px 20px;">Mother Wound</button>
-      <button class="ritual-btn" onclick="openModule('shadow-module')" style="font-size:0.6rem;padding:10px 20px;">Father Wound</button>
-      <button class="ritual-btn" onclick="openModule('shadow-module')" style="font-size:0.6rem;padding:10px 20px;">Shamed Child</button>
+      <button class="ritual-btn" onclick="openRitual('motherWound')" style="font-size:0.6rem;padding:10px 20px;">Mother Wound</button>
+      <button class="ritual-btn" onclick="openRitual('fatherWound')" style="font-size:0.6rem;padding:10px 20px;">Father Wound</button>
+      <button class="ritual-btn" onclick="openRitual('shamedChild')" style="font-size:0.6rem;padding:10px 20px;">Shamed Child</button>
     </div>
   </div>
 </div>
@@ -2865,6 +3051,23 @@ body.dark .mn-content p { color: #9a8880; }
     <div class="oversoul-sigil">&#10022;</div>
     <p>You named the pattern. October — the month your mother died. Your heart chose a woman whose name holds the shape of your deepest wound. This is not tragedy. This is precision. The soul moves toward its own medicine with the accuracy of a code.</p>
     <div class="oversoul-code">34</div>
+  </div>
+</div>
+
+<!-- ═══ SACRED UNION INSIGHT: THE 777 PROOF ═══ -->
+<div class="oversoul-wrap" style="max-width:680px;">
+  <div class="oversoul-message always-visible" style="border-color:rgba(201,168,76,0.2);">
+    <div class="oversoul-sigil">&#10022;</div>
+    <p style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:14px;">The 777 Proof</p>
+    <p>Born 777 weeks and 4 days apart.<br>
+    777 = the perfection of the trinity expressed three times.<br>
+    4 = the material world, the body, the ground it walks on.<br>
+    777 + 4 = spirit fully incarnated in matter.<br><br>
+    A stranger in Cochrane confirmed this number without being told.<br>
+    License plates repeated it four times while they spoke it aloud.<br><br>
+    The external world is a mirror of the internal code.<br>
+    As within, so without. As above, so below.</p>
+    <div class="oversoul-code">777</div>
   </div>
 </div>
 
@@ -3083,6 +3286,13 @@ body.dark .mn-content p { color: #9a8880; }
 </div>
 
 <!-- ═══════════════ DECODE PANEL ═══════════════ -->
+<!-- ═══════════════ GUIDED VISUALIZATION OVERLAY ═══════════════ -->
+<div id="viz-overlay">
+  <button id="viz-skip" onclick="skipVisualization()">Skip</button>
+  <div id="viz-text"></div>
+  <div id="viz-progress"></div>
+</div>
+
 <div id="decode-panel" class="decode-panel">
   <button class="decode-close" onclick="closeDecode()">&times;</button>
   <div class="decode-header">
@@ -3301,7 +3511,17 @@ const GEMATRIA_CODES = {
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize, { passive: true });
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+  window.addEventListener('scroll', () => {
+    scrollY = window.scrollY;
+    // Parallax phase backgrounds
+    document.querySelectorAll('.phase-section').forEach(section => {
+      const bg = section.querySelector('.phase-bg');
+      if (!bg) return;
+      const rect = section.getBoundingClientRect();
+      const offset = Math.max(-40, Math.min(40, rect.top * 0.15));
+      bg.style.transform = 'translateY(' + offset + 'px)';
+    });
+  }, { passive: true });
 
   function detectPhase() {
     const sections = document.querySelectorAll('.phase-section');
@@ -3450,9 +3670,38 @@ const GEMATRIA_CODES = {
     ctx.restore();
   }
 
+  function drawLadybug(x, y, size, t) {
+    ctx.save(); ctx.translate(x, y);
+    // Slow crawl motion
+    const crawl = Math.sin(t * 0.0003 + x) * 2;
+    ctx.translate(crawl, 0);
+    // Body dome
+    ctx.beginPath(); ctx.ellipse(0, 0, size, size * 0.8, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(178, 38, 28, 0.82)'; ctx.fill();
+    // Wing split
+    ctx.beginPath(); ctx.moveTo(0, -size * 0.8); ctx.lineTo(0, size * 0.8);
+    ctx.strokeStyle = 'rgba(15, 8, 4, 0.55)'; ctx.lineWidth = 0.5; ctx.stroke();
+    // Spots — 2 or 7 (encoding 27/72)
+    const spots = (Math.floor(x * 10) % 2 === 0) ? 2 : 7;
+    const visSpots = Math.min(spots, 4);
+    for (let s = 0; s < visSpots; s++) {
+      const angle = (Math.PI * 2 / visSpots) * s + 0.4;
+      ctx.beginPath(); ctx.arc(Math.cos(angle) * size * 0.45, Math.sin(angle) * size * 0.4, size * 0.14, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(10, 5, 0, 0.72)'; ctx.fill();
+    }
+    // Head
+    ctx.beginPath(); ctx.arc(0, -size * 0.78, size * 0.28, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(12, 8, 4, 0.8)'; ctx.fill();
+    ctx.restore();
+  }
+
   // Wildlife positions per phase
   const wildlife = {
-    origin: [], meeting: [],
+    origin: [
+      { type: 'ladybug', x: 0.38, y: 0.88, size: 5 },
+      { type: 'ladybug', x: 0.55, y: 0.91, size: 4 },
+      { type: 'ladybug', x: 0.72, y: 0.87, size: 6 },
+    ], meeting: [],
     summer: [
       { type: 'horse', x: 0.15, y: 0.82, size: 35 },
       { type: 'horse', x: 0.3, y: 0.84, size: 30 },
@@ -3561,6 +3810,36 @@ const GEMATRIA_CODES = {
       });
     }
 
+    // === LAYER 2.5: Water surface (Summer phase) ===
+    if (phase === 'summer' && !isMobile) {
+      const wy = H * 0.88, wh = H * 0.12;
+      // Base water
+      const wg = ctx.createLinearGradient(0, wy, 0, wy + wh);
+      wg.addColorStop(0, 'rgba(74, 122, 154, 0.45)');
+      wg.addColorStop(1, 'rgba(42, 90, 122, 0.7)');
+      ctx.fillStyle = wg; ctx.fillRect(0, wy, W, wh);
+      // Ripple lines
+      ctx.save(); ctx.globalAlpha = 0.18;
+      ctx.strokeStyle = 'rgba(255,255,255,1)'; ctx.lineWidth = 0.5;
+      for (let row = 0; row < 8; row++) {
+        const ry = wy + (wh / 8) * row;
+        const wo = Math.sin(t * 0.0005 + row * 0.9) * 3;
+        ctx.beginPath(); ctx.moveTo(0, ry + wo);
+        for (let x = 0; x <= W; x += 18) {
+          ctx.lineTo(x, ry + Math.sin(t * 0.0008 + x * 0.018 + row) * 1.5 + wo);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+      // Sky reflection shimmer
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = 0.06;
+      const rg2 = ctx.createLinearGradient(0, wy, 0, wy + wh);
+      rg2.addColorStop(0, 'rgba(255,230,160,0.8)');
+      rg2.addColorStop(1, 'rgba(100,180,200,0)');
+      ctx.fillStyle = rg2; ctx.fillRect(0, wy, W, wh);
+      ctx.restore();
+    }
+
     // === LAYER 3: Tree silhouettes ===
     if (!isMobile) {
       const treePhases = ['origin','summer','transmutation'];
@@ -3598,42 +3877,85 @@ const GEMATRIA_CODES = {
         else if (w.type === 'wolf') drawWolf(wx, wy, w.size, t);
         else if (w.type === 'deer') drawDeer(wx, wy, w.size, t);
         else if (w.type === 'horse') drawHorse(wx, wy, w.size, t);
+        else if (w.type === 'ladybug') drawLadybug(wx, wy, w.size, t);
       });
     }
 
     // === LAYER 5: Atmospheric particles ===
     const particles = pools[phase] || pools.origin;
     ctx.save();
-    if (isShadow || phase === 'summer') ctx.globalCompositeOperation = 'screen';
 
-    particles.forEach(p => {
-      if (isShadow) { p.y -= p.speed; if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); } }
-      else { p.y += p.speed; if (p.y > 1.05) { p.y = -0.05; p.x = Math.random(); } }
-      p.x += p.drift + Math.sin(t * 0.0008 + p.phase) * 0.00015;
-      if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+    if (phase === 'summer') {
+      // Fireflies — bioluminescent pulses that fade in and out organically
+      ctx.globalCompositeOperation = 'screen';
+      particles.forEach(p => {
+        p.y -= p.speed * 0.5; if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); }
+        p.x += p.drift + Math.sin(t * 0.0006 + p.phase) * 0.0002;
+        if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+        const px = p.x * W, py = ((p.y * H) - (scrollY * p.parallax * 0.05) % H + H) % H;
+        // Organic blink — slow sine with individual phase offset
+        const blink = Math.max(0, Math.sin(t * 0.0009 + p.phase * 3.7));
+        const a = blink * blink * 0.5; // squared for sharp fade
+        if (a < 0.02) return;
+        // Soft greenish-gold glow core
+        const glow = ctx.createRadialGradient(px, py, 0, px, py, p.r * 5);
+        glow.addColorStop(0, `rgba(180, 230, 120, ${a * 0.9})`);
+        glow.addColorStop(0.3, `rgba(140, 210, 80, ${a * 0.4})`);
+        glow.addColorStop(1, `rgba(100, 180, 60, 0)`);
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(px, py, p.r * 5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(px, py, p.r * 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 255, 180, ${a})`; ctx.fill();
+      });
+    } else if (isShadow) {
+      // Shadow: rising embers
+      ctx.globalCompositeOperation = 'screen';
+      particles.forEach(p => {
+        p.y -= p.speed; if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); }
+        p.x += p.drift + Math.sin(t * 0.0008 + p.phase) * 0.00015;
+        if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+        const px = p.x * W, py = ((p.y * H) - (scrollY * p.parallax * 0.08) % H + H) % H;
+        const flicker = 0.5 + 0.5 * Math.sin(t * 0.005 + p.phase);
+        const a = p.life * flicker * 0.9;
+        ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 140, 40, ${a * 0.85})`; ctx.fill();
+        const eg = ctx.createRadialGradient(px, py, 0, px, py, p.r * 4);
+        eg.addColorStop(0, `rgba(255, 100, 20, ${a * 0.3})`);
+        eg.addColorStop(1, 'rgba(255, 60, 10, 0)');
+        ctx.beginPath(); ctx.arc(px, py, p.r * 4, 0, Math.PI * 2);
+        ctx.fillStyle = eg; ctx.fill();
+      });
+    } else {
+      // Origin / Meeting / Transmutation — golden pollen motes
+      particles.forEach(p => {
+        p.y += p.speed; if (p.y > 1.05) { p.y = -0.05; p.x = Math.random(); }
+        p.x += p.drift + Math.sin(t * 0.0008 + p.phase) * 0.00015;
+        if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+        const px = p.x * W, py = ((p.y * H) - (scrollY * p.parallax * 0.08) % H + H) % H;
+        const flicker = 0.4 + 0.6 * Math.sin(t * 0.0012 + p.phase);
+        const a = 0.18 * flicker;
+        ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`; ctx.fill();
+      });
+    }
 
-      const px = p.x * W;
-      const py = ((p.y * H) - (scrollY * p.parallax * 0.08) % H + H) % H;
-      const flicker = 0.4 + 0.6 * Math.sin(t * 0.0012 + p.phase);
-      const a = (isShadow ? 0.3 : phase === 'summer' ? 0.25 : 0.18) * flicker;
-
-      ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`;
-      if (isShadow || phase === 'summer') {
-        ctx.shadowColor = `rgba(${col[0]},${col[1]},${col[2]},${a*0.8})`;
-        ctx.shadowBlur = p.r * 8;
-      }
-      ctx.fill(); ctx.shadowBlur = 0;
-    });
-
-    // Shadow: falling ash
+    // Shadow: falling ash + diagonal rain
     if (isShadow) {
+      ctx.globalCompositeOperation = 'source-over';
       ash.forEach(a => {
         a.y += a.speed; a.x += Math.sin(t*0.0008 + a.wobble) * 0.0003; a.wobble += 0.008;
         if (a.y > 1.05) { a.y = -0.05; a.x = Math.random(); }
         ctx.beginPath(); ctx.ellipse(a.x*W, a.y*H, a.r, a.r*0.5, a.wobble, 0, Math.PI*2);
         ctx.fillStyle = `rgba(120,110,100,${a.opacity})`; ctx.fill();
       });
+      // Rain streaks — diagonal
+      ctx.save(); ctx.globalAlpha = 0.07; ctx.strokeStyle = 'rgba(180,190,200,1)'; ctx.lineWidth = 0.6;
+      for (let i = 0; i < 60; i++) {
+        const rx = ((i * 53.7 + t * 0.08) % W);
+        const ry = ((i * 83.1 + t * 0.22) % H);
+        ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx - 4, ry + 14); ctx.stroke();
+      }
+      ctx.restore();
     }
     ctx.restore();
 
@@ -3902,6 +4224,110 @@ function sendMirrorMessage() {
 document.getElementById('mirror-input').addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMirrorMessage(); }
 });
+
+
+// ═══════════════════════════════════════════════════
+// HEALING RITUAL ENGINE
+// ═══════════════════════════════════════════════════
+const HEALING_RITUALS = {
+  motherWound: {
+    title: 'Ritual of the Mother Mirror',
+    code: 34,
+    duration: '12 minutes',
+    steps: [
+      { instruction: 'Light a candle if one is near. This is the ritual fire — the warmth that was taken too soon. Sit quietly. Feel where your body touches the chair.', timer: 30 },
+      { instruction: 'Write your mother\'s full name. Beneath it, write: "I was six years old. I did not choose this."', timer: 60 },
+      { instruction: 'Breathe in for 4 counts. Hold for 7. Exhale for 8. Repeat three times. This is the rhythm of release.', timer: 60 },
+      { instruction: 'Say aloud: "Kelly Ann Bryant. I carry your name in numbers on my hands. I carry your loss in my nervous system. Today I am choosing to carry your love instead of your absence."', timer: 45 },
+      { instruction: 'Write down every way the Mother Wound has protected you. List the relationships it ended before they could end you. Thank the wound for trying to keep you safe. Mean it.', timer: 120 },
+      { instruction: 'Now write: "I no longer need this protection. I am choosing a new pattern. Safe love is allowed to stay." Fold the paper. Hold it.', timer: 60 },
+      { instruction: 'Close your eyes. See October\'s face. Say: "You are not my mother. You are not here to leave. You are here to stay, and I am learning to let you."', timer: 45 },
+      { instruction: 'Breathe slowly three times. Open your eyes. The pattern has been named, honored, and released. This is the work — not a single dramatic moment, but the daily discipline of staying present.', timer: 30 },
+    ]
+  },
+  fatherWound: {
+    title: 'Ritual of the Masculine Return',
+    code: 27,
+    duration: '10 minutes',
+    steps: [
+      { instruction: 'Stand before a mirror if one is available. Look at yourself. Do not look away. Take three slow breaths.', timer: 30 },
+      { instruction: 'Hold up your left hand. Read: WWND = 34. This is your mother\'s code. Hold up your right. MN = 27. Your mentor\'s code. You wore them before you understood why.', timer: 45 },
+      { instruction: 'Say to your reflection: "Michael left without goodbye. My mother left without goodbye. I learned that safe men vanish. I am unlearning this now."', timer: 45 },
+      { instruction: 'Say: "I am the man who stays. I am the man who returns. I am not the pattern — I am the one who breaks it."', timer: 30 },
+      { instruction: 'Place your right hand (MN = 27) over your heart. Breathe. Say: "Malcolm showed me what the masculine can hold. I am becoming that man. I am already becoming."', timer: 60 },
+      { instruction: 'Look at your reflection one more time. Nod. The ritual is complete. The wound has been witnessed by the man who carries it.', timer: 20 },
+    ]
+  },
+  shamedChild: {
+    title: 'Ritual of the Unmasked Self',
+    code: 666,
+    duration: '10 minutes',
+    steps: [
+      { instruction: 'Sit. Place both hands on your belly. This is the center of the body. Carbon lives here — 6 protons, 6 neutrons, 6 electrons. 666. You are made of this.', timer: 30 },
+      { instruction: 'Breathe into your hands. Feel the warmth. This is the matter that the shame tried to deny.', timer: 45 },
+      { instruction: 'Say aloud: "I was shamed for existing. I learned to hide. I learned to perform. I learned to destroy what was real so no one could reject it."', timer: 45 },
+      { instruction: 'Now say: "I am not the mask. I am not the performance. I am carbon becoming conscious. The lead was always the wound. The gold was always on the other side of it."', timer: 45 },
+      { instruction: 'Say October\'s middle name: Eden. Say: "Garden of Eden = 55. Sean and October = 55. The garden is not behind me. It is in front of me. And I am allowed to enter."', timer: 45 },
+      { instruction: 'Remove your hands from your belly. Open your eyes. You are unmasked. The pattern has been seen. This is the transmutation.', timer: 20 },
+    ]
+  }
+};
+
+let ritualTimerInterval = null;
+
+function openRitual(key) {
+  const ritual = HEALING_RITUALS[key];
+  if (!ritual) return;
+  const mod = document.getElementById('ritual-module');
+  document.getElementById('ritual-subtitle').textContent = ritual.title + ' \u2014 ' + ritual.duration;
+  if (ritualTimerInterval) { clearInterval(ritualTimerInterval); ritualTimerInterval = null; }
+  let step = 0;
+
+  function showStep() {
+    if (step >= ritual.steps.length) {
+      document.getElementById('ritual-steps').innerHTML =
+        '<div class="ritual-step-display">' +
+        '<p class="ritual-instruction" style="text-align:center;color:var(--sage);">The ritual is complete.</p>' +
+        '<div class="ritual-complete"><div class="ritual-code-display">' + ritual.code + '</div></div>' +
+        '<button class="prompt-btn" style="color:var(--sage);border-color:rgba(74,103,65,0.3);margin-top:24px;" onclick="closeModule(\'ritual-module\')">Return</button>' +
+        '</div>';
+      return;
+    }
+    const s = ritual.steps[step];
+    let remaining = s.timer;
+    const m = () => Math.floor(remaining / 60);
+    const sec = () => String(remaining % 60).padStart(2, '0');
+
+    document.getElementById('ritual-steps').innerHTML =
+      '<div class="ritual-step-display">' +
+      '<div class="ritual-step-num">' + (step + 1) + ' / ' + ritual.steps.length + '</div>' +
+      '<p class="ritual-instruction">' + s.instruction + '</p>' +
+      '<div class="ritual-timer" id="ritual-timer-display">' + m() + ':' + sec() + '</div>' +
+      '<button class="prompt-btn" style="color:var(--sage);border-color:rgba(74,103,65,0.3);margin-top:18px;" onclick="ritualNext()">Continue</button>' +
+      '</div>';
+
+    if (ritualTimerInterval) clearInterval(ritualTimerInterval);
+    ritualTimerInterval = setInterval(() => {
+      remaining--;
+      const el = document.getElementById('ritual-timer-display');
+      if (el) el.textContent = m() + ':' + sec();
+      if (remaining <= 0) { clearInterval(ritualTimerInterval); ritualTimerInterval = null; }
+    }, 1000);
+  }
+
+  window.ritualNext = function() {
+    step++;
+    showStep();
+  };
+
+  showStep();
+  mod.classList.add('open');
+}
+
+function closeRitual() {
+  if (ritualTimerInterval) { clearInterval(ritualTimerInterval); ritualTimerInterval = null; }
+  closeModule('ritual-module');
+}
 
 
 // ═══════════════════════════════════════════════════
@@ -4958,57 +5384,68 @@ function closeFibExplain() {
 // FIBONACCI VIDEO — SEAMLESS CROSSFADE LOOP
 // ═══════════════════════════════════════════════════
 (function() {
-  var vidA, vidB, swapping = false;
+  var vidA, vidB, loopActive = false, rafId = null;
+  var FADE = 2.0; // crossfade duration in seconds
 
   function setup() {
     vidA = document.getElementById('fib-bg-video');
     vidB = document.getElementById('fib-bg-video-b');
+  }
+
+  function tick() {
+    if (!loopActive) return;
+    rafId = requestAnimationFrame(tick);
     if (!vidA || !vidB) return;
 
-    // Both videos listen for timeupdate — whichever is playing triggers the swap
-    vidA.addEventListener('timeupdate', onTime);
-    vidB.addEventListener('timeupdate', onTime);
-    // After the hidden video's opacity transition ends, pause it to save resources
-    vidA.addEventListener('transitionend', onFaded);
-    vidB.addEventListener('transitionend', onFaded);
-  }
+    // Determine which video is currently active (higher opacity)
+    var aOp = parseFloat(vidA.style.opacity) || 0;
+    var bOp = parseFloat(vidB.style.opacity) || 0;
+    var active = (aOp >= bOp) ? vidA : vidB;
+    var standby = (active === vidA) ? vidB : vidA;
 
-  function onTime(e) {
-    var cur = e.target;
-    if (swapping) return;
-    if (!cur.duration || cur.duration < 2) return;
-    // 1.2s before end, start the crossfade
-    if (cur.currentTime >= cur.duration - 1.2) {
-      swapping = true;
-      var nxt = (cur === vidA) ? vidB : vidA;
-      nxt.currentTime = 0;
-      nxt.play().catch(function(){});
-      nxt.style.opacity = '1';
-      cur.style.opacity = '0';
-      // Reset guard after the transition completes
-      setTimeout(function() { swapping = false; }, 1500);
+    if (!active.duration || isNaN(active.duration)) return;
+    var timeLeft = active.duration - active.currentTime;
+
+    // Cue standby video FADE seconds before active ends
+    if (timeLeft <= FADE && standby.paused) {
+      standby.currentTime = 0;
+      standby.play().catch(function(){});
     }
-  }
 
-  function onFaded(e) {
-    // Pause the video that just faded out
-    if (e.target.style.opacity === '0') {
-      e.target.pause();
+    // Blend opacities once standby is rolling
+    if (timeLeft <= FADE && !standby.paused) {
+      var t = Math.max(0, Math.min(1, 1 - timeLeft / FADE));
+      // Smoothstep easing
+      t = t * t * (3 - 2 * t);
+      active.style.opacity = String(1 - t);
+      standby.style.opacity = String(t);
+    }
+
+    // Hard cut at end — retire the faded video
+    if (timeLeft <= 0.05) {
+      active.pause();
+      active.currentTime = 0;
+      active.style.opacity = '0';
+      standby.style.opacity = '1';
     }
   }
 
   function startLoop() {
     if (!vidA) setup();
     if (!vidA || !vidB) return;
-    swapping = false;
+    loopActive = true;
     vidA.currentTime = 0;
     vidA.style.opacity = '1';
     vidB.style.opacity = '0';
     vidB.pause();
     vidA.play().catch(function(){});
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(tick);
   }
 
   function stopLoop() {
+    loopActive = false;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     if (vidA) vidA.pause();
     if (vidB) vidB.pause();
   }
@@ -5025,6 +5462,234 @@ function closeFibExplain() {
     origSwitch(viewId, btnId, cb);
   };
 })();
+
+
+// ═══════════════════════════════════════════════════
+// DOT TOOLTIPS — set data-title from EVENTS array
+// ═══════════════════════════════════════════════════
+(function initDotTooltips() {
+  const evEls = document.querySelectorAll('.tl .ev');
+  evEls.forEach((el, i) => {
+    const ev = EVENTS[i];
+    if (!ev) return;
+    const dot = el.querySelector('.dot');
+    if (dot) dot.setAttribute('data-title', ev.title);
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════
+// GUIDED VISUALIZATIONS
+// ═══════════════════════════════════════════════════
+const VISUALIZATIONS = {
+  0: {
+    title: 'The Field of Sunflowers',
+    steps: [
+      { text: 'Close your eyes.', pause: 4000 },
+      { text: 'You are standing in a meadow at dawn. The grass is wet.', pause: 5000 },
+      { text: 'Before you is a small stone altar. Sunflowers surround it.\nAmethyst catches the first light.', pause: 6000 },
+      { text: 'A ladybug lands on the stone. Two spots.\nThen another. Seven spots.', pause: 6000 },
+      { text: '2 and 7. 27. 72. The mirror is complete.', pause: 5000 },
+      { text: 'You feel warmth behind you. Not heat — warmth.\nThe kind that says: I am still here.', pause: 6000 },
+      { text: 'You do not need to turn around.\nYou already know who it is.', pause: 5000 },
+      { text: 'Breathe. She is proud of you.', pause: 8000 },
+    ]
+  },
+  13: {
+    title: 'The Gold',
+    steps: [
+      { text: 'Close your eyes.', pause: 4000 },
+      { text: 'Dawn light is breaking through old-growth forest.\nMist is lifting from still water.', pause: 5500 },
+      { text: 'A deer stands at the water\'s edge, drinking.\nIt sees you. It does not run.', pause: 6000 },
+      { text: 'You look at your hands.\nWWND on the left. MN on the right. 34 and 27.', pause: 5500 },
+      { text: 'The wound has a name.\nThe pattern has been traced.\nThe nervous system is learning something new.', pause: 6000 },
+      { text: 'Safe love can stay.', pause: 5000 },
+      { text: 'You are not the man who left.\nYou are the man who returned.', pause: 5500 },
+      { text: 'Sean And October = 55.\nApril 3rd 2026 = 55.\nThe date was always encoded.', pause: 6000 },
+      { text: 'Open your eyes. The gold is here.', pause: 5000 },
+    ]
+  }
+};
+
+let vizTimeout = null, vizStepIdx = 0, vizSteps = [], vizActive = false;
+
+function runVisualization(eventId) {
+  const viz = VISUALIZATIONS[eventId];
+  if (!viz) return;
+  vizSteps = viz.steps;
+  vizStepIdx = 0;
+  vizActive = true;
+  document.getElementById('viz-overlay').classList.add('open');
+  showVizStep();
+}
+
+function showVizStep() {
+  if (!vizActive || vizStepIdx >= vizSteps.length) {
+    endVisualization();
+    return;
+  }
+  const step = vizSteps[vizStepIdx];
+  const textEl = document.getElementById('viz-text');
+  const progEl = document.getElementById('viz-progress');
+
+  // Fade out, swap text, fade in
+  textEl.classList.remove('visible');
+  setTimeout(() => {
+    textEl.innerHTML = step.text.replace(/\n/g, '<br>');
+    progEl.textContent = (vizStepIdx + 1) + ' / ' + vizSteps.length;
+    textEl.classList.add('visible');
+  }, 400);
+
+  vizTimeout = setTimeout(() => {
+    vizStepIdx++;
+    showVizStep();
+  }, step.pause);
+}
+
+function endVisualization() {
+  vizActive = false;
+  const overlay = document.getElementById('viz-overlay');
+  const textEl = document.getElementById('viz-text');
+  textEl.classList.remove('visible');
+  setTimeout(() => overlay.classList.remove('open'), 800);
+}
+
+function skipVisualization() {
+  if (vizTimeout) clearTimeout(vizTimeout);
+  endVisualization();
+}
+
+// Inject reflect buttons into event cards 0 and 13
+(function injectReflectButtons() {
+  const evEls = document.querySelectorAll('.tl .ev');
+  evEls.forEach((el, i) => {
+    if (!VISUALIZATIONS[i]) return;
+    const ec = el.querySelector('.ec');
+    if (!ec) return;
+    const btn = document.createElement('button');
+    btn.className = 'reflect-btn';
+    btn.textContent = 'Enter Visualization';
+    btn.onclick = (e) => { e.stopPropagation(); runVisualization(i); };
+    const ea = ec.querySelector('.ea');
+    if (ea) ec.insertBefore(btn, ea);
+    else ec.appendChild(btn);
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════
+// NAVIGATE CODES IN DECODE PANEL
+// ═══════════════════════════════════════════════════
+const CODE_KEYS = Object.keys(GEMATRIA_CODES).map(Number);
+let currentDecodeCode = null;
+
+const _origOpenDecode = openDecode;
+openDecode = function(code) {
+  currentDecodeCode = code;
+  _origOpenDecode(code);
+};
+
+function navigateCode(dir) {
+  if (currentDecodeCode === null) return;
+  const idx = CODE_KEYS.indexOf(currentDecodeCode);
+  if (idx === -1) return;
+  const next = CODE_KEYS[(idx + dir + CODE_KEYS.length) % CODE_KEYS.length];
+  openDecode(next);
+}
+
+
+// ═══════════════════════════════════════════════════
+// TOUCH SWIPE SUPPORT
+// ═══════════════════════════════════════════════════
+(function initTouchSwipe() {
+  let tx = 0, ty = 0;
+  document.addEventListener('touchstart', e => {
+    tx = e.touches[0].clientX;
+    ty = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+
+    // Swipe left/right on open decode panel → cycle codes
+    if (document.getElementById('decode-panel').classList.contains('open')) {
+      if (Math.abs(dx) > 80 && Math.abs(dy) < 50) {
+        navigateCode(dx > 0 ? -1 : 1);
+      }
+    }
+
+    // Swipe down on open mirror module → close
+    if (document.querySelector('.mirror-module.open') && dy > 100 && Math.abs(dx) < 50) {
+      closeModule('mirror-module');
+    }
+
+    // Swipe down on open shadow module → close
+    if (document.querySelector('.shadow-module.open') && dy > 120 && Math.abs(dx) < 50) {
+      closeModule('shadow-module');
+    }
+  }, { passive: true });
+})();
+
+
+// ═══════════════════════════════════════════════════
+// JOURNAL MODE — localStorage per-event notes
+// ═══════════════════════════════════════════════════
+(function initJournal() {
+  const evEls = document.querySelectorAll('.tl .ev');
+  evEls.forEach((el, i) => {
+    const ec = el.querySelector('.ec');
+    if (!ec) return;
+    const ev = EVENTS[i];
+    const key = 'sacred_note_' + (ev ? ev.id : i);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'journal-wrap';
+
+    const label = document.createElement('div');
+    label.className = 'journal-label';
+    label.textContent = 'Your Reflection';
+
+    const saved = document.createElement('span');
+    saved.className = 'journal-saved';
+    saved.textContent = 'Saved';
+
+    const ta = document.createElement('textarea');
+    ta.className = 'journal-notes';
+    ta.placeholder = 'Write what this moment means to you...';
+    ta.value = localStorage.getItem(key) || '';
+
+    let saveTimer = null;
+    ta.addEventListener('input', () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        localStorage.setItem(key, ta.value);
+        saved.classList.add('show');
+        setTimeout(() => saved.classList.remove('show'), 1800);
+      }, 600);
+    });
+
+    // Prevent card collapse when clicking inside textarea
+    ta.addEventListener('click', e => e.stopPropagation());
+
+    wrap.appendChild(label);
+    wrap.appendChild(saved);
+    wrap.appendChild(ta);
+
+    const ea = ec.querySelector('.ea');
+    if (ea) ec.insertBefore(wrap, ea);
+    else ec.appendChild(wrap);
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// PHASE LABEL — inject ✦ glyphs around text
+// ═══════════════════════════════════════════════════
+document.querySelectorAll('.plabel').forEach(pl => {
+  const glyph = () => { const s = document.createElement('span'); s.className = 'plg'; s.textContent = '✦'; return s; };
+  const dc = pl.querySelector('.drop-cap');
+  if (dc) { pl.insertBefore(glyph(), dc); pl.appendChild(glyph()); }
+});
 
 </script>
 </body>

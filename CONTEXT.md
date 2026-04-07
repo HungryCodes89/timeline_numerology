@@ -1,103 +1,187 @@
-# Sean & October — The Sacred Timeline
+# Sacred Mirrors — Project Context
 
-**Subtitle:** A Story of Love and Healing
-**Chronicle Span:** May 2025 to April 2026
-**Motto:** "As within, so without. As above, so below."
+**Project:** Sean & October — The Sacred Timeline  
+**Subtitle:** A Story of Love and Healing  
+**Chronicle Span:** May 2025 – April 2026  
+**Motto:** "As within, so without. As above, so below."  
+**Current Version:** v1.x → upgrading to v2.0  
+**Last Updated:** April 7, 2026
 
-## What It Is
-A deeply personal, single-page interactive timeline documenting the gematria-encoded love story between Sean and October. It traces events from a mother's memorial ritual through a meeting, a sacred summer, a shadow period of self-sabotage and separation, and ultimately a transmutation — inner healing work leading to a conscious return. Every event is annotated with cipher values (gematria codes) that reveal numerical patterns connecting the people, dates, places, and experiences.
+---
 
-## Tech Stack
-- **Pure HTML/CSS/JS** — single self-contained file (`index.html` and a standalone `timeline.html`)
-- **Fonts (Google Fonts):** Cormorant Garamond (body serif), Cinzel / Cinzel Decorative (headings/nav), IM Fell English (italic accent text)
-- **No backend, no dependencies, no build step**
-- **Two views:** Timeline (scrolling chronological) and Constellation (canvas-based node graph connecting events by shared codes)
-- **Ambient audio toggle** built in
+## What This Is
 
-## Brand Colors (CSS Variables)
-| Token | Hex | Meaning |
+A single-file HTML experience (`timeline.html`) documenting the sacred journey between Sean and October — a personal chronicle told through gematria, numerology, and sacred geometry. It is a love story, a healing arc, and a spiritual record. Not a web app. Not a portfolio. A living document.
+
+---
+
+## File Structure
+
+```
+Sacred Mirrors/
+├── timeline.html               — The main experience (single-file HTML/CSS/JS)
+├── SACRED_MIRRORS_UPGRADE.md   — Full v2.0 spec (~33k tokens, detailed)
+├── CONTEXT.md                  — This file
+└── fib-img/                    — Local image/video assets
+    ├── ammonite.webp
+    ├── nautilus-blue.webp
+    ├── nautilus-gold.webp
+    ├── nautilus-silver.webp
+    ├── sacred-geometry.webp
+    ├── spiral-bg.mp4
+    ├── sunflower-overlay.png
+    ├── sunflower1.webp
+    └── sunflower2.webp
+```
+
+---
+
+## Current State (v1.x)
+
+### Tech Stack
+- Pure HTML/CSS/JS — no frameworks, no build tools, no dependencies except Google Fonts
+- Fonts: Cormorant Garamond, Cinzel, Cinzel Decorative, IM Fell English
+- Canvas layers: `#cover-canvas` (cover particles), `#landscape-canvas` (phase backgrounds), `#fib-canvas` + `#fib-particles` (spiral section), `#ccanvas` (constellation view)
+- CSS custom properties for all theme colors
+
+### Design Language
+- **Aesthetic:** Illuminated manuscript / parchment — stylized, symbolic, flat
+- **Particle system:** Golden dust, embers, fireflies on canvas
+- **Background:** Phase-specific CSS radial + linear gradients
+- **Noise overlay:** SVG fractalNoise filter drifting upward slowly (850s animation loop)
+
+### Color Palette
+```
+--gold:         #c9a84c   — primary sacred gold
+--gold-dim:     #a08438
+--cream:        #f5f0e8   — light background
+--ember:        #8b3a2a   — Phase IV accent
+--ember-glow:   #d4613a
+--sage:         #4a6741   — Phase V accent
+--sage-light:   #6a9460
+--void:         #0d0b0a
+--dark-bg:      #1a1210
+--dawn-blue:    #3a5070
+--alpine-green: #2a5a20
+--river-blue:   #4a7a9a
+--storm-red:    #5a2018
+--blood-moon:   #b43c28
+--moonlight:    #e0ddd2
+```
+
+### UI Structure
+- **Cover page** (`#cover`) — fixed full-screen, `spiral-bg.mp4` video bg (dual-video rAF crossfade loop), lotus SVG with Sean & October + 666 glyph, fade-in text, "Enter the Timeline" button
+- **Nav** — fixed top, phase indicator, light/dark toggle, filter chips, view toggle buttons
+- **Timeline view** (`#tl-view`) — alternating left/right event cards, centered gold spine line, scroll-triggered fade-in
+- **Fibonacci view** (`#fib-view`) — full-screen spiral map, `fib-canvas` (static spiral drawn once) + `fib-particles` (rAF particle loop), `fib-bg-video` dual-video seamless loop
+- **Constellation view** (`#cs-view`) — `#ccanvas` canvas graph, nodes = events, click to open panel
+
+### Phase Structure
+| Phase | Class | Emotional Tone | Color |
+|---|---|---|---|
+| I: The Ritual Ground | `.phase-origin` | Reverence, sacred grief | Gold / cream |
+| II: The Meeting | `.phase-meeting` | Magnetism, destiny | Warm amber |
+| III: Sacred Summer | `.phase-summer` | Ecstasy, wonder | Alpine green / emerald |
+| IV: The Shadow Descends | `.phase-shadow` | Grief, destruction | Ember / blood moon / dark |
+| V: The Transmutation | `.phase-transmutation` | Quiet power, rebirth | Sage / dawn gold |
+
+### Event Cards
+- Class `.ev` — animate in on scroll (`opacity: 0 → 1`, `translateY 24px → 0`)
+- Class `.ec` — card body, hover lift, gold border glow
+- Alternating layout: odd children `flex-direction: row-reverse`
+- Filter system: `.fchip` chips toggle `.dim` class on non-matching events
+
+### Fibonacci / Golden Spiral Section
+- `PHI_CONST = 1.6180339887`
+- `FIB_DATA` array — each entry has `label`, `title`, `cls`, `props[]`, `body`
+- Spiral drawn with `spiralXY(frac)` — logarithmic spiral, 5.5 turns, centered at `(W*0.44, H*0.46)`
+- Nodes are DOM elements positioned absolutely over canvas
+- `fibNodePulse` CSS keyframe animation on nodes (staggered delays per `.fib-node:nth-child`)
+
+---
+
+## v2.0 Upgrade Spec (SACRED_MIRRORS_UPGRADE.md)
+
+**Vision:** Manuscript → Landscape. Every phase becomes a living environment.
+
+### 5-Layer Parallax Canvas System
+```
+Layer 5: UI / HTML overlay (nav, cards)
+Layer 4: Atmospheric particles (motes, embers, fireflies, rain, snow)
+Layer 3: Wildlife & motion (wolves, ravens, deer, horses, ladybugs)
+Layer 2: Midground foliage (trees swaying, grass, water)
+Layer 1: Sky & celestial (sun/moon arc, clouds, stars, aurora)
+Layer 0: Deep background (CSS gradient — phase horizon)
+```
+
+### Phase Environments
+| Phase | Environment | Key Visual Elements |
 |---|---|---|
-| `--gold` | `#c9a84c` | Primary accent — sacred, encoded, aligned |
-| `--cream` | `#f5f0e8` | Light mode background (parchment) |
-| `--ember` | `#8b3a2a` | Shadow phase — wound, destruction, grief |
-| `--ember-glow` | `#d4613a` | Shadow accent |
-| `--sage` | `#4a6741` | Transmutation phase — growth, healing, return |
-| `--sage-light` | `#6a9460` | Transmutation accent |
-| `--dark-bg` | `#1a1210` | Dark mode background (shadow phase auto-triggers) |
-| `--void` | `#0d0b0a` | Deepest black |
+| I: Origin | Pre-dawn meadow shrine | Mist lifting, ladybugs, wildflowers, moon setting |
+| II: Meeting | Late-afternoon city dusk | Amber light through windows, warm golden sky |
+| III: Summer | Mountain sunrise / Banff | Alpine meadow, wild horses, ravens, emerald river, fireflies |
+| IV: Shadow | Autumn storm / blood moon | Dead leaves, rain, forest fire glow, wolves howling |
+| V: Transmutation | Old-growth forest dawn | Deer at still water, god rays, morning fog burning off |
 
-## Visual Design
-- **Parchment aesthetic** — SVG fractal noise overlay on the entire page simulating aged paper texture
-- **Cover page** — Full-screen animated lotus SVG with breathing glow, cinematic text reveal sequence, "Enter the Timeline" button
-- **Phase-aware theming** — background gradients and body class (`dark`) shift automatically as the user scrolls into the Shadow phase
-- **Parallax canvas** — fixed background canvas with particle/ambient effects
-- **Phase-colored timeline spine** — center vertical line gradient shifts gold > brown > ember > sage across the five phases
-- **Drop cap initials** — decorative illuminated first letters on phase labels (medieval manuscript style)
-- **Constellation view** — canvas-rendered node graph where events are positioned by phase and connected by shared cipher codes, with click-to-reveal side panel
+### New Canvas Renderers (from spec)
+- `CelestialRenderer` — `drawSun()`, `drawMoon()`, `drawBloodMoon()`, `drawGodRays()`
+- `CloudSystem` — volumetric puff clouds with per-cloud sway/breathe
+- `TreeRenderer` — fractal L-system branches with wind physics
+- `drawWaterSurface()` — rippled water with sky color reflection
+- Phase-specific wildlife entities (wolves, ravens, deer, horses, ladybugs)
 
-## The Five Phases (14 Events)
+### Phase Horizon Gradients (v2.0)
+Each phase gets an 8-stop `linear-gradient(180deg, ...)` on `.phase-[name] .horizon` — replaces current flat CSS backgrounds. All values defined in spec section 2.1.
 
-### Phase I: The Ritual Ground (Origin)
-1. **The Mother Ritual** (May 5, 2025) — Shrine built for Kelly Ann Bryant on her 72nd birthday. Ladybugs arrived encoding 27/72 mirrors.
-2. **36th Birthday — First Sober in 24 Years** (May 24, 2025) — Born on the 144th day, making bone broth = 144 RO. 666 sightings all week. Sean = 24, Hungry = 24.
+### Other v2.0 Additions
+- Section 3: Numerological & symbolic enhancements
+- Section 4: Interactive Scalar Mirror & Shadow Integration Modules
+- Section 5: Oversoul & Higher Guidance Integration
+- Section 6: Responsive / intuitive UI/UX overhaul
+- Section 9: Full appendix — data structures & code architecture
 
-### Phase II: The Meeting
-3. **Teyana Speaks Across the Room** (May 25, 2025) — At Charcut steakhouse, 34 days from the mother's ritual. October = 666 Sumerian, 33 reduction, 39 RR. Sean and October = 55 reduction.
-4. **First Date — Major Tom** (June 8, 2025) — Major Tom = 666, Delphinium = 666. Born 36 days apart. 777 weeks and 4 days between birthdays.
+---
 
-### Phase III: Sacred Summer
-5. **Banff — Wild Horses & The Raven** (July 1, 2025) — Wild Horses = 39. First kiss landing 7/2. First Kiss = 27.
-6. **Stampede — The 777 Sightings** (July 4, 2025) — 777 on license plates four times while discussing the 777-week birth separation.
-7. **Nordic Spa — I Love You** (July 11, 2025) — Wristband 223. Mirror Flame Love = 223. 33 days from first date, 47 days from meeting.
-8. **Cochrane, The Stranger & The Hailstorm** (July 12-13, 2025) — 48/84 mirror in buildings. Stranger confirms 777. Hailstorm breaks at 2:23, stops at 7:55 (= 5/5).
+## Implementation Rules
 
-### Phase IV: The Shadow Descends
-9. **The Wedding Codes** (Late August 2025) — Wedding date codes discovered; subconscious recoils from the enormity.
-10. **The Wound Activates** (September-October 2025) — The anniversary weeks of his mother's death (Sept 25). Alcohol, cocaine, self-sabotage. The Mother Wound wearing the mask of destruction.
-11. **The Separation** (January 10, 2026) — The relationship ends. Prima materia fully exposed.
+- Keep as a **single HTML file** — no external JS, no build pipeline
+- All renderers are vanilla JS classes — no libraries
+- Scroll position drives phase detection and canvas state transitions
+- Asset paths are relative: `fib-img/filename`
+- `spiral-bg.mp4` = cover video bg AND fib-view video bg
+- Read `SACRED_MIRRORS_UPGRADE.md` section by section before implementing each layer
+- v2.0 spec is source of truth for all visual decisions
 
-### Phase V: The Transmutation
-12. **The Inner Work** (January-March 2026) — Men's container with Malcolm. Three dragons. Mother Wound, Father Wound, Shamed Child Wound named. Training three times daily.
-13. **The Recognition** (April 2, 2026) — October was named after the month his mother died. The pattern made visible. WWND = 34, MN = 27 already tattooed on his hands.
-14. **The Return** (April 3, 2026) — Sean And October = 55. April 3rd 2026 = 55. Written 4/3 — the 34/43 mirror. "The man who returns is not the man who left."
+---
 
-## Core Gematria Codes (Filter System)
-| Code | Meaning | Significance |
-|---|---|---|
-| 34 | Mother | Kelly Ann Bryant = 34 reduction. Mother = 34. WWND tattoo = 34. |
-| 43 | Sacred | The 34/43 mirror. Kelly Ann Bryant = 43 Latin reduction. I Love You = 43. |
-| 27 | Mirror | Mother = 27 Chaldean. Ladybug = 27. First Kiss = 27. MN tattoo = 27. |
-| 72 | Mirror | Ladybug = 72 ordinal. Kelly's 72nd birthday. The 27/72 mirror pair. |
-| 55 | Union | Sean and October = 55. Garden of Eden = 55. 5/5 = mother's birthday. |
-| 666 | Alchemy | October = 666 Sumerian. 36th triangular number. Carbon = 6/6/6. Transmutation. |
-| 39 | Sean | Sean = 39. October = 39. Mirror Flame = 39. May = 39. |
-| 33 | Master | October = 33 reduction. Soul Urge 33. Teyana = 33. |
-| 48 | Soul | Soul Contract = 48. 48th prime = 223. 48/84 mirror. |
-| 777 | Weeks | Born 777 weeks and 4 days apart. Confirmed by stranger and license plates. |
-| 36 | Triangular | Born 36 days apart. 666 = 36th triangular number. 36th birthday. |
-| 93 | Hungry/Saturn | HUNGRY = 93 = SATURN = NORGAN in RO. |
-| 144 | Sacred Day | Born on 144th day. Bone Broth = 144 RO. |
+## Emotional Context
 
-## Key People
-- **Sean (Norgan)** — The protagonist. Born May 24, 1989. Gematria practitioner. Codes: 39, 24, 93, 108.
-- **October** — Mirror flame. Born April 18, 2004. Name = 666 Sumerian, 33 reduction, 39 RR. Middle name Eden. Named after the month Sean's mother died.
-- **Kelly Ann Bryant** — Sean's mother. Died September 25, 1995. Codes: 34, 43, 72.
-- **Michael Nyuis** — Masculine initiator/mentor. Died suddenly 2016. Codes: 666, 139 (34th prime).
-- **Teyana** — October's friend who initiated the meeting. Codes: 33, 72.
-- **Jean Morency** — Sean's friend present at the meeting. Codes: 39, 24.
-- **Malcolm** — Men's container facilitator during the transmutation phase.
+This is Sean's personal record. October is a real person. The phases represent real events:
+- **Phase I** — Reverence and sacred grief (pre-October ritual ground)
+- **Phase II** — Magnetism and destiny arriving (the meeting)
+- **Phase III** — Ecstasy and wonder (Sacred Summer, Banff)
+- **Phase IV** — Grief, destruction, exposure (the shadow descends)
+- **Phase V** — Quiet power and rebirth (the transmutation)
 
-## Footer Inscription
-> Born 777 weeks and 4 days apart. 36 days between birthdays. 666 is the 36th triangular number.
-> The lead was always the wound. The gold was always on the other side of it.
-> She was named after the month his mother died. He was encoded in every number she carried. The ritual called her. The codes confirmed her. The wound almost destroyed it — but the work brought him back.
-> "The man who returns is not the man who left."
+Every design decision should serve the emotional truth of the story. The interface should feel like standing in the place where each event happened, under the real sky of that moment.
 
-## Files
-- `timeline.html` (desktop root) — standalone full build
-- `timeline/index.html` — identical copy, deployable directory
-- Both files are self-contained single-file apps (HTML + CSS + JS inline)
+---
 
-## Deployment
-- Static site — no build step, deploy directory or single file anywhere
-- Not currently deployed (no git repo detected)
+## Recent Changes (April 7, 2026)
+
+- **Fib-view video loop** — replaced `timeupdate` + CSS transition approach with `requestAnimationFrame` smoothstep crossfade (same pattern as cover page). `FADE = 2.0s`. Removed CSS `transition` on video elements since rAF controls opacity directly.
+- **Cover page fonts** — bumped sizes and brightened colors for legibility on dark video background: `.cover-sub` 1.4→1.6rem, `.cover-invocation` 0.92→1.08rem + color `#6b5d4f→#c0b090` + text-shadow, `.cover-begin` 0.72→0.82rem.
+- **CSS variables** — added missing spec vars: `--ash-grey`, `--wolf-amber`, `--deer-brown`, `--mirror-pulse`, `--shadow-pulse`, `--heal-pulse`, `--numerology-glow`.
+- **HEALING_RITUALS engine** — implemented full timed ritual system with `HEALING_RITUALS` data (Mother/Father/ShamedChild, 6-8 steps each), `openRitual(key)` function, per-step countdown timer, and close handler. Fixed ritual buttons (were all opening shadow module instead of ritual module).
+- **Sacred Union Insights** — added two sacred text blocks to the HTML: "The Union Encoding" (55/Eden/mother's birthday, inserted before Shadow phase) and "The 777 Proof" (777 weeks, stranger confirmation, inserted before The Return event).
+- **Canvas — ladybugs** — added `drawLadybug()` function + 3 ladybug entities to Origin phase wildlife (spots encode 2 or 7, the 27/72 mirror).
+- **Canvas — rain** — added diagonal rain streaks to Shadow phase (60 streaks, `globalAlpha 0.07`, offset by time for movement).
+- **Canvas — fireflies** — replaced generic gold particles for Summer phase with bioluminescent firefly system: organic slow blink via squared sine, green-gold radial glow, individual phase offsets.
+- **Canvas — ember glow** — enhanced Shadow embers with proper radial glow halos using `screen` blending (from spec's `EmberAshSystem`).
+- **Dot tooltips** — added `data-title` CSS `::after` tooltip system; JS sets title from EVENTS array on page load (no HTML edits needed).
+- **Reflect button** — `.reflect-btn` CSS + JS injection into event cards 0 (Mother Ritual) and 13 (The Return) — appears when card is expanded.
+- **Guided Visualizations** — `VISUALIZATIONS` object (2 sequences: "The Field of Sunflowers" event 0 and "The Gold" event 13), `runVisualization(id)`, `showVizStep()`, `skipVisualization()`. Full-screen overlay with fade text steps and skip button.
+- **`navigateCode(dir)`** — cycles through `GEMATRIA_CODES` keys in the decode panel; wraps the original `openDecode` to track `currentDecodeCode`.
+- **Touch swipe** — swipe left/right on decode panel cycles codes; swipe down closes mirror/shadow modules.
+- **Water surface** — `Layer 2.5` in Summer phase canvas: rippled water band at bottom of screen with sky reflection shimmer (screen blend).
+- **Journal mode** — per-event localStorage notes injected into every card. Auto-save with 600ms debounce, "Saved" confirmation flash. Key: `sacred_note_${event.id}`.
