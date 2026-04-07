@@ -1596,30 +1596,56 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   color: rgba(201,168,76,0.45);
 }
 
-.fib-canvas-wrap {
+/* ═══ FULL-SCREEN SPIRAL MAP ═══ */
+.fib-spiral-section {
   position: relative;
-  max-width: 900px;
-  margin: 0 auto 60px;
+  width: 100vw;
+  height: 100vh;
+  min-height: 700px;
+  margin: 20px 0 60px;
+  margin-left: calc(-50vw + 50%);
+  overflow: hidden;
 }
 #fib-canvas {
-  display: block;
-  margin: 0 auto;
-  cursor: pointer;
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
+}
+#fib-particles {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;
+  pointer-events: none;
+}
+.fib-canvas-wrap {
+  display: none;
 }
 .fib-node {
   position: absolute;
-  width: 44px; height: 44px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1px;
   font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
   font-weight: 700;
   color: #fff;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
   z-index: 10;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), box-shadow 0.5s ease;
   animation: fibNodePulse 4s ease-in-out infinite;
+}
+.fib-node .nd-num { line-height: 1; }
+.fib-node .nd-label {
+  font-family: 'IM Fell English', serif; font-style: italic;
+  font-weight: 400; opacity: 0; max-width: 0; overflow: hidden;
+  transition: opacity 0.4s, max-width 0.4s;
+  white-space: nowrap; text-align: center;
+}
+.fib-node:hover .nd-label, .fib-node.active .nd-label { opacity: 0.7; max-width: 120px; }
+.fib-node::before {
+  content: ''; position: absolute; inset: -8px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  opacity: 0; transition: opacity 0.5s;
+}
+.fib-node::after {
+  content: ''; position: absolute; inset: -5px; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.1); opacity: 0; transition: opacity 0.4s;
 }
 .fib-node:nth-child(1){animation-delay:0s} .fib-node:nth-child(2){animation-delay:.3s}
 .fib-node:nth-child(3){animation-delay:.6s} .fib-node:nth-child(4){animation-delay:.9s}
@@ -1629,17 +1655,17 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .fib-node:nth-child(11){animation-delay:3s} .fib-node:nth-child(12){animation-delay:3.3s}
 .fib-node:nth-child(13){animation-delay:3.6s} .fib-node:nth-child(14){animation-delay:3.9s}
 @keyframes fibNodePulse {
-  0%,100% { filter: brightness(1) drop-shadow(0 0 6px rgba(201,168,76,0.1)); }
-  50%     { filter: brightness(1.2) drop-shadow(0 0 18px rgba(201,168,76,0.25)); }
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(201,168,76,0.12)); }
+  50%     { filter: brightness(1.2) drop-shadow(0 0 24px rgba(201,168,76,0.3)); }
 }
 .fib-node:hover {
-  transform: scale(1.3);
-  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 60px rgba(201,168,76,0.15);
+  transform: scale(1.3) !important;
   z-index: 30;
 }
+.fib-node:hover::before, .fib-node.active::before { opacity: 1; }
+.fib-node:hover::after, .fib-node.active::after { opacity: 1; }
 .fib-node.active {
-  transform: scale(1.35);
-  box-shadow: 0 0 36px rgba(201,168,76,0.5), 0 0 70px rgba(201,168,76,0.2);
+  transform: scale(1.35) !important;
   z-index: 30;
 }
 
@@ -1758,10 +1784,12 @@ body.dark .fib-intro p { color: rgba(180,165,145,0.7); }
 @media (max-width:768px) {
   .fib-seq-num { font-size: clamp(0.85rem, 2vw, 1.1rem); padding: 6px 4px; }
   .fib-seq-label { display: none; }
+  .fib-spiral-section { min-height: 500px; }
   .fib-explain { padding: 22px 20px; }
   .fib-explain-num { font-size: 1.6rem; }
   .fib-props { gap: 6px; }
   .fib-prop { font-size: 0.45rem; padding: 3px 8px; }
+  .fib-node .nd-label { display: none; }
 }
 
 /* ═══════════════════════════════
@@ -2897,18 +2925,24 @@ body.dark .mn-content p { color: #9a8880; }
   <!-- Prominent sequence strip -->
   <div class="fib-seq" id="fib-seq"></div>
 
-  <div class="fib-canvas-wrap" id="fib-canvas-wrap">
+  <div class="fib-spiral-section" id="fib-spiral-section">
     <canvas id="fib-canvas"></canvas>
+    <canvas id="fib-particles"></canvas>
   </div>
 
   <!-- Explanation panel with properties -->
-  <div class="fib-explain" id="fib-explain">
+  <div class="fib-explain" id="fib-explain" style="padding:0 20px;">
     <button class="fib-explain-close" onclick="closeFibExplain()">CLOSE &#215;</button>
     <div class="fib-explain-num" id="fib-ex-num"></div>
     <div class="fib-explain-title" id="fib-ex-title"></div>
     <div class="fib-prop-formula" id="fib-ex-formula"></div>
     <div class="fib-props" id="fib-ex-props"></div>
     <div class="fib-explain-body" id="fib-ex-body"></div>
+  </div>
+
+  <div style="text-align:center;margin-top:60px;padding-bottom:40px;">
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.88rem;color:rgba(140,120,100,0.45);line-height:2;">The spiral does not end. 233 + 144 = 377.<br>The story is still being written.</p>
+    <div style="font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.3em;color:rgba(201,168,76,0.15);margin-top:18px;">666 &middot; 55 &middot; 34 &middot; 27 &middot; 777</div>
   </div>
 </div>
 
@@ -4595,113 +4629,205 @@ const FIB_DATA = [
 ];
 
 let fibInitialized = false;
-function initFibSpiral() {
-  const wrap = document.getElementById('fib-canvas-wrap');
-  const canvas = document.getElementById('fib-canvas');
-  if (!wrap || !canvas) return;
-  const ctx = canvas.getContext('2d');
-  const wrapW = wrap.offsetWidth || wrap.parentElement.offsetWidth || 800;
-  const W = Math.min(wrapW, 900);
-  const H = Math.min(W * 0.78, 620);
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-  ctx.scale(dpr, dpr);
+const PHI_CONST = (1 + Math.sqrt(5)) / 2;
 
-  // Clear old nodes
-  wrap.querySelectorAll('.fib-node').forEach(n => n.remove());
-  wrap.style.width = W + 'px';
-  wrap.style.height = H + 'px';
-  wrap.style.position = 'relative';
-  wrap.style.margin = '0 auto';
+function initFibSpiral() {
+  const sec = document.getElementById('fib-spiral-section');
+  const c = document.getElementById('fib-canvas');
+  if (!sec || !c) return;
+  const ctx = c.getContext('2d');
+  const W = sec.offsetWidth, H = sec.offsetHeight;
+  const dpr = window.devicePixelRatio || 1;
+  c.width = W * dpr; c.height = H * dpr;
+  c.style.width = W + 'px'; c.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+  sec.querySelectorAll('.fib-node').forEach(n => n.remove());
 
   ctx.clearRect(0, 0, W, H);
-  const isDark = document.body.classList.contains('dark');
-  const phi = (1 + Math.sqrt(5)) / 2;
-  const cx = W * 0.42, cy = H * 0.48;
-  const turns = 5;
-  const steps = 800;
-  const maxR = Math.min(W, H) * 0.42;
 
-  // Draw subtle golden ratio rectangles
-  ctx.save();
-  ctx.translate(cx, cy);
-  let rectSize = maxR * 0.55;
-  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.06)' : 'rgba(201,168,76,0.05)';
-  ctx.lineWidth = 0.5;
-  for (let j = 0; j < 8; j++) {
-    ctx.strokeRect(-rectSize/2, -rectSize/2, rectSize, rectSize);
-    rectSize /= phi;
-    ctx.rotate(-Math.PI / 2);
+  // Background gradient
+  const bg = ctx.createRadialGradient(W*0.44, H*0.46, 0, W*0.44, H*0.46, Math.max(W,H)*0.7);
+  bg.addColorStop(0, '#080604'); bg.addColorStop(0.5, '#030202'); bg.addColorStop(1, '#000');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  const cx = W * 0.44, cy = H * 0.46;
+  const maxR = Math.min(W, H) * 0.46;
+  const turns = 5.5;
+
+  function spiralXY(frac) {
+    const th = frac * turns * Math.PI * 2;
+    const r = maxR * Math.pow(PHI_CONST, (frac * turns) - turns);
+    return { x: cx + r * Math.cos(th), y: cy - r * Math.sin(th), r: r };
+  }
+
+  // Golden ratio rectangles
+  ctx.save(); ctx.translate(cx, cy);
+  let rs = maxR * 0.6;
+  ctx.strokeStyle = 'rgba(201,168,76,0.025)'; ctx.lineWidth = 0.6;
+  for (let j = 0; j < 12; j++) {
+    ctx.strokeRect(-rs/2, -rs/2, rs, rs);
+    rs /= PHI_CONST; ctx.rotate(-Math.PI/2);
   }
   ctx.restore();
 
-  // Draw golden spiral
+  // Wide bloom spiral
+  ctx.save(); ctx.filter = 'blur(22px)';
   ctx.beginPath();
-  for (let i = 0; i <= steps; i++) {
-    const t = (i / steps) * turns * Math.PI * 2;
-    const r = maxR * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
-    const x = cx + r * Math.cos(t);
-    const y = cy - r * Math.sin(t);
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  }
-  const spiralGrad = ctx.createLinearGradient(0, 0, W, H);
-  spiralGrad.addColorStop(0, isDark ? 'rgba(201,168,76,0.08)' : 'rgba(201,168,76,0.1)');
-  spiralGrad.addColorStop(0.5, isDark ? 'rgba(201,168,76,0.22)' : 'rgba(201,168,76,0.2)');
-  spiralGrad.addColorStop(1, isDark ? 'rgba(201,168,76,0.14)' : 'rgba(201,168,76,0.12)');
-  ctx.strokeStyle = spiralGrad;
-  ctx.lineWidth = 1.8;
-  ctx.stroke();
+  for (let i = 0; i <= 1200; i++) { const p = spiralXY(i/1200); if (i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); }
+  ctx.strokeStyle = 'rgba(201,168,76,0.12)'; ctx.lineWidth = 10; ctx.stroke();
+  ctx.restore();
 
-  // Second trace (offset, dimmer)
+  // Medium bloom
+  ctx.save(); ctx.filter = 'blur(8px)';
   ctx.beginPath();
-  for (let i = 0; i <= steps; i++) {
-    const t = (i / steps) * turns * Math.PI * 2 + 0.1;
-    const r = maxR * 0.98 * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
-    const x = cx + r * Math.cos(t);
-    const y = cy - r * Math.sin(t);
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  for (let i = 0; i <= 1200; i++) { const p = spiralXY(i/1200); if (i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); }
+  ctx.strokeStyle = 'rgba(201,168,76,0.16)'; ctx.lineWidth = 4; ctx.stroke();
+  ctx.restore();
+
+  // Sharp spiral with gradient
+  ctx.beginPath();
+  for (let i = 0; i <= 1200; i++) { const p = spiralXY(i/1200); if (i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); }
+  const sg = ctx.createLinearGradient(0, H, W, 0);
+  sg.addColorStop(0, 'rgba(201,168,76,0.04)');
+  sg.addColorStop(0.3, 'rgba(201,168,76,0.28)');
+  sg.addColorStop(0.6, 'rgba(201,168,76,0.2)');
+  sg.addColorStop(1, 'rgba(201,168,76,0.08)');
+  ctx.strokeStyle = sg; ctx.lineWidth = 1.8; ctx.stroke();
+
+  // Second trace offset
+  ctx.beginPath();
+  for (let i = 0; i <= 1200; i++) {
+    const f = i/1200;
+    const th = f * turns * Math.PI * 2 + 0.08;
+    const r = maxR * 0.985 * Math.pow(PHI_CONST, (f * turns) - turns);
+    const x = cx + r * Math.cos(th), y = cy - r * Math.sin(th);
+    if (i===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }
-  ctx.strokeStyle = isDark ? 'rgba(201,168,76,0.05)' : 'rgba(201,168,76,0.04)';
-  ctx.lineWidth = 0.8;
-  ctx.stroke();
+  ctx.strokeStyle = 'rgba(201,168,76,0.04)'; ctx.lineWidth = 0.8; ctx.stroke();
+
+  // Crosshairs
+  ctx.strokeStyle = 'rgba(201,168,76,0.03)'; ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
+  [0.25, 0.45, 0.7].forEach(f => {
+    ctx.beginPath(); ctx.arc(cx, cy, maxR*f, 0, Math.PI*2); ctx.stroke();
+  });
+
+  // Radial light rays
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 16; i++) {
+    const a = (i/16) * Math.PI * 2;
+    const rLen = maxR * (0.4 + Math.sin(i*1.7) * 0.15);
+    const rg = ctx.createLinearGradient(cx, cy, cx + Math.cos(a)*rLen, cy - Math.sin(a)*rLen);
+    rg.addColorStop(0, 'rgba(201,168,76,0.015)'); rg.addColorStop(1, 'rgba(201,168,76,0)');
+    ctx.strokeStyle = rg; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(a)*rLen, cy - Math.sin(a)*rLen); ctx.stroke();
+  }
+  ctx.restore();
 
   // Center glow
-  const cGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * 0.25);
-  cGrad.addColorStop(0, 'rgba(201,168,76,0.06)');
-  cGrad.addColorStop(1, 'rgba(201,168,76,0)');
-  ctx.beginPath();
-  ctx.arc(cx, cy, maxR * 0.25, 0, Math.PI * 2);
-  ctx.fillStyle = cGrad;
-  ctx.fill();
+  const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR*0.18);
+  cg.addColorStop(0, 'rgba(201,168,76,0.1)'); cg.addColorStop(1, 'rgba(201,168,76,0)');
+  ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(cx, cy, maxR*0.18, 0, Math.PI*2); ctx.fill();
 
-  // Place nodes along spiral
+  // Vignette
+  const vig = ctx.createRadialGradient(cx, cy, Math.min(W,H)*0.2, cx, cy, Math.max(W,H)*0.65);
+  vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(0,0,0,0.45)');
+  ctx.fillStyle = vig; ctx.fillRect(0, 0, W, H);
+
+  // NODES — placed along the spiral, full-screen sized
   FIB_DATA.forEach((fib, i) => {
-    const frac = (i + 0.5) / FIB_DATA.length;
-    const t = frac * turns * Math.PI * 2 * 0.85 + 0.4;
-    const r = maxR * Math.pow(phi, (t / (Math.PI * 2)) - turns + 0.2) / Math.pow(phi, 0.2);
-    const x = cx + r * Math.cos(t);
-    const y = cy - r * Math.sin(t);
+    const frac = (i + 0.35) / FIB_DATA.length;
+    const p = spiralXY(frac * 0.9 + 0.02);
 
-    const baseSize = 36;
-    const scale = 0.6 + (i / FIB_DATA.length) * 0.7;
-    const size = Math.round(baseSize * scale);
-    const fontSize = (0.58 * scale).toFixed(2);
+    const scale = 0.45 + (i / FIB_DATA.length) * 0.9;
+    const size = Math.round(52 * scale);
+    const numFs = (0.7 * scale).toFixed(2);
+    const labelFs = (0.32 * scale).toFixed(2);
 
-    const node = document.createElement('div');
-    node.className = 'fib-node ' + fib.cls;
-    node.textContent = fib.label;
-    node.style.width = size + 'px';
-    node.style.height = size + 'px';
-    node.style.fontSize = fontSize + 'rem';
-    node.style.left = (x - size/2) + 'px';
-    node.style.top = (y - size/2) + 'px';
-    node.onclick = () => showFibExplain(i);
-    wrap.appendChild(node);
+    const nd = document.createElement('div');
+    nd.className = 'fib-node ' + fib.cls;
+    nd.innerHTML = '<span class="nd-num">' + fib.label + '</span><span class="nd-label" style="font-size:' + labelFs + 'rem">' + fib.title + '</span>';
+    nd.style.width = size + 'px'; nd.style.height = size + 'px';
+    nd.style.fontSize = numFs + 'rem';
+    nd.style.left = (p.x - size/2) + 'px'; nd.style.top = (p.y - size/2) + 'px';
+    nd.onclick = () => showFibExplain(i);
+    sec.appendChild(nd);
+
+    // Connection line to previous
+    if (i > 0) {
+      const prev = spiralXY(((i-1+0.35)/FIB_DATA.length)*0.9+0.02);
+      ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(p.x, p.y);
+      ctx.strokeStyle = 'rgba(201,168,76,0.025)'; ctx.lineWidth = 0.5; ctx.stroke();
+    }
+
+    // Node glow halo on canvas
+    const ng = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size*0.8);
+    ng.addColorStop(0, 'rgba(201,168,76,0.03)'); ng.addColorStop(1, 'rgba(201,168,76,0)');
+    ctx.fillStyle = ng; ctx.beginPath(); ctx.arc(p.x, p.y, size*0.8, 0, Math.PI*2); ctx.fill();
   });
 
   fibInitialized = true;
 }
+
+// ═══════════════════════════════
+// PARTICLE SYSTEM OVER SPIRAL
+// ═══════════════════════════════
+(function initFibParticles(){
+  const c = document.getElementById('fib-particles');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  let W, H; const parts = [];
+
+  function resize(){
+    const sec = document.getElementById('fib-spiral-section');
+    if (!sec) return;
+    W = c.width = sec.offsetWidth; H = c.height = sec.offsetHeight;
+  }
+
+  function spawn(){
+    if (parts.length > 150) return;
+    const cx = W*0.44, cy = H*0.46, maxR = Math.min(W,H)*0.46;
+    const angle = Math.random() * Math.PI * 12;
+    const r = maxR * Math.pow(PHI_CONST, (angle/(Math.PI*2)) - 5.5) * (0.8 + Math.random()*0.4);
+    parts.push({
+      x: cx + r*Math.cos(angle) + (Math.random()-0.5)*18,
+      y: cy - r*Math.sin(angle) + (Math.random()-0.5)*18,
+      vx: (Math.random()-0.5)*0.12, vy: -Math.random()*0.25 - 0.04,
+      life: 1, decay: Math.random()*0.003 + 0.0015,
+      sz: Math.random()*2 + 0.4, gold: Math.random() > 0.2
+    });
+  }
+
+  function frame(){
+    if (!W || !H) { requestAnimationFrame(frame); return; }
+    // Only animate if fib-view is visible
+    const fibView = document.getElementById('fib-view');
+    if (!fibView || fibView.style.display === 'none') { requestAnimationFrame(frame); return; }
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = parts.length-1; i >= 0; i--) {
+      const p = parts[i];
+      p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+      if (p.life <= 0) { parts.splice(i,1); continue; }
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.sz, 0, Math.PI*2);
+      ctx.fillStyle = p.gold ? 'rgba(220,190,100,' + (p.life*0.4) + ')' : 'rgba(170,210,190,' + (p.life*0.25) + ')';
+      ctx.fill();
+      if (p.sz > 1.2) {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.sz*3, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(201,168,76,' + (p.life*0.04) + ')';
+        ctx.fill();
+      }
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    if (Math.random() < 0.35) spawn();
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('load', () => { resize(); requestAnimationFrame(frame); });
+  window.addEventListener('resize', resize);
+})()
 
 // Build the sequence strip
 (function buildFibSeq(){
