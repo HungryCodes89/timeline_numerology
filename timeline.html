@@ -3623,7 +3623,21 @@ function switchView(viewId, btnId, cb) {
 }
 function showTL()  { switchView('tl-view','btn-tl'); }
 function showCS()  { switchView('cs-view','btn-cs', initConstellation); }
-function showFib() { switchView('fib-view','btn-fib', function(){ setTimeout(function(){ initFibSpiral(); setTimeout(function(){ var sec=document.getElementById('fib-spiral-section'); if(sec && sec.querySelectorAll('.fib-node').length===0) initFibSpiral(); },300); }, 150); }); }
+function showFib() {
+  switchView('fib-view','btn-fib', function(){
+    buildFibSeq();
+    fibPartResize();
+    setTimeout(function(){
+      initFibSpiral();
+      setTimeout(function(){
+        var sec = document.getElementById('fib-spiral-section');
+        if (sec && sec.querySelectorAll('.fib-node').length === 0) {
+          initFibSpiral();
+        }
+      }, 500);
+    }, 200);
+  });
+}
 function showMN()  { switchView('mn-view','btn-mn'); }
 
 
@@ -4627,19 +4641,16 @@ const FIB_DATA = [
 ];
 
 let fibInitialized = false;
-const PHI_CONST = (1 + Math.sqrt(5)) / 2;
+var PHI_CONST = (1 + Math.sqrt(5)) / 2;
 
 function initFibSpiral() {
-  console.log('[FIB] initFibSpiral called');
-  const sec = document.getElementById('fib-spiral-section');
-  const c = document.getElementById('fib-canvas');
-  console.log('[FIB] sec:', sec, 'canvas:', c);
-  if (!sec || !c) { console.log('[FIB] ABORT: missing elements'); return; }
-  const ctx = c.getContext('2d');
-  const W = sec.offsetWidth || window.innerWidth;
-  const H = sec.offsetHeight || window.innerHeight;
-  console.log('[FIB] dimensions:', W, 'x', H);
-  if (W < 10 || H < 10) { console.log('[FIB] ABORT: too small'); return; }
+  var sec = document.getElementById('fib-spiral-section');
+  var c = document.getElementById('fib-canvas');
+  if (!sec || !c) return;
+  var ctx = c.getContext('2d');
+  var W = sec.offsetWidth || window.innerWidth;
+  var H = sec.offsetHeight || window.innerHeight;
+  if (W < 10 || H < 10) return;
   const dpr = window.devicePixelRatio || 1;
   c.width = W * dpr; c.height = H * dpr;
   c.style.width = W + 'px'; c.style.height = H + 'px';
@@ -4776,81 +4787,85 @@ function initFibSpiral() {
 // ═══════════════════════════════
 // PARTICLE SYSTEM OVER SPIRAL
 // ═══════════════════════════════
-;(function initFibParticles(){
-  const c = document.getElementById('fib-particles');
-  if (!c) return;
-  const ctx = c.getContext('2d');
-  let W, H; const parts = [];
+var fibParticles = [];
+var fibPartW = 0, fibPartH = 0;
+var fibPartCanvas = null, fibPartCtx = null;
 
-  function resize(){
-    const sec = document.getElementById('fib-spiral-section');
-    if (!sec) return;
-    W = c.width = sec.offsetWidth || window.innerWidth;
-    H = c.height = sec.offsetHeight || window.innerHeight;
-  }
+function fibPartResize() {
+  fibPartCanvas = document.getElementById('fib-particles');
+  if (!fibPartCanvas) return;
+  fibPartCtx = fibPartCanvas.getContext('2d');
+  var sec = document.getElementById('fib-spiral-section');
+  if (!sec) return;
+  fibPartW = fibPartCanvas.width = sec.offsetWidth || window.innerWidth;
+  fibPartH = fibPartCanvas.height = sec.offsetHeight || window.innerHeight;
+}
 
-  function spawn(){
-    if (parts.length > 150) return;
-    const cx = W*0.44, cy = H*0.46, maxR = Math.min(W,H)*0.46;
-    const angle = Math.random() * Math.PI * 12;
-    const r = maxR * Math.pow(PHI_CONST, (angle/(Math.PI*2)) - 5.5) * (0.8 + Math.random()*0.4);
-    parts.push({
-      x: cx + r*Math.cos(angle) + (Math.random()-0.5)*18,
-      y: cy - r*Math.sin(angle) + (Math.random()-0.5)*18,
-      vx: (Math.random()-0.5)*0.12, vy: -Math.random()*0.25 - 0.04,
-      life: 1, decay: Math.random()*0.003 + 0.0015,
-      sz: Math.random()*2 + 0.4, gold: Math.random() > 0.2
-    });
-  }
+function fibPartSpawn() {
+  if (fibParticles.length > 150) return;
+  var cx2 = fibPartW*0.44, cy2 = fibPartH*0.46, maxR2 = Math.min(fibPartW,fibPartH)*0.46;
+  var angle = Math.random() * Math.PI * 12;
+  var r = maxR2 * Math.pow(PHI_CONST, (angle/(Math.PI*2)) - 5.5) * (0.8 + Math.random()*0.4);
+  fibParticles.push({
+    x: cx2 + r*Math.cos(angle) + (Math.random()-0.5)*18,
+    y: cy2 - r*Math.sin(angle) + (Math.random()-0.5)*18,
+    vx: (Math.random()-0.5)*0.12, vy: -Math.random()*0.25 - 0.04,
+    life: 1, decay: Math.random()*0.003 + 0.0015,
+    sz: Math.random()*2 + 0.4, gold: Math.random() > 0.2
+  });
+}
 
-  function frame(){
-    if (!W || !H) { requestAnimationFrame(frame); return; }
-    // Only animate if fib-view is visible
-    const fibView = document.getElementById('fib-view');
-    if (!fibView || fibView.style.display === 'none') { requestAnimationFrame(frame); return; }
+function fibPartFrame() {
+  if (!fibPartW || !fibPartH || !fibPartCtx) { requestAnimationFrame(fibPartFrame); return; }
+  var fibView = document.getElementById('fib-view');
+  if (!fibView || fibView.style.display === 'none') { requestAnimationFrame(fibPartFrame); return; }
 
-    ctx.clearRect(0, 0, W, H);
-    ctx.globalCompositeOperation = 'lighter';
-    for (let i = parts.length-1; i >= 0; i--) {
-      const p = parts[i];
-      p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-      if (p.life <= 0) { parts.splice(i,1); continue; }
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.sz, 0, Math.PI*2);
-      ctx.fillStyle = p.gold ? 'rgba(220,190,100,' + (p.life*0.4) + ')' : 'rgba(170,210,190,' + (p.life*0.25) + ')';
-      ctx.fill();
-      if (p.sz > 1.2) {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.sz*3, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(201,168,76,' + (p.life*0.04) + ')';
-        ctx.fill();
-      }
+  fibPartCtx.clearRect(0, 0, fibPartW, fibPartH);
+  fibPartCtx.globalCompositeOperation = 'lighter';
+  for (var i = fibParticles.length-1; i >= 0; i--) {
+    var p = fibParticles[i];
+    p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+    if (p.life <= 0) { fibParticles.splice(i,1); continue; }
+    fibPartCtx.beginPath(); fibPartCtx.arc(p.x, p.y, p.sz, 0, Math.PI*2);
+    fibPartCtx.fillStyle = p.gold ? 'rgba(220,190,100,' + (p.life*0.4) + ')' : 'rgba(170,210,190,' + (p.life*0.25) + ')';
+    fibPartCtx.fill();
+    if (p.sz > 1.2) {
+      fibPartCtx.beginPath(); fibPartCtx.arc(p.x, p.y, p.sz*3, 0, Math.PI*2);
+      fibPartCtx.fillStyle = 'rgba(201,168,76,' + (p.life*0.04) + ')';
+      fibPartCtx.fill();
     }
-    ctx.globalCompositeOperation = 'source-over';
-    if (Math.random() < 0.35) spawn();
-    requestAnimationFrame(frame);
   }
+  fibPartCtx.globalCompositeOperation = 'source-over';
+  if (Math.random() < 0.35) fibPartSpawn();
+  requestAnimationFrame(fibPartFrame);
+}
 
-  window.addEventListener('load', () => { resize(); requestAnimationFrame(frame); });
-  window.addEventListener('resize', resize);
-})();
+window.addEventListener('load', function() { fibPartResize(); requestAnimationFrame(fibPartFrame); });
+window.addEventListener('resize', fibPartResize);
 
-// Build the sequence strip
-;(function buildFibSeq(){
-  const strip = document.getElementById('fib-seq');
-  if (!strip) return;
-  FIB_DATA.forEach((d, i) => {
-    const num = document.createElement('span');
+// ═══════════════════════════════
+// BUILD SEQUENCE STRIP
+// ═══════════════════════════════
+function buildFibSeq() {
+  var strip = document.getElementById('fib-seq');
+  if (!strip || strip.children.length > 0) return;
+  for (var i = 0; i < FIB_DATA.length; i++) {
+    var d = FIB_DATA[i];
+    var num = document.createElement('span');
     num.className = 'fib-seq-num';
+    num.setAttribute('data-idx', i);
     num.innerHTML = d.label + '<span class="fib-seq-label">' + d.title + '</span>';
-    num.onclick = () => showFibExplain(i);
+    num.onclick = function(idx) { return function() { showFibExplain(idx); }; }(i);
     strip.appendChild(num);
     if (i < FIB_DATA.length - 1) {
-      const dot = document.createElement('span');
+      var dot = document.createElement('span');
       dot.className = 'fib-seq-dot';
       dot.textContent = '\u00B7';
       strip.appendChild(dot);
     }
-  });
-})();
+  }
+}
+document.addEventListener('DOMContentLoaded', buildFibSeq);
 
 function showFibExplain(idx) {
   const panel = document.getElementById('fib-explain');
