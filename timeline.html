@@ -1500,7 +1500,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   position: relative;
   overflow: hidden;
 }
-#fib-bg-video {
+#fib-bg-video, #fib-bg-video-b {
   position: fixed;
   top: 50%; left: 50%;
   min-width: 100vw; min-height: 100vh;
@@ -1509,8 +1509,10 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  opacity: 1;
+  transition: opacity 1s ease;
 }
+#fib-bg-video { opacity: 1; }
+#fib-bg-video-b { opacity: 0; }
 #fib-bg-vignette {
   position: fixed;
   top: 0; left: 0;
@@ -1519,7 +1521,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   pointer-events: none;
   background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
 }
-#fib-view > *:not(#fib-bg-video):not(#fib-bg-vignette) {
+#fib-view > *:not(#fib-bg-video):not(#fib-bg-video-b):not(#fib-bg-vignette) {
   position: relative;
   z-index: 1;
 }
@@ -1529,7 +1531,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-header h2 {
   font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  font-size: clamp(2rem, 6vw, 3.6rem);
   font-weight: 400;
   letter-spacing: 0.14em;
   color: var(--gold);
@@ -1539,10 +1541,10 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .fib-header .fib-sub {
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  font-size: 0.95rem;
-  color: #c8b8a4;
+  font-size: 1.15rem;
+  color: #d4c8b4;
   line-height: 1.9;
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   text-shadow: 0 1px 16px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.9);
 }
@@ -1553,8 +1555,8 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   flex-wrap: wrap;
   justify-content: center;
   align-items: baseline;
-  gap: 0;
-  max-width: 900px;
+  gap: 10px;
+  max-width: 960px;
   margin: 0 auto 50px;
   padding: 30px 20px;
   position: relative;
@@ -1576,21 +1578,31 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   font-size: clamp(1.1rem, 2.5vw, 1.6rem);
   font-weight: 700;
   color: rgba(201,168,76,0.55);
-  padding: 8px 6px;
+  padding: 10px 16px;
   cursor: pointer;
   transition: all 0.4s ease;
   position: relative;
   letter-spacing: 0.04em;
   text-shadow: 0 1px 10px rgba(0,0,0,0.9);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 6px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
 }
 .fib-seq-num:hover {
   color: rgba(201,168,76,0.95);
   text-shadow: 0 0 20px rgba(201,168,76,0.5), 0 0 40px rgba(201,168,76,0.25), 0 0 80px rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.08);
+  box-shadow: 0 0 20px rgba(201,168,76,0.1), inset 0 0 20px rgba(201,168,76,0.03);
 }
 .fib-seq-num.active {
   color: #f0d860;
   text-shadow: 0 0 14px rgba(201,168,76,0.7), 0 0 36px rgba(201,168,76,0.4), 0 0 80px rgba(201,168,76,0.2), 0 0 120px rgba(201,168,76,0.1);
   transform: scale(1.15);
+  border-color: rgba(201,168,76,0.6);
+  background: rgba(201,168,76,0.12);
+  box-shadow: 0 0 30px rgba(201,168,76,0.2), inset 0 0 30px rgba(201,168,76,0.05);
 }
 .fib-seq-num.active::after {
   content: '';
@@ -1724,7 +1736,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .fib-explain-close:hover { color: rgba(201,168,76,0.7); border-color: rgba(201,168,76,0.25); }
 .fib-explain-num {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 2.4rem;
+  font-size: 3rem;
   font-weight: 400;
   color: var(--gold);
   text-shadow: 0 0 50px rgba(201,168,76,0.25);
@@ -1732,7 +1744,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-explain-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: rgba(201,168,76,0.5);
@@ -1769,9 +1781,9 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-explain-body {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.95rem;
-  line-height: 2.15;
-  color: rgba(190,175,155,0.78);
+  font-size: 1.1rem;
+  line-height: 2.1;
+  color: rgba(210,195,175,0.88);
 }
 .fib-explain-body em { color: rgba(201,168,76,0.65); }
 body.dark .fib-explain-body { color: rgba(190,175,155,0.78); }
@@ -1783,10 +1795,10 @@ body.dark .fib-explain { background: rgba(6,4,2,0.92); border-color: rgba(201,16
   text-align: center;
 }
 .fib-intro p {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   line-height: 2.2;
-  color: rgba(210,195,175,0.9);
-  margin-bottom: 14px;
+  color: rgba(220,205,185,0.95);
+  margin-bottom: 16px;
   text-shadow: 0 1px 12px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.8);
 }
 .fib-intro p em { color: rgba(201,168,76,0.65); }
@@ -2928,7 +2940,10 @@ body.dark .mn-content p { color: #9a8880; }
 
 <!-- ═══════════════ FIBONACCI SPIRAL VIEW ═══════════════ -->
 <div id="fib-view">
-  <video id="fib-bg-video" autoplay muted loop playsinline>
+  <video id="fib-bg-video" muted playsinline>
+    <source src="fib-img/spiral-bg.mp4" type="video/mp4">
+  </video>
+  <video id="fib-bg-video-b" muted playsinline>
     <source src="fib-img/spiral-bg.mp4" type="video/mp4">
   </video>
   <div id="fib-bg-vignette"></div>
@@ -4938,23 +4953,70 @@ function closeFibExplain() {
 }
 
 // ═══════════════════════════════════════════════════
-// FIBONACCI VIDEO BACKGROUND — play/pause with view
+// FIBONACCI VIDEO — SEAMLESS CROSSFADE LOOP
 // ═══════════════════════════════════════════════════
 (function() {
+  var vidA = null, vidB = null;
+  var active = 'A'; // which video is currently visible
+  var loopRunning = false;
+  var CROSSFADE = 1.0; // seconds before end to start crossfade
+
+  function getVids() {
+    if (!vidA) vidA = document.getElementById('fib-bg-video');
+    if (!vidB) vidB = document.getElementById('fib-bg-video-b');
+  }
+
+  function loopCheck() {
+    if (!loopRunning) return;
+    getVids();
+    if (!vidA || !vidB) { requestAnimationFrame(loopCheck); return; }
+
+    var cur = (active === 'A') ? vidA : vidB;
+    var nxt = (active === 'A') ? vidB : vidA;
+
+    // When current video is within CROSSFADE seconds of ending, start the swap
+    if (cur.duration && cur.currentTime > 0 && cur.currentTime >= cur.duration - CROSSFADE) {
+      nxt.currentTime = 0;
+      nxt.play().catch(function(){});
+      // Crossfade: show next, hide current
+      nxt.style.opacity = '1';
+      cur.style.opacity = '0';
+      active = (active === 'A') ? 'B' : 'A';
+    }
+
+    requestAnimationFrame(loopCheck);
+  }
+
+  function startLoop() {
+    getVids();
+    if (!vidA || !vidB) return;
+    vidA.currentTime = 0;
+    vidA.style.opacity = '1';
+    vidB.style.opacity = '0';
+    active = 'A';
+    vidA.play().catch(function(){});
+    if (!loopRunning) {
+      loopRunning = true;
+      requestAnimationFrame(loopCheck);
+    }
+  }
+
+  function stopLoop() {
+    loopRunning = false;
+    getVids();
+    if (vidA) vidA.pause();
+    if (vidB) vidB.pause();
+  }
+
   var origShowFib = window.showFib;
   window.showFib = function() {
     origShowFib();
-    var vid = document.getElementById('fib-bg-video');
-    if (vid) { vid.currentTime = 0; vid.play().catch(function(){}); }
+    startLoop();
   };
 
-  // Pause video when leaving fib view
   var origSwitch = window.switchView;
   window.switchView = function(viewId, btnId, cb) {
-    if (viewId !== 'fib-view') {
-      var vid = document.getElementById('fib-bg-video');
-      if (vid) vid.pause();
-    }
+    if (viewId !== 'fib-view') stopLoop();
     origSwitch(viewId, btnId, cb);
   };
 })();
