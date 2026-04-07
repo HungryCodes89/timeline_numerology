@@ -1509,7 +1509,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 1;
 }
 #fib-bg-vignette {
   position: fixed;
@@ -1517,7 +1517,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   width: 100vw; height: 100vh;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.9) 100%);
+  background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
 }
 #fib-view > *:not(#fib-bg-video):not(#fib-bg-vignette) {
   position: relative;
@@ -1533,17 +1533,18 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   font-weight: 400;
   letter-spacing: 0.14em;
   color: var(--gold);
-  text-shadow: 0 0 60px rgba(201,168,76,0.3), 0 0 120px rgba(201,168,76,0.1);
+  text-shadow: 0 0 60px rgba(201,168,76,0.4), 0 0 120px rgba(201,168,76,0.15), 0 2px 30px rgba(0,0,0,1), 0 0 80px rgba(0,0,0,0.8);
   margin-bottom: 14px;
 }
 .fib-header .fib-sub {
   font-family: 'IM Fell English', serif;
   font-style: italic;
   font-size: 0.95rem;
-  color: #8a7a6a;
+  color: #c8b8a4;
   line-height: 1.9;
   max-width: 680px;
   margin: 0 auto;
+  text-shadow: 0 1px 16px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.9);
 }
 
 /* ═══ SEQUENCE STRIP — prominent glowing gold ═══ */
@@ -1574,12 +1575,13 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   font-family: 'Cinzel', serif;
   font-size: clamp(1.1rem, 2.5vw, 1.6rem);
   font-weight: 700;
-  color: rgba(201,168,76,0.35);
+  color: rgba(201,168,76,0.55);
   padding: 8px 6px;
   cursor: pointer;
   transition: all 0.4s ease;
   position: relative;
   letter-spacing: 0.04em;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.9);
 }
 .fib-seq-num:hover {
   color: rgba(201,168,76,0.95);
@@ -1695,13 +1697,14 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   max-width: 720px;
   margin: 0 auto;
   padding: 34px 38px;
-  border: 1px solid rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.15);
   border-radius: 6px;
-  background: rgba(6,4,2,0.92);
-  backdrop-filter: blur(30px);
+  background: rgba(6,4,2,0.95);
+  backdrop-filter: blur(40px);
   display: none;
   animation: fadeUp 0.5s ease;
   position: relative;
+  box-shadow: 0 8px 60px rgba(0,0,0,0.8);
 }
 .fib-explain::before {
   content: '';
@@ -1782,8 +1785,9 @@ body.dark .fib-explain { background: rgba(6,4,2,0.92); border-color: rgba(201,16
 .fib-intro p {
   font-size: 0.95rem;
   line-height: 2.2;
-  color: rgba(180,165,145,0.7);
+  color: rgba(210,195,175,0.9);
   margin-bottom: 14px;
+  text-shadow: 0 1px 12px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.8);
 }
 .fib-intro p em { color: rgba(201,168,76,0.65); }
 body.dark .fib-intro p { color: rgba(180,165,145,0.7); }
