@@ -1498,6 +1498,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   min-height: 100vh;
   padding: 100px 20px 80px;
   position: relative;
+  overflow-x: clip;
 }
 .fib-header {
   text-align: center;
@@ -1612,9 +1613,6 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 #fib-particles {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;
   pointer-events: none;
-}
-.fib-canvas-wrap {
-  display: none;
 }
 .fib-node {
   position: absolute;
@@ -3625,7 +3623,7 @@ function switchView(viewId, btnId, cb) {
 }
 function showTL()  { switchView('tl-view','btn-tl'); }
 function showCS()  { switchView('cs-view','btn-cs', initConstellation); }
-function showFib() { switchView('fib-view','btn-fib', function(){ setTimeout(initFibSpiral, 80); }); }
+function showFib() { switchView('fib-view','btn-fib', function(){ setTimeout(function(){ initFibSpiral(); setTimeout(function(){ var sec=document.getElementById('fib-spiral-section'); if(sec && sec.querySelectorAll('.fib-node').length===0) initFibSpiral(); },300); }, 150); }); }
 function showMN()  { switchView('mn-view','btn-mn'); }
 
 
@@ -4636,7 +4634,9 @@ function initFibSpiral() {
   const c = document.getElementById('fib-canvas');
   if (!sec || !c) return;
   const ctx = c.getContext('2d');
-  const W = sec.offsetWidth, H = sec.offsetHeight;
+  const W = sec.offsetWidth || window.innerWidth;
+  const H = sec.offsetHeight || window.innerHeight;
+  if (W < 10 || H < 10) return; // not laid out yet
   const dpr = window.devicePixelRatio || 1;
   c.width = W * dpr; c.height = H * dpr;
   c.style.width = W + 'px'; c.style.height = H + 'px';
@@ -4782,7 +4782,8 @@ function initFibSpiral() {
   function resize(){
     const sec = document.getElementById('fib-spiral-section');
     if (!sec) return;
-    W = c.width = sec.offsetWidth; H = c.height = sec.offsetHeight;
+    W = c.width = sec.offsetWidth || window.innerWidth;
+    H = c.height = sec.offsetHeight || window.innerHeight;
   }
 
   function spawn(){
