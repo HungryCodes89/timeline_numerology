@@ -4630,13 +4630,16 @@ let fibInitialized = false;
 const PHI_CONST = (1 + Math.sqrt(5)) / 2;
 
 function initFibSpiral() {
+  console.log('[FIB] initFibSpiral called');
   const sec = document.getElementById('fib-spiral-section');
   const c = document.getElementById('fib-canvas');
-  if (!sec || !c) return;
+  console.log('[FIB] sec:', sec, 'canvas:', c);
+  if (!sec || !c) { console.log('[FIB] ABORT: missing elements'); return; }
   const ctx = c.getContext('2d');
   const W = sec.offsetWidth || window.innerWidth;
   const H = sec.offsetHeight || window.innerHeight;
-  if (W < 10 || H < 10) return; // not laid out yet
+  console.log('[FIB] dimensions:', W, 'x', H);
+  if (W < 10 || H < 10) { console.log('[FIB] ABORT: too small'); return; }
   const dpr = window.devicePixelRatio || 1;
   c.width = W * dpr; c.height = H * dpr;
   c.style.width = W + 'px'; c.style.height = H + 'px';
