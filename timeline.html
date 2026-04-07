@@ -1500,14 +1500,26 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   position: relative;
   overflow: hidden;
 }
-#fib-sunflower-bg {
+#fib-bg-video {
+  position: fixed;
+  top: 50%; left: 50%;
+  min-width: 100vw; min-height: 100vh;
+  width: auto; height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+#fib-bg-vignette {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   z-index: 0;
   pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.9) 100%);
 }
-#fib-view > *:not(#fib-sunflower-bg) {
+#fib-view > *:not(#fib-bg-video):not(#fib-bg-vignette) {
   position: relative;
   z-index: 1;
 }
@@ -2912,7 +2924,10 @@ body.dark .mn-content p { color: #9a8880; }
 
 <!-- ═══════════════ FIBONACCI SPIRAL VIEW ═══════════════ -->
 <div id="fib-view">
-  <canvas id="fib-sunflower-bg"></canvas>
+  <video id="fib-bg-video" autoplay muted loop playsinline>
+    <source src="fib-img/spiral-bg.mp4" type="video/mp4">
+  </video>
+  <div id="fib-bg-vignette"></div>
   <div class="fib-header">
     <div class="sigil" style="margin-bottom:14px;">&#10022; &#934; &#10022;</div>
     <h2>The Golden Spiral</h2>
@@ -4919,105 +4934,25 @@ function closeFibExplain() {
 }
 
 // ═══════════════════════════════════════════════════
-// FIBONACCI SUNFLOWER — FULL-PAGE SPINNING BACKGROUND
+// FIBONACCI VIDEO BACKGROUND — play/pause with view
 // ═══════════════════════════════════════════════════
 (function() {
-  var sfCanvas, sfCtx, sfW, sfH, sfAngle = 0;
-  var GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5)); // ~137.508 degrees in radians
-  var SEED_COUNT = 1800;
-  var sfRunning = false;
-
-  function sfResize() {
-    sfCanvas = document.getElementById('fib-sunflower-bg');
-    if (!sfCanvas) return;
-    sfCtx = sfCanvas.getContext('2d');
-    sfW = sfCanvas.width = window.innerWidth;
-    sfH = sfCanvas.height = window.innerHeight;
-  }
-
-  function sfDraw() {
-    if (!sfCtx || !sfW || !sfH) return;
-    sfCtx.clearRect(0, 0, sfW, sfH);
-
-    // Dark background fill
-    sfCtx.fillStyle = '#000';
-    sfCtx.fillRect(0, 0, sfW, sfH);
-
-    var cx = sfW / 2;
-    var cy = sfH / 2;
-    var maxR = Math.min(sfW, sfH) * 0.48;
-
-    sfCtx.save();
-    sfCtx.translate(cx, cy);
-    sfCtx.rotate(sfAngle);
-
-    for (var i = 0; i < SEED_COUNT; i++) {
-      var angle = i * GOLDEN_ANGLE;
-      var frac = i / SEED_COUNT;
-      var r = maxR * Math.sqrt(frac);
-      var x = r * Math.cos(angle);
-      var y = r * Math.sin(angle);
-
-      // Seed size: smaller at center, larger at edges
-      var sz = 1.0 + frac * 2.8;
-
-      // Color: golden at center fading to dim amber at edges
-      var alpha = 0.08 + (1 - frac) * 0.35;
-      var red = Math.round(201 + (1 - frac) * 40);
-      var green = Math.round(140 + (1 - frac) * 50);
-      var blue = Math.round(40 + (1 - frac) * 30);
-
-      sfCtx.beginPath();
-      sfCtx.arc(x, y, sz, 0, Math.PI * 2);
-      sfCtx.fillStyle = 'rgba(' + Math.min(red,255) + ',' + Math.min(green,255) + ',' + blue + ',' + alpha + ')';
-      sfCtx.fill();
-
-      // Glow on every Nth seed for sparkle
-      if (i % 34 === 0 || i % 55 === 0) {
-        sfCtx.beginPath();
-        sfCtx.arc(x, y, sz * 4, 0, Math.PI * 2);
-        sfCtx.fillStyle = 'rgba(201,168,76,' + (alpha * 0.15) + ')';
-        sfCtx.fill();
-      }
-    }
-
-    sfCtx.restore();
-
-    // Vignette overlay to blend edges to black
-    var vig = sfCtx.createRadialGradient(cx, cy, maxR * 0.3, cx, cy, maxR * 1.1);
-    vig.addColorStop(0, 'rgba(0,0,0,0)');
-    vig.addColorStop(0.6, 'rgba(0,0,0,0.3)');
-    vig.addColorStop(1, 'rgba(0,0,0,0.85)');
-    sfCtx.fillStyle = vig;
-    sfCtx.fillRect(0, 0, sfW, sfH);
-  }
-
-  function sfFrame() {
-    var fibView = document.getElementById('fib-view');
-    if (!fibView || fibView.style.display === 'none') {
-      sfRunning = false;
-      return;
-    }
-    sfAngle += 0.0003; // Slow, meditative rotation
-    sfDraw();
-    requestAnimationFrame(sfFrame);
-  }
-
-  // Start/stop when fibonacci view is shown/hidden
   var origShowFib = window.showFib;
   window.showFib = function() {
     origShowFib();
-    if (!sfRunning) {
-      sfRunning = true;
-      sfResize();
-      requestAnimationFrame(sfFrame);
-    }
+    var vid = document.getElementById('fib-bg-video');
+    if (vid) { vid.currentTime = 0; vid.play().catch(function(){}); }
   };
 
-  window.addEventListener('resize', function() {
-    var fibView = document.getElementById('fib-view');
-    if (fibView && fibView.style.display !== 'none') sfResize();
-  });
+  // Pause video when leaving fib view
+  var origSwitch = window.switchView;
+  window.switchView = function(viewId, btnId, cb) {
+    if (viewId !== 'fib-view') {
+      var vid = document.getElementById('fib-bg-video');
+      if (vid) vid.pause();
+    }
+    origSwitch(viewId, btnId, cb);
+  };
 })();
 
 </script>
