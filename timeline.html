@@ -1575,34 +1575,35 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-seq-num {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-size: clamp(1.3rem, 3vw, 2rem);
   font-weight: 700;
-  color: rgba(201,168,76,0.55);
-  padding: 10px 16px;
+  color: #e8d5a0;
+  padding: 6px 10px;
   cursor: pointer;
   transition: all 0.4s ease;
   position: relative;
   letter-spacing: 0.04em;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.9);
-  border: 1px solid rgba(201,168,76,0.15);
-  border-radius: 6px;
-  background: rgba(0,0,0,0.4);
+  text-shadow: 0 1px 10px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.45);
   backdrop-filter: blur(8px);
+  line-height: 1.2;
 }
 .fib-seq-num:hover {
-  color: rgba(201,168,76,0.95);
+  color: #fff;
   text-shadow: 0 0 20px rgba(201,168,76,0.5), 0 0 40px rgba(201,168,76,0.25), 0 0 80px rgba(201,168,76,0.1);
-  border-color: rgba(201,168,76,0.4);
-  background: rgba(201,168,76,0.08);
-  box-shadow: 0 0 20px rgba(201,168,76,0.1), inset 0 0 20px rgba(201,168,76,0.03);
+  border-color: rgba(201,168,76,0.45);
+  background: rgba(201,168,76,0.1);
+  box-shadow: 0 0 20px rgba(201,168,76,0.12);
 }
 .fib-seq-num.active {
-  color: #f0d860;
-  text-shadow: 0 0 14px rgba(201,168,76,0.7), 0 0 36px rgba(201,168,76,0.4), 0 0 80px rgba(201,168,76,0.2), 0 0 120px rgba(201,168,76,0.1);
-  transform: scale(1.15);
+  color: #fff;
+  text-shadow: 0 0 14px rgba(201,168,76,0.7), 0 0 36px rgba(201,168,76,0.4), 0 0 80px rgba(201,168,76,0.2);
+  transform: scale(1.1);
   border-color: rgba(201,168,76,0.6);
-  background: rgba(201,168,76,0.12);
-  box-shadow: 0 0 30px rgba(201,168,76,0.2), inset 0 0 30px rgba(201,168,76,0.05);
+  background: rgba(201,168,76,0.14);
+  box-shadow: 0 0 30px rgba(201,168,76,0.2);
 }
 .fib-seq-num.active::after {
   content: '';
@@ -4956,54 +4957,57 @@ function closeFibExplain() {
 // FIBONACCI VIDEO — SEAMLESS CROSSFADE LOOP
 // ═══════════════════════════════════════════════════
 (function() {
-  var vidA = null, vidB = null;
-  var active = 'A'; // which video is currently visible
-  var loopRunning = false;
-  var CROSSFADE = 1.0; // seconds before end to start crossfade
+  var vidA, vidB, swapping = false;
 
-  function getVids() {
-    if (!vidA) vidA = document.getElementById('fib-bg-video');
-    if (!vidB) vidB = document.getElementById('fib-bg-video-b');
+  function setup() {
+    vidA = document.getElementById('fib-bg-video');
+    vidB = document.getElementById('fib-bg-video-b');
+    if (!vidA || !vidB) return;
+
+    // Both videos listen for timeupdate — whichever is playing triggers the swap
+    vidA.addEventListener('timeupdate', onTime);
+    vidB.addEventListener('timeupdate', onTime);
+    // After the hidden video's opacity transition ends, pause it to save resources
+    vidA.addEventListener('transitionend', onFaded);
+    vidB.addEventListener('transitionend', onFaded);
   }
 
-  function loopCheck() {
-    if (!loopRunning) return;
-    getVids();
-    if (!vidA || !vidB) { requestAnimationFrame(loopCheck); return; }
-
-    var cur = (active === 'A') ? vidA : vidB;
-    var nxt = (active === 'A') ? vidB : vidA;
-
-    // When current video is within CROSSFADE seconds of ending, start the swap
-    if (cur.duration && cur.currentTime > 0 && cur.currentTime >= cur.duration - CROSSFADE) {
+  function onTime(e) {
+    var cur = e.target;
+    if (swapping) return;
+    if (!cur.duration || cur.duration < 2) return;
+    // 1.2s before end, start the crossfade
+    if (cur.currentTime >= cur.duration - 1.2) {
+      swapping = true;
+      var nxt = (cur === vidA) ? vidB : vidA;
       nxt.currentTime = 0;
       nxt.play().catch(function(){});
-      // Crossfade: show next, hide current
       nxt.style.opacity = '1';
       cur.style.opacity = '0';
-      active = (active === 'A') ? 'B' : 'A';
+      // Reset guard after the transition completes
+      setTimeout(function() { swapping = false; }, 1500);
     }
+  }
 
-    requestAnimationFrame(loopCheck);
+  function onFaded(e) {
+    // Pause the video that just faded out
+    if (e.target.style.opacity === '0') {
+      e.target.pause();
+    }
   }
 
   function startLoop() {
-    getVids();
+    if (!vidA) setup();
     if (!vidA || !vidB) return;
+    swapping = false;
     vidA.currentTime = 0;
     vidA.style.opacity = '1';
     vidB.style.opacity = '0';
-    active = 'A';
+    vidB.pause();
     vidA.play().catch(function(){});
-    if (!loopRunning) {
-      loopRunning = true;
-      requestAnimationFrame(loopCheck);
-    }
   }
 
   function stopLoop() {
-    loopRunning = false;
-    getVids();
     if (vidA) vidA.pause();
     if (vidB) vidB.pause();
   }
