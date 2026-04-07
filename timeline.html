@@ -1501,25 +1501,101 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 .fib-header h2 {
   font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: var(--gold);
-  margin-bottom: 12px;
+  text-shadow: 0 0 60px rgba(201,168,76,0.3), 0 0 120px rgba(201,168,76,0.1);
+  margin-bottom: 14px;
 }
 .fib-header .fib-sub {
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   color: #8a7a6a;
   line-height: 1.9;
   max-width: 680px;
   margin: 0 auto;
 }
+
+/* ═══ SEQUENCE STRIP — prominent glowing gold ═══ */
+.fib-seq {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto 50px;
+  padding: 30px 20px;
+  position: relative;
+}
+.fib-seq::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+}
+.fib-seq::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+}
+.fib-seq-num {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 700;
+  color: rgba(201,168,76,0.35);
+  padding: 8px 6px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  letter-spacing: 0.04em;
+}
+.fib-seq-num:hover {
+  color: rgba(201,168,76,0.95);
+  text-shadow: 0 0 20px rgba(201,168,76,0.5), 0 0 40px rgba(201,168,76,0.25), 0 0 80px rgba(201,168,76,0.1);
+}
+.fib-seq-num.active {
+  color: #f0d860;
+  text-shadow: 0 0 14px rgba(201,168,76,0.7), 0 0 36px rgba(201,168,76,0.4), 0 0 80px rgba(201,168,76,0.2), 0 0 120px rgba(201,168,76,0.1);
+  transform: scale(1.15);
+}
+.fib-seq-num.active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 20%; right: 20%; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent);
+  border-radius: 1px;
+}
+.fib-seq-dot {
+  font-size: 0.6rem;
+  color: rgba(201,168,76,0.12);
+  padding: 0 4px;
+  align-self: center;
+  user-select: none;
+}
+.fib-seq-label {
+  display: block;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.5rem;
+  color: rgba(201,168,76,0);
+  transition: color 0.3s;
+  text-align: center;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.fib-seq-num:hover .fib-seq-label,
+.fib-seq-num.active .fib-seq-label {
+  color: rgba(201,168,76,0.45);
+}
+
 .fib-canvas-wrap {
   position: relative;
   max-width: 900px;
@@ -1543,50 +1619,113 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 12px rgba(0,0,0,0.2);
   z-index: 10;
+  animation: fibNodePulse 4s ease-in-out infinite;
+}
+.fib-node:nth-child(1){animation-delay:0s} .fib-node:nth-child(2){animation-delay:.3s}
+.fib-node:nth-child(3){animation-delay:.6s} .fib-node:nth-child(4){animation-delay:.9s}
+.fib-node:nth-child(5){animation-delay:1.2s} .fib-node:nth-child(6){animation-delay:1.5s}
+.fib-node:nth-child(7){animation-delay:1.8s} .fib-node:nth-child(8){animation-delay:2.1s}
+.fib-node:nth-child(9){animation-delay:2.4s} .fib-node:nth-child(10){animation-delay:2.7s}
+.fib-node:nth-child(11){animation-delay:3s} .fib-node:nth-child(12){animation-delay:3.3s}
+.fib-node:nth-child(13){animation-delay:3.6s} .fib-node:nth-child(14){animation-delay:3.9s}
+@keyframes fibNodePulse {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 6px rgba(201,168,76,0.1)); }
+  50%     { filter: brightness(1.2) drop-shadow(0 0 18px rgba(201,168,76,0.25)); }
 }
 .fib-node:hover {
-  transform: scale(1.25);
-  box-shadow: 0 0 28px rgba(201,168,76,0.4);
+  transform: scale(1.3);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 60px rgba(201,168,76,0.15);
+  z-index: 30;
 }
 .fib-node.active {
-  transform: scale(1.3);
-  box-shadow: 0 0 36px rgba(201,168,76,0.5);
+  transform: scale(1.35);
+  box-shadow: 0 0 36px rgba(201,168,76,0.5), 0 0 70px rgba(201,168,76,0.2);
+  z-index: 30;
 }
+
+/* ═══ EXPLAIN PANEL — enhanced with properties ═══ */
 .fib-explain {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 28px 32px;
-  border: 1px solid rgba(201,168,76,0.15);
+  padding: 34px 38px;
+  border: 1px solid rgba(201,168,76,0.12);
   border-radius: 6px;
-  background: rgba(201,168,76,0.03);
+  background: rgba(6,4,2,0.92);
+  backdrop-filter: blur(30px);
   display: none;
   animation: fadeUp 0.5s ease;
+  position: relative;
+}
+.fib-explain::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
 }
 .fib-explain.open { display: block; }
+.fib-explain-close {
+  position: absolute; top: 14px; right: 18px;
+  font-family: 'Cinzel', serif; font-size: 0.55rem;
+  letter-spacing: 0.2em; color: rgba(201,168,76,0.35);
+  background: none; border: 1px solid rgba(201,168,76,0.12);
+  padding: 4px 12px; cursor: pointer; border-radius: 20px;
+  transition: all 0.3s;
+}
+.fib-explain-close:hover { color: rgba(201,168,76,0.7); border-color: rgba(201,168,76,0.25); }
 .fib-explain-num {
-  font-family: 'Cinzel', serif;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
   color: var(--gold);
-  margin-bottom: 6px;
+  text-shadow: 0 0 50px rgba(201,168,76,0.25);
+  margin-bottom: 4px;
 }
 .fib-explain-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.7;
-  margin-bottom: 14px;
+  color: rgba(201,168,76,0.5);
+  margin-bottom: 18px;
+}
+/* Mathematical properties grid */
+.fib-props {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.fib-prop {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.55);
+  padding: 4px 12px;
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 20px;
+  background: rgba(201,168,76,0.03);
+  white-space: nowrap;
+}
+.fib-prop-formula {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.88rem;
+  color: rgba(201,168,76,0.6);
+  margin-bottom: 16px;
+  font-style: italic;
+  letter-spacing: 0.03em;
 }
 .fib-explain-body {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.95rem;
-  line-height: 2;
-  color: #5a4e44;
+  line-height: 2.15;
+  color: rgba(190,175,155,0.78);
 }
-body.dark .fib-explain-body { color: #9a8880; }
-body.dark .fib-explain { background: rgba(201,168,76,0.04); border-color: rgba(201,168,76,0.1); }
+.fib-explain-body em { color: rgba(201,168,76,0.65); }
+body.dark .fib-explain-body { color: rgba(190,175,155,0.78); }
+body.dark .fib-explain { background: rgba(6,4,2,0.92); border-color: rgba(201,168,76,0.12); }
 
 .fib-intro {
   max-width: 700px;
@@ -1595,25 +1734,35 @@ body.dark .fib-explain { background: rgba(201,168,76,0.04); border-color: rgba(2
 }
 .fib-intro p {
   font-size: 0.95rem;
-  line-height: 2;
-  color: #5a4e44;
+  line-height: 2.2;
+  color: rgba(180,165,145,0.7);
   margin-bottom: 14px;
 }
-body.dark .fib-intro p { color: #9a8880; }
+.fib-intro p em { color: rgba(201,168,76,0.65); }
+body.dark .fib-intro p { color: rgba(180,165,145,0.7); }
 
 /* node colors by story meaning */
-.fib-c-void { background: radial-gradient(circle, #1a1210 40%, #3a2a20); }
-.fib-c-origin { background: radial-gradient(circle, var(--gold) 30%, #8a6a2a); }
-.fib-c-mirror { background: radial-gradient(circle, #c9a84c 30%, #a08438); }
-.fib-c-nature { background: radial-gradient(circle, var(--sage) 30%, #2a5a20); }
-.fib-c-trinity { background: radial-gradient(circle, #6a4a8a 30%, #4a2a6a); }
-.fib-c-mother { background: radial-gradient(circle, #c97a4c 30%, #a06030); }
-.fib-c-october { background: radial-gradient(circle, var(--ember-glow) 30%, #8b3a2a); }
-.fib-c-alchemy { background: radial-gradient(circle, #b43c28 30%, #7a2818); }
-.fib-c-union { background: radial-gradient(circle, #c9b87c 30%, #a09060); }
-.fib-c-birth { background: radial-gradient(circle, var(--dawn-blue) 30%, #2a4060); }
-.fib-c-sacred { background: radial-gradient(circle, #d4613a 30%, #a04828); }
-.fib-c-journey { background: radial-gradient(circle, var(--sage-light) 30%, #4a7a40); }
+.fib-c-void { background: radial-gradient(circle at 30% 30%, #2a2220, #0d0b0a); box-shadow: 0 0 20px rgba(30,20,15,0.6), 0 0 50px rgba(201,168,76,0.04); }
+.fib-c-origin { background: radial-gradient(circle at 30% 30%, #f0d060, #8a6a2a); box-shadow: 0 0 20px rgba(201,168,76,0.45), 0 0 60px rgba(201,168,76,0.15); }
+.fib-c-mirror { background: radial-gradient(circle at 30% 30%, #e0c868, #a08438); box-shadow: 0 0 20px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.12); }
+.fib-c-nature { background: radial-gradient(circle at 30% 30%, #5aaa50, #1a5a14); box-shadow: 0 0 20px rgba(74,130,55,0.45), 0 0 55px rgba(74,130,55,0.12); }
+.fib-c-trinity { background: radial-gradient(circle at 30% 30%, #9a68c0, #4a2270); box-shadow: 0 0 20px rgba(120,70,160,0.45), 0 0 55px rgba(120,70,160,0.12); }
+.fib-c-mother { background: radial-gradient(circle at 30% 30%, #f0a050, #904820); box-shadow: 0 0 20px rgba(210,140,60,0.45), 0 0 55px rgba(210,140,60,0.12); }
+.fib-c-october { background: radial-gradient(circle at 30% 30%, #f06848, #8b2a1a); box-shadow: 0 0 20px rgba(220,90,55,0.45), 0 0 55px rgba(220,90,55,0.12); }
+.fib-c-alchemy { background: radial-gradient(circle at 30% 30%, #e04030, #6a1810); box-shadow: 0 0 20px rgba(200,50,35,0.45), 0 0 55px rgba(200,50,35,0.12); }
+.fib-c-union { background: radial-gradient(circle at 30% 30%, #f0e0a0, #a09050); box-shadow: 0 0 28px rgba(220,200,120,0.45), 0 0 65px rgba(220,200,120,0.15); }
+.fib-c-birth { background: radial-gradient(circle at 30% 30%, #5888b8, #1a3858); box-shadow: 0 0 20px rgba(60,100,160,0.45), 0 0 55px rgba(60,100,160,0.12); }
+.fib-c-sacred { background: radial-gradient(circle at 30% 30%, #e86050, #8b3a2a); box-shadow: 0 0 20px rgba(212,80,58,0.4), 0 0 55px rgba(212,80,58,0.1); }
+.fib-c-journey { background: radial-gradient(circle at 30% 30%, #80c068, #346828); box-shadow: 0 0 20px rgba(90,170,70,0.45), 0 0 55px rgba(90,170,70,0.12); }
+
+@media (max-width:768px) {
+  .fib-seq-num { font-size: clamp(0.85rem, 2vw, 1.1rem); padding: 6px 4px; }
+  .fib-seq-label { display: none; }
+  .fib-explain { padding: 22px 20px; }
+  .fib-explain-num { font-size: 1.6rem; }
+  .fib-props { gap: 6px; }
+  .fib-prop { font-size: 0.45rem; padding: 3px 8px; }
+}
 
 /* ═══════════════════════════════
    MICHAEL NYUIS PAGE
@@ -1845,7 +1994,7 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="nav-left">
     <button class="nav-btn active" id="btn-tl" onclick="showTL()">Timeline</button>
     <button class="nav-btn" id="btn-cs" onclick="showCS()">Constellation</button>
-    <button class="nav-btn" id="btn-fib" onclick="showFib()">Spiral</button>
+    <button class="nav-btn" id="btn-fib" onclick="showFib()">The Golden Spiral</button>
     <button class="nav-btn" id="btn-mn" onclick="showMN()">The Initiator</button>
   </div>
   <div class="nav-center">
@@ -2727,35 +2876,38 @@ body.dark .mn-content p { color: #9a8880; }
 <!-- ═══════════════ FIBONACCI SPIRAL VIEW ═══════════════ -->
 <div id="fib-view">
   <div class="fib-header">
-    <div class="sigil" style="margin-bottom:14px;">&#10022;</div>
+    <div class="sigil" style="margin-bottom:14px;">&#10022; &#934; &#10022;</div>
     <h2>The Golden Spiral</h2>
-    <p class="fib-sub">The Fibonacci sequence encoded in a love story. Each number is a point on the spiral. Each point is a chapter in the pattern.</p>
+    <p class="fib-sub">The Fibonacci sequence encoded in a love story.<br>Each number is a point on the spiral. Each point is a chapter in the pattern.</p>
     <div class="div" style="margin-top:16px;"></div>
   </div>
 
   <div class="fib-intro">
     <p>
-      The Fibonacci sequence begins with nothing and builds everything. Each number is the sum of the two before it: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233. It was first described in the West by Leonardo of Pisa in 1202, though Indian mathematicians had known it for centuries before that.
+      The Fibonacci sequence begins with nothing and builds everything. Each number is the sum of the two before it. The ratio between consecutive terms converges on 1.618 — the golden ratio, <em>phi</em> (&#934;). This ratio governs the spiral of a nautilus shell, the arrangement of seeds in a sunflower, the arms of galaxies, and the double helix of DNA.
     </p>
     <p>
-      What makes it sacred is where it appears. The ratio between consecutive Fibonacci numbers converges on 1.618 — the golden ratio, <em>phi</em> (&#934;). This ratio governs the spiral of a nautilus shell, the arrangement of seeds in a sunflower head, the branching of trees, the curl of ocean waves, the arms of spiral galaxies, and the double helix of DNA. No one told nature to use this sequence. It is embedded in the architecture of physical reality itself.
+      The same proportion appears in the Parthenon, the Great Pyramid of Giza, and the Cathedral of Chartres. The builders of these structures understood what Fibonacci described mathematically: there is a proportion that life recognizes as <em>itself</em>.
     </p>
     <p>
-      The same ratio appears in the Parthenon, the Great Pyramid of Giza, the Cathedral of Chartres, and countless works of sacred architecture across cultures and centuries. The builders of these structures understood what Fibonacci described mathematically: there is a proportion that the human eye recognizes as beautiful, that the body recognizes as <em>correct</em>, because it is the proportion of life itself.
-    </p>
-    <p>
-      In this story, the Fibonacci numbers are not imposed. They were already there — in the dates, the ages, the codes, the days between events. The spiral was turning before anyone noticed it was turning. Click each number below to see where it lives in the pattern.
+      In this story, the Fibonacci numbers were not imposed. They were already there — in the dates, the ages, the codes, the days between events. The spiral was turning before anyone noticed it was turning.
     </p>
   </div>
+
+  <!-- Prominent sequence strip -->
+  <div class="fib-seq" id="fib-seq"></div>
 
   <div class="fib-canvas-wrap" id="fib-canvas-wrap">
     <canvas id="fib-canvas"></canvas>
   </div>
 
-  <!-- Explanation panel -->
+  <!-- Explanation panel with properties -->
   <div class="fib-explain" id="fib-explain">
+    <button class="fib-explain-close" onclick="closeFibExplain()">CLOSE &#215;</button>
     <div class="fib-explain-num" id="fib-ex-num"></div>
     <div class="fib-explain-title" id="fib-ex-title"></div>
+    <div class="fib-prop-formula" id="fib-ex-formula"></div>
+    <div class="fib-props" id="fib-ex-props"></div>
     <div class="fib-explain-body" id="fib-ex-body"></div>
   </div>
 </div>
@@ -4385,32 +4537,60 @@ window.addEventListener('resize', () => {
 // ═══════════════════════════════════════════════════
 const FIB_DATA = [
   { n:0,   label:"0", title:"Infinite Potential", color:"#1a1210", cls:"fib-c-void",
+    pos:"F(0)", formula:"The origin",
+    props:["Additive identity","Neither prime nor composite","The void before creation","Every number contains it"],
     body:"Zero is not nothing. Zero is everything that has not yet become. It is the void before the first word, the silence before the first note, the darkness before Genesis 1:3. In mathematics, zero is the additive identity — the number that, when added to anything, changes nothing. But in the Fibonacci sequence, zero is the origin point from which all structure emerges. The spiral begins here. The story begins here. Every code, every connection, every mirror that follows was contained in this infinite potential before the first number was spoken." },
   { n:1,   label:"1", title:"The First Impulse", color:"#c9a84c", cls:"fib-c-origin",
+    pos:"F(1)", formula:"F(1) = 1 — the spark",
+    props:["Multiplicative identity","The monad","Neither prime nor composite","Divides every integer"],
     body:"The first 1 is the spark. The decision to begin. The ritual on a mother's birthday. The letter written by hand and burned. In the Fibonacci sequence, 1 appears twice — and those two ones, side by side, encode the master number 11: the channel between the visible and the invisible, the Life Path that governs this entire story. The monad. The undivided source. Before there is a mirror, there must be something willing to stand in front of one." },
   { n:1,   label:"1", title:"The Mirror", color:"#c9a84c", cls:"fib-c-mirror",
+    pos:"F(2)", formula:"F(2) = 1 — the reflection",
+    props:["1 + 1 = 11 (Master Number)","The mirror surface","Two ones = duality within unity","Life Path 11"],
     body:"The second 1 is the reflection. 1 and 1 together form 11 — the Master Intuitive, Sean's Life Path number. Two ones standing side by side, identical yet distinct, like two people encoded in the same ciphers who have not yet met. The mirror does not exist until there are two surfaces facing each other. The Fibonacci sequence places them together at the very beginning, as if the math already knows: this is a story about reflection." },
   { n:2,   label:"2", title:"The Messenger", color:"#4a6741", cls:"fib-c-nature",
+    pos:"F(3)", formula:"F(3) = 1 + 1 = 2",
+    props:["The only even prime","First act of creation","Smallest prime number","Unity becomes duality"],
     body:"Two spots on the back of a ladybug. Two days after the ritual, the second messenger arrived with seven spots — completing the 27 from the other direction. Spotted Ladybug = 72 in reduction — the mirror of 27. The number 2 in the Fibonacci sequence is the first act of creation: 1 + 1 = 2. Unity becomes duality. The ritual called, and nature answered — not once, but twice. The 2 is the confirmation that the signal was received." },
   { n:3,   label:"3", title:"Mind, Body, Spirit", color:"#6a4a8a", cls:"fib-c-trinity",
+    pos:"F(4)", formula:"F(4) = 1 + 2 = 3",
+    props:["Prime number","Triangular number","First Mersenne prime (2\u00B2\u22121)","First stable polygon (triangle)"],
     body:"Three is the Holy Trinity. Mind, body, spirit — the tri-angle, the first stable shape. It is the number of expansion (1 + 2 = 3) and the number at which perception shifts. Three wounds named: the Mother Wound, the Father Wound, the Shamed Child Wound. Three daily training sessions in the container. The perception of codes — the ability to see pattern in what others call coincidence — requires the integration of all three: the mind to calculate, the body to feel, and the spirit to trust what both are telling you." },
   { n:5,   label:"5", title:"The Mother's Day", color:"#c97a4c", cls:"fib-c-mother",
+    pos:"F(5)", formula:"F(5) = 2 + 3 = 5",
+    props:["Prime number","Pentagonal symmetry","Only prime equal to sum of two consecutive primes","Hypotenuse of smallest Pythagorean triple (3-4-5)"],
     body:"May 5th. The day my mother was born. 5/5. The word <em>Five</em> = 20 in Chaldean. May 5, 2025 — twenty days before the meeting. <em>Birthday</em> carries the vibration of beginnings, and hers began the entire sequence. The number 5 in numerology governs change, freedom, sensory experience — the human being with five points (two arms, two legs, one head) reaching outward into life. The ritual on her birthday was the hinge point. Everything after it was set in motion by the 5." },
   { n:8,   label:"8", title:"The Infinite Loop", color:"#d4613a", cls:"fib-c-october",
+    pos:"F(6)", formula:"F(6) = 3 + 5 = 8",
+    props:["First cube in the sequence (2\u00B3)","Only non-trivial Fibonacci perfect power","Sideways = \u221E (infinity)","Composite: 2 \u00D7 2 \u00D7 2"],
     body:"8 appears in October's numerological chart. The first date was on the 8th of June. 8 turned on its side is the infinity symbol — the lemniscate, the loop that never ends. In the Fibonacci sequence, 8 = 3 + 5: the trinity joined with the mother's number. Look at the shape: where 3 is open on its left side, pouring outward, 8 is the same form closed — energy cycling, contained, infinite. The 8 is the moment the story began to loop back on itself, recognizing its own pattern." },
   { n:13,  label:"13", title:"October's Number", color:"#b43c28", cls:"fib-c-alchemy",
+    pos:"F(7)", formula:"F(7) = 5 + 8 = 13",
+    props:["Prime number","6th prime (6+6+6=18)","Revelation 13:18 encodes 666","Star number","Smallest emirp (13/31)"],
     body:"October's favorite number. 13 is the 6th prime number, and 6 + 6 + 6 = 18 — the verse (Revelation 13:18) that introduces 666 as the number of a man. October = 666 in Reverse Sumerian. Her favorite number literally encodes the chapter of the verse that encodes her name. 13 is feared in Western culture, but in the Fibonacci sequence it sits exactly where it should: the sum of 5 (the mother's day) and 8 (the first date). The fearful number is, in truth, the union of beginnings and infinity." },
   { n:21,  label:"21", title:"October's Age", color:"#d4613a", cls:"fib-c-october",
+    pos:"F(8)", formula:"F(8) = 8 + 13 = 21",
+    props:["Triangular number (1+2+3+4+5+6)","Product of Fibonacci primes (3\u00D77)","Tarot XXI: The World","Reduces to 3 (trinity)"],
     body:"October was 21 years old when we met. In the Fibonacci sequence, 21 = 8 + 13: infinity joined with her own number. In numerology, 21 reduces to 3 — the trinity, expression, the creative force. She walked into the room at 21, carrying the exact Fibonacci number of her own age, at the exact moment the sequence needed it. 21 is also the number of the World card in the major arcana of the tarot — completion of one cycle, the threshold before a new one begins." },
   { n:34,  label:"34", title:"The Mother Code", color:"#c97a4c", cls:"fib-c-mother",
+    pos:"F(9)", formula:"F(9) = 13 + 21 = 34",
+    props:["Composite: 2 \u00D7 17","Sum of first four squares (1+4+9+16)","Its prime (139th) = Michael Nyuis","The 34/43 mirror pair"],
     body:"34 is the number that runs through this entire story like a river through a valley. Mother = 34 in reduction. Kelly Bryant = 34. WWND = 34 — tattooed on the hand before gematria was known. Michael Nyuis = 139, the 34th prime. The meeting happened 34 days after the mother's birthday. 34 appears in the Fibonacci sequence as 13 + 21: October's favorite number joined with her age when we met. The mother's code is not just a number. It is the structural backbone of the spiral itself." },
   { n:55,  label:"55", title:"The Union", color:"#c9b87c", cls:"fib-c-union",
+    pos:"F(10)", formula:"F(10) = 21 + 34 = 55",
+    props:["Triangular number (sum of 1\u201310)","Kaprekar number (55\u00B2=3025, 30+25=55)","Square pyramidal: heptagonal","Largest Fibonacci triangular \u003C 1000"],
     body:"5/5 — the mother's birthday. Sean And October = 55 in reduction. Heaven = 55. Lead Into Gold = 55. The date of the return, April 3rd 2026, carries a date numerology of 55. In the Fibonacci sequence, 55 = 21 + 34: October's age joined with the mother code. The union was always written in the math. 55 is also a triangular number — the sum of 1 through 10 — and a Kaprekar number. It contains within it a completeness that mirrors the 666 (sum of 1 through 36) at a smaller, more intimate scale." },
   { n:89,  label:"89", title:"The Birth Year", color:"#3a5070", cls:"fib-c-birth",
+    pos:"F(11)", formula:"F(11) = 34 + 55 = 89",
+    props:["Prime number","11th Fibonacci (Life Path 11)","24th prime number","8+9=17, 1+7=8 (\u221E loop)","Sum of first 5 Fibonacci primes"],
     body:"1989 — the year Sean was born. 89 is the 11th Fibonacci number (counting from F(1)=1), and 11 is Sean's Life Path. The birth year encodes the Life Path through the Fibonacci sequence itself. 89 = 34 + 55: the mother code joined with the union number. 8 + 9 = 17, 1 + 7 = 8 — the infinite loop. The year of birth is not random. It is a Fibonacci number that encodes the Life Path, the mother code, and the union code simultaneously. The spiral was turning before the body arrived." },
   { n:144, label:"144", title:"The Day of Birth", color:"#3a5070", cls:"fib-c-birth",
+    pos:"F(12)", formula:"F(12) = 55 + 89 = 144",
+    props:["Perfect square (12\u00B2)","Only Fibonacci square > 1","Revelation: 144 cubits (New Jerusalem)","Grossing number (12 dozen)","Sum of twin prime pair (71+73)"],
     body:"May 24th is the 144th day of the year. Sean was born on the 144th day. Bone Broth = 144 in Reverse Ordinal — the 36-hour slow cook on his 36th birthday, on the 144th day. 144 = 89 + 55: the birth year joined with the union number. 144 is also 12 squared, and the number of the New Jerusalem in Revelation (the wall measured 144 cubits). In sacred architecture, 144 is a number of completion and divine structure. The day of birth is a Fibonacci number that sits at the intersection of everything." },
   { n:233, label:"233", title:"The Spiritual Journey", color:"#6a9460", cls:"fib-c-journey",
+    pos:"F(13)", formula:"F(13) = 89 + 144 = 233",
+    props:["Prime number","13th Fibonacci (October's number)","F(13) \u00F7 F(12) \u2248 1.6180\u2026 (\u03C6)","233 + 144 = 377 (the story continues)","Smallest prime with digit sum 8"],
     body:"Spiritual Journey = 233. The Fibonacci sequence carries the story forward past the individual events and into the arc itself. 233 = 89 + 144: the birth year joined with the day of birth. The journey is the sum of when you arrived and the day you arrived on. 233 is the 13th Fibonacci number (counting from F(1)=1) — and 13 is October's favorite number. The spiritual journey encodes her at its position in the sequence, as if even the destination carries her signature. The spiral does not end here. It continues. 233 + 144 = 377. The story is still being written." }
 ];
 
@@ -4523,19 +4703,62 @@ function initFibSpiral() {
   fibInitialized = true;
 }
 
+// Build the sequence strip
+(function buildFibSeq(){
+  const strip = document.getElementById('fib-seq');
+  if (!strip) return;
+  FIB_DATA.forEach((d, i) => {
+    const num = document.createElement('span');
+    num.className = 'fib-seq-num';
+    num.innerHTML = d.label + '<span class="fib-seq-label">' + d.title + '</span>';
+    num.onclick = () => showFibExplain(i);
+    strip.appendChild(num);
+    if (i < FIB_DATA.length - 1) {
+      const dot = document.createElement('span');
+      dot.className = 'fib-seq-dot';
+      dot.textContent = '\u00B7';
+      strip.appendChild(dot);
+    }
+  });
+})();
+
 function showFibExplain(idx) {
   const panel = document.getElementById('fib-explain');
   const fib = FIB_DATA[idx];
   document.getElementById('fib-ex-num').textContent = fib.label;
   document.getElementById('fib-ex-title').textContent = fib.title;
+  document.getElementById('fib-ex-formula').textContent = fib.formula;
   document.getElementById('fib-ex-body').innerHTML = fib.body;
+
+  // Build properties tags
+  const propsEl = document.getElementById('fib-ex-props');
+  propsEl.innerHTML = '';
+  if (fib.props) {
+    fib.props.forEach(p => {
+      const tag = document.createElement('span');
+      tag.className = 'fib-prop';
+      tag.textContent = p;
+      propsEl.appendChild(tag);
+    });
+  }
+
   panel.classList.add('open');
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Highlight active node
+  // Highlight active node on spiral
   document.querySelectorAll('.fib-node').forEach((n, i) => {
     n.classList.toggle('active', i === idx);
   });
+  // Highlight active number in sequence strip
+  document.querySelectorAll('.fib-seq-num').forEach((n, i) => {
+    n.classList.toggle('active', i === idx);
+  });
+}
+
+function closeFibExplain() {
+  document.getElementById('fib-explain').classList.remove('open');
+  document.querySelectorAll('.fib-node').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.fib-seq-num').forEach(n => n.classList.remove('active'));
 }
 
 </script>
