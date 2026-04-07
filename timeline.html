@@ -4511,7 +4511,7 @@ function drawConstellationLoop() {
   constellationRAF = requestAnimationFrame(drawConstellationLoop);
 }
 
-(function () {
+;(function () {
   const canvas = document.getElementById('ccanvas');
   function getEC(e, c) {
     const r = c.getBoundingClientRect();
@@ -4773,7 +4773,7 @@ function initFibSpiral() {
 // ═══════════════════════════════
 // PARTICLE SYSTEM OVER SPIRAL
 // ═══════════════════════════════
-(function initFibParticles(){
+;(function initFibParticles(){
   const c = document.getElementById('fib-particles');
   if (!c) return;
   const ctx = c.getContext('2d');
@@ -4828,10 +4828,10 @@ function initFibSpiral() {
 
   window.addEventListener('load', () => { resize(); requestAnimationFrame(frame); });
   window.addEventListener('resize', resize);
-})()
+})();
 
 // Build the sequence strip
-(function buildFibSeq(){
+;(function buildFibSeq(){
   const strip = document.getElementById('fib-seq');
   if (!strip) return;
   FIB_DATA.forEach((d, i) => {
