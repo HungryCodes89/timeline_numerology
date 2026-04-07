@@ -31,6 +31,7 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
   background: var(--cream);
   color: #1a1210;
   overflow-x: hidden;
@@ -129,12 +130,12 @@ body::after {
 }
 .cover-sub {
   font-family: 'IM Fell English', serif; font-style: italic;
-  font-size: 1.15rem; color: #b8a888;
+  font-size: 1.4rem; color: #b8a888;
   margin-bottom: 4px; opacity: 0;
   animation: coverTextIn 2s ease 1.8s forwards;
 }
 .cover-sub-code {
-  font-family: 'Cinzel', serif; font-size: 0.6rem;
+  font-family: 'Cinzel', serif; font-size: 0.75rem;
   letter-spacing: 0.18em; color: #c9a84c;
   opacity: 0; margin-bottom: 36px;
   animation: coverTextIn 2s ease 2.1s forwards;
@@ -261,8 +262,8 @@ nav[data-phase="transmutation"] .nav-phase-indicator { color: var(--sage); }
 
 .nav-btn {
   font-family: 'Cinzel', serif;
-  font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 6px 14px; border: 1px solid rgba(201,168,76,0.3);
+  font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 8px 16px; border: 1px solid rgba(201,168,76,0.3);
   background: transparent; color: var(--gold);
   cursor: pointer; border-radius: 20px;
   transition: all 0.3s ease;
@@ -277,8 +278,8 @@ nav[data-phase="transmutation"] .nav-phase-indicator { color: var(--sage); }
 }
 #filter-bar.hidden { display: none; }
 .fchip {
-  font-family: 'Cinzel', serif; font-size: 0.56rem; letter-spacing: 0.12em;
-  padding: 3px 11px; border: 1px solid rgba(201,168,76,0.3);
+  font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.12em;
+  padding: 5px 13px; border: 1px solid rgba(201,168,76,0.3);
   background: rgba(201,168,76,0.03); color: var(--gold);
   cursor: pointer; border-radius: 20px; transition: all 0.25s;
 }
@@ -307,7 +308,7 @@ header {
 }
 h1 {
   font-family: 'Cinzel Decorative', 'Cinzel', serif;
-  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-size: clamp(2.8rem, 6vw, 4rem);
   font-weight: 400; letter-spacing: 0.15em; margin-bottom: 10px;
 }
 h1 span { color: var(--gold); }
@@ -349,7 +350,7 @@ body.dark .motto { color: #7a6a5a; }
 .plabel {
   text-align: center;
   font-family: 'Cinzel Decorative', 'Cinzel', serif;
-  font-size: 0.8rem; font-weight: 700;
+  font-size: 1rem; font-weight: 700;
   letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--gold); margin: 60px 0 40px;
   position: relative; z-index: 2; line-height: 1;
@@ -444,7 +445,7 @@ body.dark .motto { color: #7a6a5a; }
 .detail {
   max-height: 0; overflow: hidden; opacity: 0;
   font-family: 'IM Fell English', serif;
-  font-size: 0.82rem; line-height: 1.85;
+  font-size: 0.82rem; line-height: 2.1;
   color: #7a6a5a; font-style: italic;
   transition: max-height 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, margin 0.4s ease;
 }
@@ -892,7 +893,7 @@ body.dark .panel-title { color: #d4b8a8; }
   background: linear-gradient(90deg, var(--gold), transparent);
   margin-bottom: 20px;
 }
-.panel-text { font-size: 0.92rem; line-height: 1.85; color: #5a4e44; margin-bottom: 16px; }
+.panel-text { font-size: 0.92rem; line-height: 2.1; color: #5a4e44; margin-bottom: 16px; }
 body.dark .panel-text { color: #9a8880; }
 .panel-detail {
   font-family: 'IM Fell English', serif; font-style: italic;
@@ -944,8 +945,8 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
     padding: 16px 40px; font-size: 0.65rem;
     min-height: 48px; /* touch target */
   }
-  .cover-sub { font-size: 1rem; }
-  .cover-sub-code { font-size: 0.55rem; margin-bottom: 28px; }
+  .cover-sub { font-size: 1.2rem; }
+  .cover-sub-code { font-size: 0.7rem; margin-bottom: 28px; }
   .cover-divider { margin-bottom: 28px; }
 
   /* ── NAV — bottom bar ── */
@@ -967,7 +968,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   .nav-left, .nav-right { gap: 4px; }
   .nav-center { display: none; }
   .nav-btn {
-    font-size: 0.5rem; padding: 8px 12px;
+    font-size: 0.65rem; padding: 8px 14px;
     letter-spacing: 0.12em;
     white-space: nowrap; flex-shrink: 0;
     min-height: 36px;
@@ -975,7 +976,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 
   /* ── HEADER ── */
   header { padding: 72px 20px 32px; }
-  h1 { font-size: 1.6rem; letter-spacing: 0.08em; }
+  h1 { font-size: 2.8rem; letter-spacing: 0.08em; }
   .sub { font-size: 0.88rem; }
   .motto { font-size: 0.78rem; }
   .sigil { font-size: 1.3rem; letter-spacing: 0.2em; }
@@ -1016,15 +1017,15 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   .edate { font-size: 0.52rem; letter-spacing: 0.15em; }
   .etitle { font-size: 1.05rem; margin-bottom: 8px; line-height: 1.35; }
   .ebody { font-size: 0.88rem; line-height: 1.78; }
-  .detail { font-size: 0.8rem; line-height: 1.8; }
+  .detail { font-size: 0.8rem; line-height: 2.1; }
   .ec.open .detail { max-height: 600px; }
 
   /* ── PHASE LABELS ── */
   .plabel {
-    font-size: 0.62rem; margin: 36px 0 24px;
+    font-size: 0.8rem; margin: 36px 0 24px;
     letter-spacing: 0.2em;
   }
-  .plabel .drop-cap { font-size: 1.5rem; }
+  .plabel .drop-cap { font-size: 1.8rem; }
   .plabel::before, .plabel::after { width: 20px; margin: 0 8px; }
 
   /* ── TAGS ── */
@@ -1187,7 +1188,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
    SMALL PHONES (420px)
    ═══════════════════════════════ */
 @media (max-width: 420px) {
-  h1 { font-size: 1.35rem; letter-spacing: 0.06em; }
+  h1 { font-size: 2.8rem; letter-spacing: 0.06em; }
   .sub { font-size: 0.82rem; }
   .motto { font-size: 0.72rem; }
 
@@ -1195,12 +1196,12 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   .cover-content { padding: 20px 16px calc(20px + env(safe-area-inset-bottom)); }
   .cover-invocation { font-size: 0.78rem; line-height: 1.8; margin-bottom: 24px; }
   .cover-begin { padding: 14px 28px; font-size: 0.6rem; }
-  .cover-sub { font-size: 0.9rem; }
+  .cover-sub { font-size: 1.1rem; }
 
   header { padding: 64px 16px 28px; }
 
-  .plabel .drop-cap { font-size: 1.3rem; }
-  .plabel { font-size: 0.55rem; letter-spacing: 0.18em; margin: 28px 0 20px; }
+  .plabel .drop-cap { font-size: 1.6rem; }
+  .plabel { font-size: 0.72rem; letter-spacing: 0.18em; margin: 28px 0 20px; }
 
   .etitle { font-size: 0.95rem; }
   .ebody { font-size: 0.84rem; }
@@ -1214,7 +1215,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   .intro-section summary { font-size: 0.6rem; padding: 12px 14px; }
   .intro-body p { font-size: 0.88rem !important; }
 
-  .nav-btn { font-size: 0.44rem; padding: 6px 8px; }
+  .nav-btn { font-size: 0.58rem; padding: 6px 10px; }
 
   .module-content { padding: 22px 14px; }
   .module-header h2 { font-size: 1.05rem; }
@@ -1236,7 +1237,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
    ULTRA-SMALL PHONES (360px)
    ═══════════════════════════════ */
 @media (max-width: 360px) {
-  h1 { font-size: 1.2rem; }
+  h1 { font-size: 2.4rem; }
   .cover-lotus { width: clamp(120px, 50vw, 180px); }
   .cover-invocation { font-size: 0.72rem; }
   .cover-begin { padding: 12px 24px; }
@@ -1250,7 +1251,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   .etitle { font-size: 0.88rem; }
   .ebody { font-size: 0.8rem; }
 
-  .nav-btn { font-size: 0.42rem; padding: 5px 6px; min-height: 32px; }
+  .nav-btn { font-size: 0.54rem; padding: 5px 8px; min-height: 32px; }
   .module-content { padding: 18px 12px; }
 }
 
@@ -1259,7 +1260,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
    ═══════════════════════════════ */
 @media (max-height: 500px) and (orientation: landscape) {
   nav { padding: 6px 8px; }
-  .nav-btn { font-size: 0.46rem; padding: 4px 8px; }
+  .nav-btn { font-size: 0.6rem; padding: 5px 10px; }
   .module-content { max-height: 95vh; }
   .sacred-module { align-items: flex-start; }
   .cover-lotus { width: 120px; }
