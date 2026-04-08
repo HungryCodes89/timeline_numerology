@@ -138,20 +138,6 @@ body.dark::after { opacity: 0.13; }
   from { opacity: 0; transform: translateY(16px); letter-spacing: 0.3em; }
   to { opacity: 1; transform: translateY(0); letter-spacing: 0.12em; }
 }
-.cover-title {
-  position: absolute;
-  top: clamp(28px, 7vh, 60px);
-  left: 50%; transform: translateX(-50%);
-  width: 100%; text-align: center;
-  font-family: 'Cinzel Decorative', 'Cinzel', serif;
-  font-size: clamp(2.2rem, 6vw, 4.5rem);
-  letter-spacing: 0.2em; color: #fff;
-  font-weight: 400; z-index: 3;
-  opacity: 0; animation: coverTextIn 2s ease 0.8s forwards;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-  pointer-events: none;
-}
-.cover-title span { color: var(--gold); }
 .cover-sub {
   font-family: 'IM Fell English', serif; font-style: italic;
   font-size: 1.6rem; color: #d4c9a8;
@@ -2172,7 +2158,6 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="cover-grade"></div>
   <div class="cover-vignette"></div>
   <canvas id="cover-canvas"></canvas>
-  <h2 class="cover-title"><span>Sacred</span> Mirrors</h2>
   <div class="cover-content">
     <div class="cover-lotus-wrap">
       <svg class="cover-lotus" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
