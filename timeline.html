@@ -1886,7 +1886,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   font-family: 'IM Fell English', serif;
   font-style: italic;
   font-size: 0.5rem;
-  color: rgba(201,168,76,0);
+  color: rgba(201,168,76,0.3);
   transition: color 0.3s;
   text-align: center;
   white-space: nowrap;
@@ -1894,7 +1894,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-seq-num:hover .fib-seq-label,
 .fib-seq-num.active .fib-seq-label {
-  color: rgba(201,168,76,0.45);
+  color: rgba(201,168,76,0.7);
 }
 
 /* ═══ FULL-SCREEN SPIRAL MAP ═══ */
@@ -1931,11 +1931,11 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .fib-node .nd-num { line-height: 1; }
 .fib-node .nd-label {
   font-family: 'IM Fell English', serif; font-style: italic;
-  font-weight: 400; opacity: 0; max-width: 0; overflow: hidden;
+  font-weight: 400; opacity: 0.5; max-width: 110px; overflow: hidden;
   transition: opacity 0.4s, max-width 0.4s;
   white-space: nowrap; text-align: center;
 }
-.fib-node:hover .nd-label, .fib-node.active .nd-label { opacity: 0.7; max-width: 120px; }
+.fib-node:hover .nd-label, .fib-node.active .nd-label { opacity: 0.9; max-width: 160px; }
 .fib-node::before {
   content: ''; position: absolute; inset: -8px; border-radius: 50%;
   background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
@@ -1967,19 +1967,28 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   z-index: 30;
 }
 
-/* ═══ EXPLAIN PANEL, enhanced with properties ═══ */
+/* ═══ EXPLAIN PANEL — fixed overlay ═══ */
 .fib-explain {
-  max-width: 720px;
-  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(720px, 92vw);
+  max-height: 80vh;
+  overflow-y: auto;
   padding: 34px 38px;
-  border: 1px solid rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.22);
   border-radius: 6px;
-  background: rgba(6,4,2,0.95);
+  background: rgba(6,4,2,0.97);
   backdrop-filter: blur(40px);
   display: none;
-  animation: fadeUp 0.5s ease;
-  position: relative;
-  box-shadow: 0 8px 60px rgba(0,0,0,0.8);
+  animation: fibPanelIn 0.35s cubic-bezier(0.2,0,0.2,1) forwards;
+  z-index: 1100;
+  box-shadow: 0 8px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(201,168,76,0.06);
+}
+@keyframes fibPanelIn {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.95); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 .fib-explain::before {
   content: '';
@@ -1988,6 +1997,17 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
 }
 .fib-explain.open { display: block; }
+/* Backdrop overlay for fib explain panel */
+#fib-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(3px);
+  z-index: 1099;
+  cursor: pointer;
+}
+#fib-overlay.open { display: block; }
 .fib-explain-close {
   position: absolute; top: 14px; right: 18px;
   font-family: 'Cinzel', serif; font-size: 0.55rem;
@@ -3271,8 +3291,11 @@ body.dark .mn-content p { color: #9a8880; }
     <canvas id="fib-particles"></canvas>
   </div>
 
+  <!-- Overlay backdrop for explain panel -->
+  <div id="fib-overlay" onclick="closeFibExplain()"></div>
+
   <!-- Explanation panel with properties -->
-  <div class="fib-explain" id="fib-explain" style="padding:0 20px;">
+  <div class="fib-explain" id="fib-explain" style="padding:34px 38px;">
     <button class="fib-explain-close" onclick="closeFibExplain()">CLOSE &#215;</button>
     <div class="fib-explain-num" id="fib-ex-num"></div>
     <div class="fib-explain-title" id="fib-ex-title"></div>
@@ -5184,7 +5207,7 @@ function initFibSpiral() {
   // Golden ratio rectangles
   ctx.save(); ctx.translate(cx, cy);
   let rs = maxR * 0.6;
-  ctx.strokeStyle = 'rgba(201,168,76,0.025)'; ctx.lineWidth = 0.6;
+  ctx.strokeStyle = 'rgba(201,168,76,0.07)'; ctx.lineWidth = 0.8;
   for (let j = 0; j < 12; j++) {
     ctx.strokeRect(-rs/2, -rs/2, rs, rs);
     rs /= PHI_CONST; ctx.rotate(-Math.PI/2);
@@ -5261,10 +5284,10 @@ function initFibSpiral() {
     const frac = (i + 0.35) / FIB_DATA.length;
     const p = spiralXY(frac * 0.9 + 0.02);
 
-    const scale = 0.45 + (i / FIB_DATA.length) * 0.9;
-    const size = Math.round(52 * scale);
-    const numFs = (0.7 * scale).toFixed(2);
-    const labelFs = (0.32 * scale).toFixed(2);
+    const scale = 0.65 + (i / FIB_DATA.length) * 0.85;
+    const size = Math.round(60 * scale);
+    const numFs = (0.72 * scale).toFixed(2);
+    const labelFs = (0.38 * scale).toFixed(2);
 
     const nd = document.createElement('div');
     nd.className = 'fib-node ' + fib.cls;
@@ -5273,19 +5296,27 @@ function initFibSpiral() {
     nd.style.fontSize = numFs + 'rem';
     nd.style.left = (p.x - size/2) + 'px'; nd.style.top = (p.y - size/2) + 'px';
     nd.onclick = () => showFibExplain(i);
+    nd.style.opacity = '0';
+    nd.style.animation = 'none';
     sec.appendChild(nd);
+    // Staggered appear — delay based on index
+    setTimeout(() => {
+      nd.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.2,0,0.2,1)';
+      nd.style.opacity = '1';
+      nd.style.animation = 'fibNodePulse 4s ease-in-out ' + (i * 0.28) + 's infinite';
+    }, 80 + i * 120);
 
     // Connection line to previous
     if (i > 0) {
       const prev = spiralXY(((i-1+0.35)/FIB_DATA.length)*0.9+0.02);
       ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(p.x, p.y);
-      ctx.strokeStyle = 'rgba(201,168,76,0.025)'; ctx.lineWidth = 0.5; ctx.stroke();
+      ctx.strokeStyle = 'rgba(201,168,76,0.14)'; ctx.lineWidth = 1.2; ctx.stroke();
     }
 
     // Node glow halo on canvas
-    const ng = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size*0.8);
-    ng.addColorStop(0, 'rgba(201,168,76,0.03)'); ng.addColorStop(1, 'rgba(201,168,76,0)');
-    ctx.fillStyle = ng; ctx.beginPath(); ctx.arc(p.x, p.y, size*0.8, 0, Math.PI*2); ctx.fill();
+    const ng = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size*1.2);
+    ng.addColorStop(0, 'rgba(201,168,76,0.1)'); ng.addColorStop(0.5, 'rgba(201,168,76,0.04)'); ng.addColorStop(1, 'rgba(201,168,76,0)');
+    ctx.fillStyle = ng; ctx.beginPath(); ctx.arc(p.x, p.y, size*1.2, 0, Math.PI*2); ctx.fill();
   });
 
   fibInitialized = true;
@@ -5318,7 +5349,7 @@ function fibPartSpawn() {
     y: cy2 - r*Math.sin(angle) + (Math.random()-0.5)*18,
     vx: (Math.random()-0.5)*0.12, vy: -Math.random()*0.25 - 0.04,
     life: 1, decay: Math.random()*0.003 + 0.0015,
-    sz: Math.random()*2 + 0.4, gold: Math.random() > 0.2
+    sz: Math.random()*2 + 0.4, gold: Math.random() > 0.45
   });
 }
 
@@ -5334,7 +5365,7 @@ function fibPartFrame() {
     p.x += p.vx; p.y += p.vy; p.life -= p.decay;
     if (p.life <= 0) { fibParticles.splice(i,1); continue; }
     fibPartCtx.beginPath(); fibPartCtx.arc(p.x, p.y, p.sz, 0, Math.PI*2);
-    fibPartCtx.fillStyle = p.gold ? 'rgba(220,190,100,' + (p.life*0.4) + ')' : 'rgba(170,210,190,' + (p.life*0.25) + ')';
+    fibPartCtx.fillStyle = p.gold ? 'rgba(220,190,100,' + (p.life*0.4) + ')' : 'rgba(240,210,140,' + (p.life*0.22) + ')';
     fibPartCtx.fill();
     if (p.sz > 1.2) {
       fibPartCtx.beginPath(); fibPartCtx.arc(p.x, p.y, p.sz*3, 0, Math.PI*2);
@@ -5395,7 +5426,8 @@ function showFibExplain(idx) {
   }
 
   panel.classList.add('open');
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const ov = document.getElementById('fib-overlay');
+  if (ov) ov.classList.add('open');
 
   // Highlight active node on spiral
   document.querySelectorAll('.fib-node').forEach((n, i) => {
@@ -5409,6 +5441,8 @@ function showFibExplain(idx) {
 
 function closeFibExplain() {
   document.getElementById('fib-explain').classList.remove('open');
+  const ov = document.getElementById('fib-overlay');
+  if (ov) ov.classList.remove('open');
   document.querySelectorAll('.fib-node').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.fib-seq-num').forEach(n => n.classList.remove('active'));
 }
