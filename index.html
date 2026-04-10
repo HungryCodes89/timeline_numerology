@@ -885,6 +885,15 @@ body.dark .decode-connections li { color: #9a8880; }
   margin-top: 20px; transition: all 0.3s;
 }
 .step-continue:hover { background: rgba(201,168,76,0.1); }
+.step-back {
+  font-family: 'Cinzel', serif; font-size: 0.52rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: #7a6a60; background: transparent;
+  border: 1px solid rgba(150,130,110,0.2);
+  padding: 8px 18px; cursor: pointer; border-radius: 20px;
+  margin-top: 20px; transition: all 0.3s; opacity: 0.7;
+}
+.step-back:hover { opacity: 1; border-color: rgba(150,130,110,0.45); }
 
 /* Mirror Module */
 .mirror-conversation {
@@ -2802,6 +2811,32 @@ body.dark .mn-content p { color: #9a8880; }
     <div id="chart-result" style="display:none;"></div>
   </div></details>
 
+  <!-- SECTION: DATE DECODER -->
+  <details class="intro-section">
+    <summary>Date Decoder</summary>
+    <div class="intro-body">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.9;color:#3a3028;margin-bottom:18px;">
+      Enter any date to reveal its numerological resonance — reduction, day of year, distance from Sean and October's births, and any sacred codes it carries.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px;">
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:4px;">MONTH</label>
+        <input type="number" id="dd-month" min="1" max="12" placeholder="MM" style="width:60px;padding:10px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
+      </div>
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:4px;">DAY</label>
+        <input type="number" id="dd-day" min="1" max="31" placeholder="DD" style="width:60px;padding:10px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
+      </div>
+      <div>
+        <label style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:4px;">YEAR</label>
+        <input type="number" id="dd-year" min="1900" max="2100" placeholder="YYYY" style="width:80px;padding:10px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(201,168,76,0.03);color:#3a2a1a;text-align:center;outline:none;" />
+      </div>
+      <button onclick="decodeDate()" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#1a1210;background:var(--gold);border:none;padding:11px 24px;cursor:pointer;border-radius:20px;transition:all 0.3s;font-weight:600;">Decode</button>
+      <button onclick="(function(){const n=new Date();document.getElementById('dd-month').value=n.getMonth()+1;document.getElementById('dd-day').value=n.getDate();document.getElementById('dd-year').value=n.getFullYear();decodeDate();})()" style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid rgba(201,168,76,0.3);padding:10px 18px;cursor:pointer;border-radius:20px;transition:all 0.3s;">Today</button>
+    </div>
+    <div id="dd-result" style="display:none;"></div>
+  </div></details>
+
   <div class="div" style="margin:40px auto;"></div>
 
 </div>
@@ -3662,6 +3697,7 @@ const GEMATRIA_CODES = {
   const canvas = document.getElementById('landscape-canvas');
   const ctx = canvas.getContext('2d');
   let W, H, scrollY = 0, currentPhase = 'origin';
+  let prevPhase = 'origin', phaseBlend = 1.0;
   const isMobile = window.innerWidth < 768;
 
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
@@ -3917,7 +3953,9 @@ const GEMATRIA_CODES = {
       { type: 'horse', x: 0.15, y: 0.82, size: 35 },
       { type: 'horse', x: 0.3, y: 0.84, size: 30 },
       { type: 'horse', x: 0.75, y: 0.83, size: 32 },
+      { type: 'horse', x: 0.55, y: 0.85, size: 28 },
       { type: 'raven', x: 0.6, y: 0.15, size: 20, orbit: true },
+      { type: 'raven', x: 0.35, y: 0.22, size: 17, orbit: true, orbitOffset: 2.4 },
     ],
     shadow: [
       { type: 'wolf', x: 0.2, y: 0.85, size: 40 },
@@ -3934,7 +3972,12 @@ const GEMATRIA_CODES = {
   function draw() {
     t += 16;
     const phase = detectPhase();
-    currentPhase = phase;
+    if (phase !== currentPhase) {
+      prevPhase = currentPhase;
+      currentPhase = phase;
+      phaseBlend = 0;
+    }
+    if (phaseBlend < 1) phaseBlend = Math.min(1, phaseBlend + 0.018);
 
     // Update nav phase indicator
     const navPhase = document.getElementById('nav-phase');
@@ -3946,15 +3989,30 @@ const GEMATRIA_CODES = {
     const col = phaseColors[phase] || phaseColors.origin;
     const isShadow = phase === 'shadow';
 
+    // Phase blend fade-in — new phase elements fade in over ~55 frames (~0.9s at 60fps)
+    ctx.save();
+    ctx.globalAlpha = phaseBlend;
+
     // === LAYER 1: Celestial bodies ===
     if (phase === 'origin') {
-      // Crescent moon setting
-      const mx = W * 0.8, my = H * 0.15;
-      const glow = ctx.createRadialGradient(mx, my, 8, mx, my, 80);
-      glow.addColorStop(0, 'rgba(220,210,190,0.15)'); glow.addColorStop(1, 'rgba(200,190,170,0)');
+      // Gibbous moon setting in pre-dawn sky
+      const mx = W * 0.82, my = H * 0.14;
+      const moonR = 22;
+      // Atmospheric halo
+      const glow = ctx.createRadialGradient(mx, my, moonR * 0.8, mx, my, moonR * 6);
+      glow.addColorStop(0, 'rgba(220,215,200,0.18)'); glow.addColorStop(0.35, 'rgba(200,195,180,0.06)'); glow.addColorStop(1, 'rgba(180,175,165,0)');
       ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
-      ctx.beginPath(); ctx.arc(mx, my, 18, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(230,225,210,0.4)'; ctx.fill();
+      // Full disc
+      ctx.beginPath(); ctx.arc(mx, my, moonR, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(235,230,215,0.45)'; ctx.fill();
+      // Shadow arc (creates crescent shape without compositing tricks)
+      ctx.beginPath(); ctx.arc(mx + moonR * 0.6, my - moonR * 0.04, moonR * 0.86, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(8,5,3,0.55)'; ctx.fill();
+      // Faint crater details
+      ctx.save(); ctx.globalAlpha = 0.1;
+      ctx.beginPath(); ctx.arc(mx - 5, my - 4, 3, 0, Math.PI*2); ctx.fillStyle = 'rgba(145,140,130,1)'; ctx.fill();
+      ctx.beginPath(); ctx.arc(mx + 3, my + 6, 2, 0, Math.PI*2); ctx.fillStyle = 'rgba(145,140,130,1)'; ctx.fill();
+      ctx.restore();
     } else if (phase === 'meeting' || phase === 'summer') {
       // Sun, golden hour / rising
       const sy = phase === 'meeting' ? H * 0.25 : H * 0.12;
@@ -3968,15 +4026,24 @@ const GEMATRIA_CODES = {
       ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI*2);
       ctx.fillStyle = 'rgba(255,240,200,0.5)'; ctx.fill();
     } else if (isShadow) {
-      // Blood moon
+      // Blood moon — slow biotic pulse (heartbeat rhythm)
       const bx = W * 0.5, by = H * 0.15;
-      const bmGlow = ctx.createRadialGradient(bx, by, 15, bx, by, 120);
-      bmGlow.addColorStop(0, 'rgba(139,58,42,0.25)');
-      bmGlow.addColorStop(0.4, 'rgba(120,40,30,0.08)');
-      bmGlow.addColorStop(1, 'rgba(80,20,15,0)');
+      const bmPulse = 1 + Math.sin(t * 0.00018) * 0.09;
+      const bmR = 20 * bmPulse;
+      const bmGlowR = (110 + Math.sin(t * 0.00018) * 18) * bmPulse;
+      const bmAlpha = 0.22 + Math.sin(t * 0.00018) * 0.07;
+      const bmGlow = ctx.createRadialGradient(bx, by, bmR * 0.6, bx, by, bmGlowR);
+      bmGlow.addColorStop(0, `rgba(139,58,42,${bmAlpha + 0.06})`);
+      bmGlow.addColorStop(0.35, `rgba(120,40,30,${bmAlpha * 0.35})`);
+      bmGlow.addColorStop(0.7, `rgba(80,20,15,${bmAlpha * 0.1})`);
+      bmGlow.addColorStop(1, 'rgba(60,10,10,0)');
       ctx.fillStyle = bmGlow; ctx.fillRect(0, 0, W, H);
-      ctx.beginPath(); ctx.arc(bx, by, 20, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(160,50,35,0.6)'; ctx.fill();
+      ctx.beginPath(); ctx.arc(bx, by, bmR, 0, Math.PI*2);
+      const bmDisc = ctx.createRadialGradient(bx, by, 0, bx, by, bmR);
+      bmDisc.addColorStop(0, 'rgba(200,65,42,0.72)');
+      bmDisc.addColorStop(0.6, 'rgba(160,50,35,0.62)');
+      bmDisc.addColorStop(1, 'rgba(110,32,22,0.42)');
+      ctx.fillStyle = bmDisc; ctx.fill();
     } else if (phase === 'transmutation') {
       // Dawn sun with god-rays
       const gx = W * 0.25, gy = H * 0.2;
@@ -4000,12 +4067,18 @@ const GEMATRIA_CODES = {
       ctx.restore();
     }
 
-    // === LAYER 2: Clouds ===
+    // === LAYER 2: Clouds — phase-specific color + opacity ===
     if (!isMobile) {
-      const cloudCol = isShadow ? {r:40,g:20,b:15} : {r:220,g:210,b:195};
-      const cloudAlpha = isShadow ? 0.15 : 0.08;
+      const cloudCfg = {
+        origin:        { r:200, g:190, b:175, a:0.14, spd:0.28 },
+        meeting:       { r:224, g:182, b:132, a:0.20, spd:0.42 },
+        summer:        { r:255, g:255, b:250, a:0.32, spd:0.52 },
+        shadow:        { r:40,  g:20,  b:14,  a:0.52, spd:0.68 },
+        transmutation: { r:220, g:210, b:188, a:0.16, spd:0.38 },
+      }[phase] || { r:220, g:210, b:195, a:0.10, spd:0.40 };
+      const cloudCol = cloudCfg, cloudAlpha = cloudCfg.a;
       clouds.forEach(c => {
-        c.x += c.speed; if (c.x > W + 200) c.x = -200;
+        c.x += cloudCfg.spd; if (c.x > W + 200) c.x = -200;
         ctx.save(); ctx.translate(c.x, c.y); ctx.scale(c.scale, c.scale * 0.5);
         const breathe = 1 + Math.sin(t * 0.0003 + c.x * 0.01) * 0.02;
         ctx.scale(breathe, breathe);
@@ -4065,8 +4138,9 @@ const GEMATRIA_CODES = {
       wl.forEach(w => {
         let wx = w.x * W, wy = w.y * H;
         if (w.orbit) {
-          wx += Math.sin(t * 0.001) * 150;
-          wy += Math.cos(t * 0.0012) * 50;
+          const oo = w.orbitOffset || 0;
+          wx += Math.sin(t * 0.001 + oo) * 150;
+          wy += Math.cos(t * 0.0012 + oo) * 50;
         }
         if (w.type === 'raven') drawRaven(wx, wy, w.size, t);
         else if (w.type === 'wolf') drawWolf(wx, wy, w.size, t);
@@ -4120,15 +4194,70 @@ const GEMATRIA_CODES = {
         ctx.beginPath(); ctx.arc(px, py, p.r * 4, 0, Math.PI * 2);
         ctx.fillStyle = eg; ctx.fill();
       });
+    } else if (phase === 'meeting') {
+      // Meeting: amber light flares — warm bokeh, sunlight through restaurant windows
+      ctx.globalCompositeOperation = 'screen';
+      particles.forEach(p => {
+        p.y += p.speed * 0.25; if (p.y > 1.08) { p.y = -0.08; p.x = Math.random(); }
+        p.x += p.drift * 0.4 + Math.sin(t * 0.0006 + p.phase) * 0.0001;
+        if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+        const px = p.x * W, py = p.y * H;
+        // Slow warm pulse — softer than fireflies, golden-amber tone
+        const pulse = Math.pow(Math.max(0, Math.sin(t * 0.00065 + p.phase * 2.1)), 0.55);
+        const a = pulse * 0.24;
+        if (a < 0.04) return;
+        // Bokeh disc — soft amber radial with bright core
+        const bk = ctx.createRadialGradient(px, py, 0, px, py, p.r * 7.5);
+        bk.addColorStop(0, `rgba(255,205,100,${a * 0.68})`);
+        bk.addColorStop(0.22, `rgba(255,175,55,${a * 0.38})`);
+        bk.addColorStop(0.6, `rgba(220,140,28,${a * 0.1})`);
+        bk.addColorStop(1, 'rgba(200,120,20,0)');
+        ctx.beginPath(); ctx.arc(px, py, p.r * 7.5, 0, Math.PI * 2);
+        ctx.fillStyle = bk; ctx.fill();
+        // Bright centre spot
+        ctx.beginPath(); ctx.arc(px, py, p.r * 0.95, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,232,165,${Math.min(1, a * 1.3)})`; ctx.fill();
+      });
+    } else if (phase === 'transmutation') {
+      // Transmutation: morning dew sparkles — brief bright flashes catching first light
+      ctx.globalCompositeOperation = 'screen';
+      particles.forEach(p => {
+        // Very slow drift — dew sits on the land
+        p.x += p.drift * 0.18 + Math.sin(t * 0.0004 + p.phase) * 0.00007;
+        if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
+        if (p.y < -0.02 || p.y > 1.02) p.y = Math.random() * 0.85 + 0.1;
+        const px = p.x * W, py = p.y * H;
+        // Sharp flash — squared sine for crisp appear/disappear
+        const raw = Math.sin(t * 0.0013 + p.phase * 5.7);
+        const flash = raw > 0 ? raw * raw : 0;
+        const a = flash * 0.52;
+        if (a < 0.05) return;
+        // Crisp white-gold sparkle
+        const sg = ctx.createRadialGradient(px, py, 0, px, py, p.r * 3.8);
+        sg.addColorStop(0, `rgba(255,252,230,${a})`);
+        sg.addColorStop(0.38, `rgba(230,218,182,${a * 0.3})`);
+        sg.addColorStop(1, 'rgba(200,188,145,0)');
+        ctx.beginPath(); ctx.arc(px, py, p.r * 3.8, 0, Math.PI * 2);
+        ctx.fillStyle = sg; ctx.fill();
+        // Pinpoint core
+        ctx.beginPath(); ctx.arc(px, py, p.r * 0.55, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,245,${Math.min(1, a * 1.6)})`; ctx.fill();
+      });
     } else {
-      // Origin / Meeting / Transmutation, golden pollen motes
+      // Origin: golden pollen motes with soft luminous halos
       particles.forEach(p => {
         p.y += p.speed; if (p.y > 1.05) { p.y = -0.05; p.x = Math.random(); }
         p.x += p.drift + Math.sin(t * 0.0008 + p.phase) * 0.00015;
         if (p.x < -0.05) p.x = 1.05; if (p.x > 1.05) p.x = -0.05;
         const px = p.x * W, py = ((p.y * H) - (scrollY * p.parallax * 0.08) % H + H) % H;
         const flicker = 0.4 + 0.6 * Math.sin(t * 0.0012 + p.phase);
-        const a = 0.18 * flicker;
+        const a = 0.20 * flicker;
+        // Soft glow halo behind each mote
+        const mg = ctx.createRadialGradient(px, py, 0, px, py, p.r * 4);
+        mg.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${a * 0.5})`);
+        mg.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
+        ctx.beginPath(); ctx.arc(px, py, p.r * 4, 0, Math.PI * 2);
+        ctx.fillStyle = mg; ctx.fill();
         ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`; ctx.fill();
       });
@@ -4166,6 +4295,9 @@ const GEMATRIA_CODES = {
         ctx.fill();
       }
     }
+
+    // Close phase blend save
+    ctx.restore();
 
     requestAnimationFrame(draw);
   }
@@ -4370,13 +4502,20 @@ function showReflectionStep() {
     html += `<p class="step-text">${step.text}</p>`;
   }
 
-  html += `<br><button class="step-continue" onclick="nextReflectionStep()">Continue</button></div>`;
+  html += `<br><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;"><button class="step-continue" onclick="nextReflectionStep()">Continue</button><button class="step-back" onclick="backToWounds()">← Wounds</button></div></div>`;
   area.innerHTML = html;
 }
 
 function nextReflectionStep() {
   currentReflectionStep++;
   showReflectionStep();
+}
+
+function backToWounds() {
+  currentReflectionStep = 0;
+  currentReflectionKey = '';
+  document.getElementById('shadow-reflection-area').style.display = 'none';
+  document.getElementById('shadow-prompts-list').style.display = 'block';
 }
 
 
@@ -4478,6 +4617,23 @@ function openRitual(key) {
   if (ritualTimerInterval) { clearInterval(ritualTimerInterval); ritualTimerInterval = null; }
   let step = 0;
 
+  function showIntro() {
+    const elementsHtml = ritual.elements && ritual.elements.length
+      ? '<div style="margin:20px 0 8px;font-family:\'Cinzel\',serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);opacity:0.8;">You will need</div>' +
+        '<ul style="list-style:none;padding:0;margin:0 0 24px;">' +
+        ritual.elements.map(e => '<li style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.88rem;color:#9a8a7a;padding:4px 0;border-bottom:1px solid rgba(201,168,76,0.06);">' + e + '</li>').join('') +
+        '</ul>'
+      : '';
+    document.getElementById('ritual-steps').innerHTML =
+      '<div class="ritual-step-display">' +
+      '<div style="font-family:\'Cinzel Decorative\',serif;font-size:1.6rem;color:var(--sage);text-align:center;letter-spacing:0.08em;margin-bottom:8px;">' + ritual.code + '</div>' +
+      '<p class="ritual-instruction" style="text-align:center;margin-bottom:4px;">' + ritual.title + '</p>' +
+      '<p style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.78rem;color:#7a6a60;text-align:center;margin-bottom:24px;">' + ritual.duration + ' · ' + ritual.steps.length + ' steps</p>' +
+      elementsHtml +
+      '<button class="prompt-btn" style="color:var(--sage);border-color:rgba(74,103,65,0.3);" onclick="ritualBegin()">Begin Ritual</button>' +
+      '</div>';
+  }
+
   function showStep() {
     if (step >= ritual.steps.length) {
       document.getElementById('ritual-steps').innerHTML =
@@ -4510,12 +4666,10 @@ function openRitual(key) {
     }, 1000);
   }
 
-  window.ritualNext = function() {
-    step++;
-    showStep();
-  };
+  window.ritualBegin = function() { step = 0; showStep(); };
+  window.ritualNext = function() { step++; showStep(); };
 
-  showStep();
+  showIntro();
   mod.classList.add('open');
 }
 
@@ -4544,7 +4698,10 @@ function closeRitual() {
     clock.innerHTML = `<span style="opacity:0.6">${timeStr}</span> <span style="font-weight:600">= ${sum}</span>${known ? ` <span style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.55rem;opacity:0.7">${known.name}</span>` : ''}`;
     if (known) { clock.classList.add('resonant'); setTimeout(() => clock.classList.remove('resonant'), 2000); }
   }
-  update(); setInterval(update, 10000);
+  update();
+  // Align to next minute boundary then tick every 60s
+  const msToNextMin = (60 - new Date().getSeconds()) * 1000;
+  setTimeout(() => { update(); setInterval(update, 60000); }, msToNextMin);
 })();
 
 
@@ -4806,6 +4963,117 @@ function renderPrebuiltChart(targetId, name, month, day, year) {
 window.addEventListener('load', () => {
   renderPrebuiltChart('october-chart', 'October Eden Hoflin', 4, 18, 2004);
 });
+
+
+// ═══════════════════════════════════════════════════
+// DATE DECODER
+// ═══════════════════════════════════════════════════
+function decodeDate() {
+  const m = parseInt(document.getElementById('dd-month').value);
+  const d = parseInt(document.getElementById('dd-day').value);
+  const y = parseInt(document.getElementById('dd-year').value);
+  if (!m || !d || !y) return;
+
+  const result = document.getElementById('dd-result');
+  result.style.display = 'block';
+
+  // Core reductions
+  const allDigits = `${m}${d}${y}`.split('').map(Number);
+  const dateSum = allDigits.reduce((a,b) => a+b, 0);
+  const reduction = reduceToSingle(dateSum);
+
+  // Alternate reduction (m + d + century + last2)
+  const altSum = m + d + Math.floor(y / 100) + (y % 100);
+  const altReduction = reduceToSingle(altSum);
+
+  // Day of year
+  const dateUTC = Date.UTC(y, m - 1, d);
+  const startUTC = Date.UTC(y, 0, 1);
+  const dayOfYear = Math.floor((dateUTC - startUTC) / 86400000) + 1;
+  const dayOfYearReduced = reduceToSingle(dayOfYear);
+
+  // Distance from Sean (May 24, 1989) and October (April 18, 2004)
+  const SEAN_BIRTH = Date.UTC(1989, 4, 24);  // May 24, 1989
+  const OCT_BIRTH  = Date.UTC(2004, 3, 18);  // April 18, 2004
+  const msPerDay   = 86400000;
+  const msPerWeek  = msPerDay * 7;
+  const seanDays   = Math.round(Math.abs(dateUTC - SEAN_BIRTH) / msPerDay);
+  const seanWeeks  = Math.floor(seanDays / 7);
+  const octDays    = Math.round(Math.abs(dateUTC - OCT_BIRTH) / msPerDay);
+  const octWeeks   = Math.floor(octDays / 7);
+  const seanWeekReduced = reduceToSingle(seanWeeks);
+  const octWeekReduced  = reduceToSingle(octWeeks);
+
+  // Find matching codes
+  const allNums = new Set([reduction, altReduction, dayOfYear, dayOfYearReduced, seanWeeks, octWeeks, seanWeekReduced, octWeekReduced]);
+  const matchingCodes = Object.entries(GEMATRIA_CODES).filter(([code]) => allNums.has(Number(code)));
+
+  // Find matching events
+  const monthNames = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+  const targetStr = `${monthNames[m-1]} ${d}`.toLowerCase();
+  const matchingEvents = EVENTS.filter(ev => ev.date.toLowerCase().includes(targetStr) || (ev.short && ev.short === `${m}/${d}`));
+
+  // Check if both Sean and October's reduction match the date reduction
+  const seanLP = reduceToSingle([5,2,4,1,9,8,9].reduce((a,b)=>a+b,0)); // LP 11
+  const octLP  = reduceToSingle([4,1,8,2,0,0,4].reduce((a,b)=>a+b,0)); // LP 19 → 1? let me compute
+
+  // Build HTML
+  let html = '<div style="animation:fadeUp 0.5s ease;">';
+
+  // Main stats row
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px;">';
+
+  const stat = (num, label, sub) =>
+    `<div style="text-align:center;border:1px solid rgba(201,168,76,0.15);border-radius:6px;padding:16px 10px;background:rgba(201,168,76,0.02);">
+      <div style="font-family:'Cinzel Decorative',serif;font-size:1.8rem;color:var(--gold);line-height:1;margin-bottom:6px;">${num}</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:3px;">${label}</div>
+      ${sub ? `<div style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.72rem;color:#8a7a6a;">${sub}</div>` : ''}
+    </div>`;
+
+  const codeLabel = (n) => GEMATRIA_CODES[n] ? ` · ${GEMATRIA_CODES[n].name}` : '';
+
+  html += stat(reduction, 'Reduction', `sum ${dateSum}${codeLabel(reduction)}`);
+  html += stat(altReduction, 'Alt Reduction', `${m}+${d}+${Math.floor(y/100)}+${y%100}=${altSum}${codeLabel(altReduction)}`);
+  html += stat(dayOfYear, 'Day of Year', `reduced: ${dayOfYearReduced}${codeLabel(dayOfYear)}`);
+  html += stat(seanWeeks, 'Weeks from Sean', `${seanDays} days · reduced ${seanWeekReduced}${codeLabel(seanWeeks)}`);
+  html += stat(octWeeks, 'Weeks from October', `${octDays} days · reduced ${octWeekReduced}${codeLabel(octWeeks)}`);
+  html += '</div>';
+
+  // Matching codes
+  if (matchingCodes.length > 0) {
+    html += `<div style="margin-bottom:20px;">
+      <div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Resonant Codes</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">`;
+    matchingCodes.forEach(([code, info]) => {
+      html += `<div onclick="openDecode(${code})" style="border:1px solid rgba(201,168,76,0.25);border-radius:4px;padding:8px 14px;cursor:pointer;transition:all 0.2s;background:rgba(201,168,76,0.03);" onmouseenter="this.style.borderColor='rgba(201,168,76,0.6)'" onmouseleave="this.style.borderColor='rgba(201,168,76,0.25)'">
+        <span style="font-family:'Cinzel Decorative',serif;font-size:1rem;color:var(--gold);">${code}</span>
+        <span style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;color:#8a7a6a;margin-left:6px;">${info.name}</span>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // Matching events
+  if (matchingEvents.length > 0) {
+    html += `<div style="margin-bottom:16px;">
+      <div style="font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Events on This Date</div>`;
+    matchingEvents.forEach(ev => {
+      html += `<div onclick="showTL();setTimeout(()=>scrollToEvent(${ev.id}),200)" style="border-left:2px solid rgba(201,168,76,0.3);padding:8px 14px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;" onmouseenter="this.style.borderColor='rgba(201,168,76,0.8)'" onmouseleave="this.style.borderColor='rgba(201,168,76,0.3)'">
+        <span style="font-family:'Cinzel',serif;font-size:0.75rem;color:var(--gold);">${ev.title}</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:0.8rem;color:#8a7a6a;margin-left:8px;">${ev.date}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // No matches message
+  if (matchingCodes.length === 0 && matchingEvents.length === 0) {
+    html += `<p style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.9rem;color:#9a8a7a;text-align:center;padding:16px 0;">No resonant codes or events found for this date.</p>`;
+  }
+
+  html += '</div>';
+  result.innerHTML = html;
+}
 
 
 // ═══════════════════════════════════════════════════
