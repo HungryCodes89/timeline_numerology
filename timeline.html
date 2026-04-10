@@ -915,6 +915,22 @@ body.dark .decode-connections li { color: #9a8880; }
 .mirror-msg.assistant .mirror-bubble {
   background: rgba(74,103,65,0.05); border: 1px solid rgba(74,103,65,0.12);
 }
+.mirror-typing .mirror-bubble {
+  background: rgba(74,103,65,0.05); border: 1px solid rgba(74,103,65,0.12);
+  padding: 18px 24px;
+}
+.mirror-typing-dots { display: flex; gap: 6px; align-items: center; height: 20px; }
+.mirror-typing-dots span {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(201,168,76,0.5);
+  animation: mirrorDot 1.4s ease-in-out infinite;
+}
+.mirror-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.mirror-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes mirrorDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
 .mirror-input-area { display: flex; gap: 12px; align-items: flex-end; }
 #mirror-input {
   flex: 1; font-family: 'Cormorant Garamond', serif;
@@ -2439,7 +2455,7 @@ body.dark .mn-content p { color: #9a8880; }
       The premise is simple: every letter is represented by a number. Every word has a sum. Words that share the same sum share a hidden relationship, a resonance beneath the surface of language.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      For instance, there are 26 letters in the English alphabet. English descends from Latin, Latin from Greek, Greek from Hebrew, Hebrew from the ancient Phoenicians of Babylon, the same civilization that produced the world's first alphabet and the first recorded practice of Kabbalah. In Hebrew, every letter is also a number. The number 26 holds the four-letter name of God, the Tetragrammaton: YHWH. Yod (10) + He (5) + Vav (6) + He (5) = 26. Moses, the credited author of Genesis, was born 26 generations from Adam. The number at the root of the English alphabet is not accidental. It is the name.
+      For instance, there are 26 letters in the English alphabet. English descends from Latin, Latin from Greek, Greek from Hebrew, Hebrew from the ancient Phoenicians of Babylon, the same civilization that produced the world's first alphabet and the first recorded practice of Kabbalah. In Hebrew, every letter is also a number. The number 26 holds the four-letter name of God, the Tetragrammaton: YHWH. Yod (10) + He (5) + Vav (6) + He (5) = 26. Moses, the credited author of Genesis, was born 26 generations from Adam. This is what gematria is built on and it is woven into the architecture of the English language itself.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       The <em>Sefer Yetzirah</em>, the Book of Formation, describes God creating the universe through three acts as one: the letter, the number, and the word. <em>Sefer. Sefor. Sippur.</em> Not three steps. One act. The name of something and the number of that name are not separate pieces of information. They are the same fact expressed two different ways. This is what gematria is built on and it is woven into the oldest texts humanity possesses.
@@ -4532,20 +4548,45 @@ function backToWounds() {
 // SCALAR MIRROR (local reflective engine, no API needed)
 // ═══════════════════════════════════════════════════
 const MIRROR_RESPONSES = [
-  "What you just named \u2014 sit with it. Where does it live in your body? The body always knows before the mind. What is the sensation telling you?",
-  "You said the word without flinching. That is the work in action. The wound can only control what it can hide. You just made it visible. What else is behind it?",
-  "As within, so without. The pattern you\u2019re seeing in the world is the pattern living inside you. The codes confirm what the heart already knows. What is the code trying to show you right now?",
-  "The man who returns is not the man who left. Every word you\u2019re writing here is proof of that. The old version would not have looked. What has changed in you?",
-  "34 and 27 are on your hands. You chose to carry those numbers before you understood why. The body encodes what the mind isn\u2019t ready for. What else has your body known before your mind caught up?",
-  "666 is carbon becoming conscious. What you\u2019re describing is not destruction \u2014 it is transmutation. The lead is being named. The gold is forming. Stay in the fire. What would it mean to not leave this time?",
-  "Sean = 39. October = 39. The mirror is exact. What you see in her that moves you \u2014 that is also in you. What part of yourself are you meeting when you look at her?",
-  "The wound says: if I let this be real, it will be taken. But the wound is not a prophet. It is a six-year-old\u2019s conclusion. What does the man \u2014 not the boy \u2014 know to be true?",
-  "You\u2019re doing the work. The fact that you\u2019re here, writing this, sitting with it instead of running \u2014 this is the transmutation. Not a single dramatic moment, but the daily discipline of staying present. What are you choosing today?",
-  "55 is the union number. It appeared at the beginning and it appeared at the return. The code doesn\u2019t change. The question is whether you trust it. Do you?",
+  // Body & sensation
+  "What you just named \u2014 sit with it. Where does it live in your body? The body always knows before the mind catches up. What is the sensation telling you right now, if you stop trying to figure it out?",
+  "The chest tightens when we touch what\u2019s real. The throat closes when we\u2019re about to say the true thing. Where is your body right now? What is it doing while you type these words?",
+  "Breathe into wherever you\u2019re holding. Notice that you\u2019re still here. The nervous system learned to brace when things got close \u2014 but you are not in that moment anymore. What does safety feel like, even just for a second?",
+  "The body carries the timeline. Somewhere in your chest or stomach or jaw is the whole story, compressed into sensation. What body part keeps asking for your attention? What would it say if it could speak?",
+  // Grief & loss
+  "Grief is not weakness. It is proof that something real existed. The size of the grief maps exactly to the size of the love. What are you afraid will happen if you let the loss be as big as it actually is?",
+  "You are allowed to miss what you miss. You are allowed to want what you want. The wound tries to make grief into shame. They are not the same thing. What are you grieving right now, fully named?",
+  "The ache doesn\u2019t mean you failed. It means you opened. Most people never open this much. What would it mean to honor the grief instead of managing it?",
+  // Pattern recognition & codes
+  "As within, so without. The pattern you\u2019re seeing out there \u2014 in the numbers, in her, in the timing \u2014 is a pattern living inside you too. The codes confirm what the heart already knows. What is the code pointing at that you\u2019ve been avoiding?",
+  "Sean = 39. October = 39. The mirror is exact. What you see in her that moves you most \u2014 the part that stops your breath \u2014 that lives in you too. What part of yourself are you recognizing?",
+  "55 is the union number. It appeared at the first meeting. It appeared at the return. The code doesn\u2019t change to comfort you \u2014 it just doesn\u2019t lie. What does the code say that the fear is arguing against?",
+  "666 is carbon. It is the element that makes life possible. What you\u2019re calling destruction might be the necessary pressure that makes a diamond. What if this isn\u2019t the end of something \u2014 what if it\u2019s the compression before the form?",
+  "34 and 27 are on your hands. You chose to carry those numbers before you understood why. The body encodes what the mind isn\u2019t ready for. What have you known longer than you\u2019ve admitted?",
+  // Wound & the boy
+  "The wound says: if I let this be real, it will be taken. But the wound is not a prophet \u2014 it\u2019s a child\u2019s conclusion drawn in a moment of terror. It generalized. What does the man \u2014 not the boy \u2014 actually know to be true?",
+  "The boy learned to leave before he could be left. He learned to make himself invisible so he couldn\u2019t be a problem. He was brilliant and wrong. What does he need to hear right now, from you?",
+  "The part that wants to run is not bad. It learned to run because running worked. It kept you alive. But it doesn\u2019t know that you\u2019re not in that house anymore. What would you say to it if it were a child standing in front of you?",
+  "Shame says: this is who I am. Guilt says: this is what I did. They are not the same. The codes, the mirrors, the fact that you\u2019re here at all \u2014 they are saying something about who you are. What do you hear?",
+  // Transmutation & return
+  "You said the word without flinching. That is the work in action. The wound can only control what it can hide. You just made it visible. What else wants to come into the light?",
+  "The man who returns is not the man who left. That is not a consolation \u2014 it is the whole point. Every word you write here is proof of a different pattern forming. What has genuinely changed in you?",
+  "You\u2019re doing the work. Not dramatically, not perfectly \u2014 just honestly. The daily choice to look instead of run, that is the transmutation. It doesn\u2019t announce itself. It accumulates. What are you choosing today?",
+  "666 is carbon becoming conscious. The lead is being named. The gold is forming. You don\u2019t have to rush the alchemy \u2014 fire has its own timing. What would it mean to stay in this fire a little longer without fixing it?",
+  // Trust & surrender
+  "The sacred record is not a comfort. It is a mirror. The mirror shows what is, not what you wish. What does it show you that you are still reluctant to fully accept?",
+  "You keep asking if it\u2019s real. That question itself is data. The thing that is most real is the thing we keep circling. What are you circling?",
+  "The codes appeared before you understood them. The meeting happened before you were ready. The numbers were already there. What if trust isn\u2019t a feeling that arrives \u2014 what if it\u2019s a choice you make in the absence of certainty?",
+  // Presence & closing
+  "You showed up. That is not nothing \u2014 that is the first and most essential act. The part of you that opened this mirror, that wrote what it wrote \u2014 what does it need right now, honestly?",
+  "Whatever you\u2019re carrying, it is allowed to be here. You don\u2019t have to resolve it in this session. You just have to let it be seen. It already knows. What else is here, underneath what you\u2019ve already said?",
+  "This is the work. Not the insight. Not the breakthrough. The showing up, the honesty, the willingness to look \u2014 this is already the transmutation happening. What would it feel like to let that be enough for right now?",
 ];
 let mirrorResponseIdx = 0;
+let mirrorTyping = false;
 
 function sendMirrorMessage() {
+  if (mirrorTyping) return;
   const input = document.getElementById('mirror-input');
   const text = input.value.trim();
   if (!text) return;
@@ -4553,15 +4594,25 @@ function sendMirrorMessage() {
 
   const conv = document.getElementById('mirror-conversation');
   conv.innerHTML += `<div class="mirror-msg user"><div class="mirror-bubble">${text.replace(/</g,'&lt;')}</div></div>`;
+  conv.scrollTop = conv.scrollHeight;
 
+  // Show typing indicator
+  mirrorTyping = true;
+  const typingId = 'mirror-typing-' + Date.now();
+  conv.innerHTML += `<div class="mirror-msg assistant mirror-typing" id="${typingId}"><div class="mirror-bubble"><div class="mirror-typing-dots"><span></span><span></span><span></span></div></div></div>`;
+  conv.scrollTop = conv.scrollHeight;
+
+  // Variable delay 1400–2400ms
+  const delay = 1400 + Math.random() * 1000;
   setTimeout(() => {
+    const el = document.getElementById(typingId);
+    if (el) el.remove();
     const response = MIRROR_RESPONSES[mirrorResponseIdx % MIRROR_RESPONSES.length];
     mirrorResponseIdx++;
     conv.innerHTML += `<div class="mirror-msg assistant"><div class="mirror-bubble">${response}</div></div>`;
     conv.scrollTop = conv.scrollHeight;
-  }, 1200);
-
-  conv.scrollTop = conv.scrollHeight;
+    mirrorTyping = false;
+  }, delay);
 }
 
 document.getElementById('mirror-input').addEventListener('keydown', e => {
