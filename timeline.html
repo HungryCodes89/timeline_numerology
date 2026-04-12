@@ -1967,8 +1967,8 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   display: block;
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  font-size: 0.5rem;
-  color: rgba(201,168,76,0.3);
+  font-size: 0.72rem;
+  color: rgba(201,168,76,0.55);
   transition: color 0.3s;
   text-align: center;
   white-space: nowrap;
@@ -1976,7 +1976,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-seq-num:hover .fib-seq-label,
 .fib-seq-num.active .fib-seq-label {
-  color: rgba(201,168,76,0.7);
+  color: rgba(201,168,76,0.9);
 }
 
 /* ═══ FULL-SCREEN SPIRAL MAP ═══ */
@@ -2092,8 +2092,8 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 #fib-overlay.open { display: block; }
 .fib-explain-close {
   position: absolute; top: 14px; right: 18px;
-  font-family: 'Cinzel', serif; font-size: 0.55rem;
-  letter-spacing: 0.2em; color: rgba(201,168,76,0.35);
+  font-family: 'Cinzel', serif; font-size: 0.72rem;
+  letter-spacing: 0.18em; color: rgba(201,168,76,0.5);
   background: none; border: 1px solid rgba(201,168,76,0.12);
   padding: 4px 12px; cursor: pointer; border-radius: 20px;
   transition: all 0.3s;
@@ -2109,10 +2109,10 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-explain-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.28em;
+  font-size: 0.9rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(201,168,76,0.5);
+  color: rgba(201,168,76,0.65);
   margin-bottom: 18px;
 }
 /* Mathematical properties grid */
@@ -2126,10 +2126,10 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-prop {
   font-family: 'Cinzel', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(201,168,76,0.55);
+  color: rgba(201,168,76,0.7);
   padding: 4px 12px;
   border: 1px solid rgba(201,168,76,0.12);
   border-radius: 20px;
@@ -2190,7 +2190,7 @@ body.dark .fib-intro p { color: rgba(180,165,145,0.7); }
   .fib-explain { padding: 22px 20px; }
   .fib-explain-num { font-size: 1.6rem; }
   .fib-props { gap: 6px; }
-  .fib-prop { font-size: 0.45rem; padding: 3px 8px; }
+  .fib-prop { font-size: 0.62rem; padding: 3px 8px; }
   .fib-node .nd-label { display: none; }
 }
 
@@ -4076,21 +4076,22 @@ const GEMATRIA_CODES = {
     }
   };
 
-  function drawTerrainLayer(pts, fillColor, city) {
+  function drawTerrainLayer(pts, fillColor, city, yOff) {
     if (!pts || pts.length < 2) return;
+    yOff = yOff || 0;
     const n = pts.length;
     ctx.beginPath();
     ctx.moveTo(-5, H + 5);
-    ctx.lineTo(pts[0].x * W, pts[0].y * H);
+    ctx.lineTo(pts[0].x * W, pts[0].y * H - yOff);
     for (let i = 1; i < n; i++) {
       const p0 = pts[i - 1], p1 = pts[i];
       // City buildings and dead trees use straight lines; natural terrain uses curves
       if (city || Math.abs(p1.y - p0.y) < 0.012 || Math.abs(p1.x - p0.x) < 0.015) {
-        ctx.lineTo(p1.x * W, p1.y * H);
+        ctx.lineTo(p1.x * W, p1.y * H - yOff);
       } else {
         const cpx = (p0.x * 0.3 + p1.x * 0.7) * W;
-        const cpy = (p0.y * 0.4 + p1.y * 0.6) * H;
-        ctx.quadraticCurveTo(p0.x * W, p0.y * H, cpx, cpy);
+        const cpy = (p0.y * 0.4 + p1.y * 0.6) * H - yOff;
+        ctx.quadraticCurveTo(p0.x * W, p0.y * H - yOff, cpx, cpy);
       }
     }
     ctx.lineTo(W + 5, H + 5);
@@ -4099,7 +4100,8 @@ const GEMATRIA_CODES = {
     ctx.fill();
   }
 
-  function drawSnowCaps(pts) {
+  function drawSnowCaps(pts, yOff) {
+    yOff = yOff || 0;
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
     const snowLine = 0.42;
@@ -4107,12 +4109,13 @@ const GEMATRIA_CODES = {
       if (p.y < snowLine) {
         const depth = (snowLine - p.y) / 0.15;
         const sr = Math.max(10, W * 0.032 * depth);
-        const sg = ctx.createRadialGradient(p.x * W, p.y * H + sr * 0.2, 0, p.x * W, p.y * H, sr);
+        const py = p.y * H - yOff;
+        const sg = ctx.createRadialGradient(p.x * W, py + sr * 0.2, 0, p.x * W, py, sr);
         sg.addColorStop(0,   `rgba(238,242,248,${Math.min(0.62, 0.5 * depth)})`);
         sg.addColorStop(0.42,`rgba(215,222,232,${Math.min(0.25, 0.20 * depth)})`);
         sg.addColorStop(1,   'rgba(195,205,220,0)');
         ctx.beginPath();
-        ctx.arc(p.x * W, p.y * H, sr, 0, Math.PI * 2);
+        ctx.arc(p.x * W, py, sr, 0, Math.PI * 2);
         ctx.fillStyle = sg;
         ctx.fill();
       }
@@ -4164,6 +4167,35 @@ const GEMATRIA_CODES = {
     ctx.restore();
   }
 
+  // ─── Phase top offsets cache (for parallax) ───
+  let phaseTops = {};
+  function cachePhaseTops() {
+    document.querySelectorAll('.phase-section').forEach(sec => {
+      phaseTops[sec.dataset.phase] = sec.offsetTop;
+    });
+  }
+  window.addEventListener('resize', cachePhaseTops, { passive: true });
+  setTimeout(cachePhaseTops, 300);
+
+  // ─── Horizon gradient (Layer 0) ───
+  const HORIZONS = {
+    origin:        [[0,'#1a1428'],[0.15,'#2d1f3d'],[0.30,'#4a3055'],[0.50,'#8b5e3c'],[0.60,'#c9a84c'],[0.75,'#3a5a2e'],[0.85,'#2a4a1e'],[1,'#1e3815']],
+    meeting:       [[0,'#2a1810'],[0.20,'#5a3020'],[0.40,'#c9784c'],[0.55,'#e8a855'],[0.65,'#d4926a'],[0.80,'#3a2a1e'],[1,'#1a1210']],
+    summer:        [[0,'#0a1a2a'],[0.15,'#1a3a5a'],[0.30,'#4a7a9a'],[0.45,'#e8c87a'],[0.55,'#a8d8a0'],[0.70,'#3a6a30'],[0.85,'#2a5a20'],[1,'#1a4a15']],
+    shadow:        [[0,'#0d0808'],[0.15,'#1a0a0a'],[0.30,'#3a1510'],[0.45,'#5a2018'],[0.60,'#2a0a05'],[0.75,'#150808'],[0.90,'#0d0505'],[1,'#080303']],
+    transmutation: [[0,'#1a2030'],[0.15,'#3a5070'],[0.30,'#7a9ab0'],[0.42,'#c9b87c'],[0.52,'#a8c898'],[0.65,'#4a7a40'],[0.80,'#3a6a35'],[1,'#2a5025']],
+  };
+  function drawHorizon(ph, alpha) {
+    const pts = HORIZONS[ph] || HORIZONS.origin;
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    pts.forEach(([pos, col]) => g.addColorStop(pos, col));
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.42;
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+
   let t = 0;
   function draw() {
     t += 16;
@@ -4185,6 +4217,16 @@ const GEMATRIA_CODES = {
     const col = phaseColors[phase] || phaseColors.origin;
     const isShadow = phase === 'shadow';
 
+    // === LAYER 0: Horizon gradient cross-fade ===
+    if (phaseBlend < 1 && prevPhase) drawHorizon(prevPhase, 1 - phaseBlend);
+    drawHorizon(phase, phaseBlend);
+
+    // Parallax scroll offsets within current phase
+    const phaseTop = phaseTops[phase] || 0;
+    const pScroll = Math.max(0, scrollY - phaseTop);
+    const farOff  = pScroll * 0.05;
+    const midOff  = pScroll * 0.13;
+    const nearOff = pScroll * 0.24;
 
     // Phase blend fade-in — new phase elements fade in over ~55 frames (~0.9s at 60fps)
     ctx.save();
@@ -4264,6 +4306,16 @@ const GEMATRIA_CODES = {
       ctx.restore();
     }
 
+    // === LAYER 1.5: Terrain silhouettes (parallax depth) ===
+    const ter = TERRAIN[phase];
+    if (ter) {
+      if (ter.far)  drawTerrainLayer(ter.far.pts, ter.far.col, false, farOff);
+      if (ter.far && ter.far.snow) drawSnowCaps(ter.far.pts, farOff);
+      if (ter.mid)  drawTerrainLayer(ter.mid.pts, ter.mid.col, !!(ter.mid.city), midOff);
+      drawGroundMist(ter.mist);
+      if (ter.near) drawTerrainLayer(ter.near.pts, ter.near.col, false, nearOff);
+    }
+
     // === LAYER 2: Clouds — phase-specific color + opacity ===
     if (!isMobile) {
       const cloudCfg = {
@@ -4325,7 +4377,7 @@ const GEMATRIA_CODES = {
     if (!isMobile) {
       const tl = treeLayers[phase] || [];
       tl.forEach(tr => {
-        drawTree(tr.x * W, tr.y * H, tr.h, tr.d, t, tr.w, tr.dead || false);
+        drawTree(tr.x * W, tr.y * H - nearOff * 0.8, tr.h, tr.d, t, tr.w, tr.dead || false);
       });
     }
 
@@ -4333,7 +4385,7 @@ const GEMATRIA_CODES = {
     if (!isMobile) {
       const wl = wildlife[phase] || [];
       wl.forEach(w => {
-        let wx = w.x * W, wy = w.y * H;
+        let wx = w.x * W, wy = w.y * H - nearOff;
         if (w.orbit) {
           const oo = w.orbitOffset || 0;
           wx += Math.sin(t * 0.001 + oo) * 150;
