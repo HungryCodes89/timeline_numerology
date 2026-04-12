@@ -370,15 +370,6 @@ nav[data-phase="transmutation"] .nav-phase-indicator::before { color: var(--sage
 #tl-view, #cs-view { position: relative; z-index: 1; }
 #cs-view { display: none; }
 
-/* Pre-phase intro area — the canvas sky shows through transparent #tl-view areas,
-   so give the header and "Before You Read" wrapper a parchment backdrop. */
-#tl-view > header {
-  background: rgba(8, 5, 3, 0.28);
-  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
-}
-#tl-view > div:not(.phase-section):not(#filter-bar) {
-  background: rgba(10, 6, 4, 0.22);
-}
 
 /* ═══════════════════════════════
    HEADER
@@ -4151,29 +4142,6 @@ const GEMATRIA_CODES = {
     const col = phaseColors[phase] || phaseColors.origin;
     const isShadow = phase === 'shadow';
 
-    // === SKY FILL — paints the full canvas background so the transparent phase-bg top
-    //     shows the correct sky color rather than the body cream background.
-    //     Crossfades between phases during transitions.
-    const SKY_STOPS = {
-      origin:        [[0,'#08071a'],[0.15,'#150e2e'],[0.30,'#241640'],[0.48,'#5a3018'],[0.62,'#b88820'],[0.75,'#3a5a28'],[1,'#1e3815']],
-      meeting:       [[0,'#120806'],[0.18,'#341608'],[0.36,'#8a4a1e'],[0.52,'#d07828'],[0.64,'#e09038'],[0.76,'#3a2a18'],[1,'#1a1210']],
-      summer:        [[0,'#060c16'],[0.18,'#0e2840'],[0.36,'#185878'],[0.52,'#c89838'],[0.64,'#a0c860'],[0.78,'#2e6618'],[1,'#1a4a15']],
-      shadow:        [[0,'#020101'],[0.22,'#060202'],[0.44,'#120606'],[0.62,'#0c0302'],[0.80,'#080202'],[1,'#040101']],
-      transmutation: [[0,'#080c16'],[0.20,'#182a3c'],[0.38,'#305e72'],[0.52,'#c0a050'],[0.64,'#88b468'],[0.78,'#386428'],[1,'#2a5025']],
-    };
-    function paintSkyFill(ph, alpha) {
-      const stops = SKY_STOPS[ph] || SKY_STOPS.origin;
-      const sg = ctx.createLinearGradient(0, 0, 0, H);
-      stops.forEach(([p, c]) => sg.addColorStop(p, c));
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = sg;
-      ctx.fillRect(0, 0, W, H);
-      ctx.globalAlpha = 1;
-    }
-    if (phaseBlend < 1 && prevPhase !== phase) {
-      paintSkyFill(prevPhase, 1 - phaseBlend);
-    }
-    paintSkyFill(phase, phaseBlend);
 
     // Phase blend fade-in — new phase elements fade in over ~55 frames (~0.9s at 60fps)
     ctx.save();
