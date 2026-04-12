@@ -256,41 +256,34 @@ body.dark::after { opacity: 0.26; }
   pointer-events: none; z-index: 0;
   overflow: hidden; transition: opacity 2s ease;
 }
-/* Phase I, Pre-dawn shrine: moonlight upper-right, amber horizon below */
+/* Phase backgrounds — illuminated manuscript / parchment aesthetic */
+
+/* Phase I — Reverence, sacred grief */
 .phase-origin .phase-bg {
-  background:
-    radial-gradient(ellipse at 88% 12%, rgba(255,215,120,0.18) 0%, rgba(201,168,76,0.06) 28%, transparent 52%),
-    radial-gradient(ellipse at 12% 55%, rgba(180,150,80,0.06) 0%, transparent 38%),
-    linear-gradient(180deg, #0a0806 0%, #110e08 8%, #1c1610 22%, #221a0e 100%);
+  background: radial-gradient(ellipse at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 60%),
+              linear-gradient(180deg, var(--cream) 0%, #f0ead8 100%);
 }
-/* Phase II, Late golden hour: amber light flooding from right */
+/* Phase II — Magnetism, destiny */
 .phase-meeting .phase-bg {
-  background:
-    radial-gradient(ellipse at 94% 22%, rgba(255,175,50,0.28) 0%, rgba(220,150,40,0.14) 32%, transparent 58%),
-    radial-gradient(ellipse at 8% 75%, rgba(160,110,40,0.07) 0%, transparent 40%),
-    linear-gradient(160deg, #f5f0e8 0%, #f0e6cc 50%, #e8d4a0 100%);
+  background: radial-gradient(ellipse at 30% 40%, rgba(176,128,64,0.05) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 60%, rgba(201,168,76,0.04) 0%, transparent 50%),
+              linear-gradient(180deg, #f3ede2 0%, #f5f0e8 100%);
 }
-/* Phase III, Alpine noon: zenith sun, emerald below */
+/* Phase III — Ecstasy, wonder */
 .phase-summer .phase-bg {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,248,200,0.32) 0%, rgba(210,235,170,0.14) 28%, transparent 52%),
-    radial-gradient(ellipse at 80% 85%, rgba(74,103,65,0.14) 0%, transparent 42%),
-    linear-gradient(180deg, #d8ecd0 0%, #e8f0e0 25%, #f2f5ee 55%, #f5f0e8 100%);
+  background: radial-gradient(ellipse at 50% 30%, rgba(74,103,65,0.07) 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 70%, rgba(106,148,96,0.05) 0%, transparent 50%),
+              linear-gradient(180deg, #f2efe5 0%, #eef4eb 50%, #f5f0e8 100%);
 }
-/* Phase IV, Blood-moon storm: near-black, deep crimson ember glow */
+/* Phase IV — Grief, destruction */
 .phase-shadow .phase-bg {
-  background:
-    radial-gradient(ellipse at 50% 12%, rgba(200,40,10,0.4) 0%, rgba(130,20,5,0.22) 28%, transparent 55%),
-    radial-gradient(ellipse at 18% 88%, rgba(100,15,8,0.18) 0%, transparent 38%),
-    radial-gradient(ellipse at 82% 78%, rgba(140,30,10,0.12) 0%, transparent 32%),
-    linear-gradient(180deg, #030100 0%, #060202 20%, #0a0404 60%, #1a1210 100%);
+  background: radial-gradient(ellipse at 50% 40%, rgba(139,58,42,0.08) 0%, transparent 50%),
+              linear-gradient(180deg, var(--dark-bg) 0%, #0d0806 50%, #1a1210 100%);
 }
-/* Phase V, Old-growth dawn: dark crown, gold-sage light rising */
+/* Phase V — Quiet power, rebirth */
 .phase-transmutation .phase-bg {
-  background:
-    radial-gradient(ellipse at 28% 8%, rgba(220,195,110,0.22) 0%, rgba(180,210,150,0.10) 32%, transparent 55%),
-    radial-gradient(ellipse at 72% 88%, rgba(74,103,65,0.12) 0%, transparent 40%),
-    linear-gradient(180deg, #0e1208 0%, #1a2010 7%, #eef3eb 18%, #f5f0e8 100%);
+  background: radial-gradient(ellipse at 50% 60%, rgba(74,103,65,0.06) 0%, transparent 50%),
+              linear-gradient(180deg, #eef3eb 0%, #f5f0e8 100%);
 }
 
 /* Atmospheric lighting overlays */
@@ -299,27 +292,16 @@ body.dark::after { opacity: 0.26; }
   pointer-events: none; z-index: 1; transition: all 3s ease;
 }
 .phase-origin::before {
-  background:
-    radial-gradient(ellipse at 88% 10%, rgba(255,210,90,0.16) 0%, rgba(201,168,76,0.06) 30%, transparent 55%),
-    radial-gradient(ellipse at 15% 65%, rgba(170,130,55,0.07) 0%, transparent 35%);
-}
-.phase-meeting::before {
-  background:
-    radial-gradient(ellipse at 96% 18%, rgba(255,165,30,0.22) 0%, rgba(220,140,30,0.10) 35%, transparent 62%);
+  background: radial-gradient(ellipse at 80% 60%, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 30%, transparent 60%);
 }
 .phase-summer::before {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,248,180,0.26) 0%, rgba(200,230,155,0.10) 32%, transparent 58%),
-    radial-gradient(ellipse at 75% 82%, rgba(74,103,65,0.10) 0%, transparent 38%);
+  background: radial-gradient(ellipse at 50% 10%, rgba(255,240,200,0.1) 0%, rgba(200,220,180,0.04) 40%, transparent 70%);
 }
 .phase-shadow::before {
-  background:
-    radial-gradient(ellipse at 50% 6%, rgba(210,45,12,0.32) 0%, rgba(140,22,6,0.16) 28%, transparent 52%),
-    radial-gradient(ellipse at 20% 92%, rgba(110,18,8,0.14) 0%, transparent 32%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(139,58,42,0.06) 0%, rgba(100,30,15,0.03) 30%, transparent 50%);
 }
 .phase-transmutation::before {
-  background:
-    radial-gradient(ellipse at 26% 5%, rgba(225,198,115,0.20) 0%, rgba(175,212,148,0.09) 35%, transparent 58%);
+  background: radial-gradient(ellipse at 20% 20%, rgba(201,184,124,0.1) 0%, rgba(180,200,160,0.04) 35%, transparent 65%);
 }
 
 /* ═══════════════════════════════
@@ -387,6 +369,16 @@ nav[data-phase="transmutation"] .nav-phase-indicator::before { color: var(--sage
 /* VIEWS */
 #tl-view, #cs-view { position: relative; z-index: 1; }
 #cs-view { display: none; }
+
+/* Pre-phase intro area — the canvas sky shows through transparent #tl-view areas,
+   so give the header and "Before You Read" wrapper a parchment backdrop. */
+#tl-view > header {
+  background: rgba(8, 5, 3, 0.28);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+}
+#tl-view > div:not(.phase-section):not(#filter-bar) {
+  background: rgba(10, 6, 4, 0.22);
+}
 
 /* ═══════════════════════════════
    HEADER
@@ -1731,6 +1723,12 @@ body.dark .gw { color: #d4a84c; }
 .intro-body {
   padding: 4px 22px 24px;
   animation: introFadeIn 0.5s ease;
+  /* Parchment veil so dark text reads on the canvas sky background */
+  background: rgba(245, 240, 232, 0.92);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+body.dark .intro-body {
+  background: rgba(20, 14, 10, 0.92);
 }
 .intro-body p {
   font-family: 'Cormorant Garamond', serif !important;
@@ -3968,7 +3966,11 @@ const GEMATRIA_CODES = {
 
   // Wildlife positions per phase
   const wildlife = {
-    origin: [],
+    origin: [
+      { type: 'ladybug', x: 0.28, y: 0.915, size: 5, spots: 7 },
+      { type: 'ladybug', x: 0.52, y: 0.928, size: 4, spots: 2 },
+      { type: 'ladybug', x: 0.74, y: 0.910, size: 6, spots: 7 },
+    ],
     meeting: [],
     summer: [
       { type: 'horse', x: 0.15, y: 0.82, size: 35 },
@@ -3988,6 +3990,145 @@ const GEMATRIA_CODES = {
       { type: 'deer', x: 0.65, y: 0.84, size: 28 },
     ],
   };
+
+  // ═══════════════════════════════════════════════════
+  // TERRAIN SYSTEM — layered silhouettes with depth
+  // ═══════════════════════════════════════════════════
+  const TERRAIN = {
+    origin: {
+      far:  { col:'rgba(38,24,62,0.58)',
+               pts:[{x:0,y:.58},{x:.10,y:.50},{x:.20,y:.54},{x:.32,y:.46},{x:.48,y:.52},{x:.62,y:.45},{x:.75,y:.50},{x:.87,y:.47},{x:1,y:.57}] },
+      mid:  { col:'rgba(16,34,12,0.82)',
+               pts:[{x:0,y:.70},{x:.08,y:.63},{x:.18,y:.67},{x:.30,y:.61},{x:.44,y:.65},{x:.56,y:.59},{x:.68,y:.64},{x:.80,y:.60},{x:.92,y:.65},{x:1,y:.70}] },
+      near: { col:'rgba(8,20,5,0.97)',
+               pts:[{x:0,y:.83},{x:.07,y:.78},{x:.16,y:.80},{x:.28,y:.76},{x:.42,y:.79},{x:.56,y:.75},{x:.70,y:.79},{x:.84,y:.76},{x:.94,y:.80},{x:1,y:.83}] },
+      mist: { y:.74, h:.09, r:150, g:168, b:185, a:.14 }
+    },
+    meeting: {
+      far:  { col:'rgba(48,28,12,0.50)',
+               pts:[{x:0,y:.62},{x:.08,y:.58},{x:.14,y:.62},{x:.20,y:.56},{x:.28,y:.60},{x:.36,y:.64},{x:.44,y:.57},{x:.52,y:.61},{x:.60,y:.58},{x:.68,y:.62},{x:.76,y:.56},{x:.84,y:.60},{x:.92,y:.58},{x:1,y:.62}] },
+      mid:  { col:'rgba(20,10,4,0.84)', city:true,
+               pts:[{x:0,y:.74},{x:.04,y:.74},{x:.04,y:.63},{x:.08,y:.63},{x:.08,y:.74},{x:.12,y:.74},{x:.12,y:.68},{x:.16,y:.68},{x:.16,y:.59},{x:.20,y:.59},{x:.20,y:.74},{x:.24,y:.74},{x:.24,y:.65},{x:.28,y:.65},{x:.28,y:.57},{x:.32,y:.57},{x:.32,y:.74},{x:.36,y:.74},{x:.36,y:.67},{x:.40,y:.67},{x:.40,y:.62},{x:.44,y:.62},{x:.44,y:.74},{x:.48,y:.74},{x:.48,y:.59},{x:.52,y:.59},{x:.52,y:.74},{x:.56,y:.74},{x:.56,y:.64},{x:.60,y:.64},{x:.60,y:.57},{x:.64,y:.57},{x:.64,y:.74},{x:.68,y:.74},{x:.68,y:.63},{x:.72,y:.63},{x:.72,y:.69},{x:.76,y:.69},{x:.76,y:.61},{x:.80,y:.61},{x:.80,y:.74},{x:.84,y:.74},{x:.84,y:.66},{x:.88,y:.66},{x:.88,y:.59},{x:.92,y:.59},{x:.92,y:.74},{x:1,y:.74}] },
+      near: { col:'rgba(8,4,2,0.98)',
+               pts:[{x:0,y:.84},{x:.15,y:.80},{x:.30,y:.82},{x:.50,y:.79},{x:.70,y:.82},{x:.85,y:.80},{x:1,y:.84}] },
+      mist: { y:.76, h:.07, r:175, g:135, b:75, a:.07 }
+    },
+    summer: {
+      far:  { col:'rgba(36,48,72,0.70)', snow:true,
+               pts:[{x:0,y:.57},{x:.04,y:.50},{x:.09,y:.33},{x:.15,y:.46},{x:.21,y:.27},{x:.27,y:.41},{x:.33,y:.35},{x:.41,y:.47},{x:.47,y:.29},{x:.53,y:.40},{x:.59,y:.33},{x:.67,y:.44},{x:.73,y:.29},{x:.79,y:.40},{x:.86,y:.33},{x:.93,y:.44},{x:.98,y:.50},{x:1,y:.57}] },
+      mid:  { col:'rgba(20,48,18,0.86)',
+               pts:[{x:0,y:.68},{x:.08,y:.61},{x:.18,y:.65},{x:.30,y:.58},{x:.44,y:.63},{x:.58,y:.56},{x:.70,y:.62},{x:.82,y:.57},{x:.92,y:.63},{x:1,y:.68}] },
+      near: { col:'rgba(12,40,10,0.97)',
+               pts:[{x:0,y:.80},{x:.10,y:.75},{x:.22,y:.77},{x:.36,y:.73},{x:.50,y:.76},{x:.64,y:.72},{x:.78,y:.76},{x:.90,y:.73},{x:1,y:.80}] },
+      mist: { y:.70, h:.10, r:115, g:178, b:148, a:.15 }
+    },
+    shadow: {
+      far:  { col:'rgba(14,5,4,0.60)',
+               pts:[{x:0,y:.58},{x:.06,y:.52},{x:.12,y:.56},{x:.18,y:.48},{x:.26,y:.54},{x:.34,y:.46},{x:.42,y:.52},{x:.50,y:.48},{x:.58,y:.54},{x:.66,y:.50},{x:.74,y:.53},{x:.82,y:.48},{x:.90,y:.52},{x:1,y:.58}] },
+      mid:  { col:'rgba(6,2,2,0.92)', dead:true,
+               pts:[{x:0,y:.72},{x:.02,y:.62},{x:.04,y:.72},{x:.06,y:.57},{x:.08,y:.72},{x:.10,y:.64},{x:.13,y:.72},{x:.15,y:.55},{x:.17,y:.72},{x:.20,y:.62},{x:.22,y:.72},{x:.25,y:.59},{x:.27,y:.72},{x:.30,y:.65},{x:.33,y:.72},{x:.36,y:.57},{x:.38,y:.72},{x:.41,y:.63},{x:.44,y:.72},{x:.47,y:.58},{x:.49,y:.72},{x:.52,y:.64},{x:.55,y:.72},{x:.58,y:.59},{x:.60,y:.72},{x:.63,y:.63},{x:.66,y:.72},{x:.69,y:.57},{x:.71,y:.72},{x:.74,y:.64},{x:.77,y:.72},{x:.80,y:.58},{x:.82,y:.72},{x:.85,y:.65},{x:.88,y:.72},{x:.91,y:.58},{x:.93,y:.72},{x:.96,y:.63},{x:.99,y:.72},{x:1,y:.72}] },
+      near: { col:'rgba(4,1,1,0.99)',
+               pts:[{x:0,y:.84},{x:.08,y:.78},{x:.16,y:.82},{x:.26,y:.76},{x:.36,y:.81},{x:.48,y:.77},{x:.60,y:.82},{x:.72,y:.78},{x:.84,y:.83},{x:.94,y:.79},{x:1,y:.84}] },
+      mist: { y:.76, h:.08, r:55, g:15, b:10, a:.10 }
+    },
+    transmutation: {
+      far:  { col:'rgba(26,46,24,0.58)',
+               pts:[{x:0,y:.52},{x:.10,y:.44},{x:.22,y:.48},{x:.34,y:.42},{x:.48,y:.47},{x:.60,y:.40},{x:.72,y:.46},{x:.84,y:.42},{x:.94,y:.48},{x:1,y:.52}] },
+      mid:  { col:'rgba(14,36,12,0.88)',
+               pts:[{x:0,y:.66},{x:.06,y:.58},{x:.14,y:.63},{x:.24,y:.56},{x:.34,y:.62},{x:.46,y:.54},{x:.58,y:.60},{x:.70,y:.53},{x:.80,y:.59},{x:.90,y:.55},{x:.96,y:.62},{x:1,y:.66}] },
+      near: { col:'rgba(6,22,5,0.97)',
+               pts:[{x:0,y:.78},{x:.08,y:.72},{x:.18,y:.76},{x:.30,y:.70},{x:.44,y:.74},{x:.58,y:.68},{x:.72,y:.73},{x:.84,y:.70},{x:.94,y:.75},{x:1,y:.78}] },
+      mist: { y:.70, h:.12, r:135, g:182, b:140, a:.18 }
+    }
+  };
+
+  function drawTerrainLayer(pts, fillColor, city) {
+    if (!pts || pts.length < 2) return;
+    const n = pts.length;
+    ctx.beginPath();
+    ctx.moveTo(-5, H + 5);
+    ctx.lineTo(pts[0].x * W, pts[0].y * H);
+    for (let i = 1; i < n; i++) {
+      const p0 = pts[i - 1], p1 = pts[i];
+      // City buildings and dead trees use straight lines; natural terrain uses curves
+      if (city || Math.abs(p1.y - p0.y) < 0.012 || Math.abs(p1.x - p0.x) < 0.015) {
+        ctx.lineTo(p1.x * W, p1.y * H);
+      } else {
+        const cpx = (p0.x * 0.3 + p1.x * 0.7) * W;
+        const cpy = (p0.y * 0.4 + p1.y * 0.6) * H;
+        ctx.quadraticCurveTo(p0.x * W, p0.y * H, cpx, cpy);
+      }
+    }
+    ctx.lineTo(W + 5, H + 5);
+    ctx.closePath();
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+  }
+
+  function drawSnowCaps(pts) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const snowLine = 0.42;
+    pts.forEach(p => {
+      if (p.y < snowLine) {
+        const depth = (snowLine - p.y) / 0.15;
+        const sr = Math.max(10, W * 0.032 * depth);
+        const sg = ctx.createRadialGradient(p.x * W, p.y * H + sr * 0.2, 0, p.x * W, p.y * H, sr);
+        sg.addColorStop(0,   `rgba(238,242,248,${Math.min(0.62, 0.5 * depth)})`);
+        sg.addColorStop(0.42,`rgba(215,222,232,${Math.min(0.25, 0.20 * depth)})`);
+        sg.addColorStop(1,   'rgba(195,205,220,0)');
+        ctx.beginPath();
+        ctx.arc(p.x * W, p.y * H, sr, 0, Math.PI * 2);
+        ctx.fillStyle = sg;
+        ctx.fill();
+      }
+    });
+    ctx.restore();
+  }
+
+  function drawGroundMist(cfg) {
+    if (!cfg) return;
+    const my = cfg.y * H, mh = cfg.h * H;
+    const wave = Math.sin(t * 0.00016) * mh * 0.14;
+    const mg = ctx.createLinearGradient(0, my - mh * 0.55 + wave, 0, my + mh * 1.1 + wave);
+    mg.addColorStop(0,    `rgba(${cfg.r},${cfg.g},${cfg.b},0)`);
+    mg.addColorStop(0.32, `rgba(${cfg.r},${cfg.g},${cfg.b},${cfg.a})`);
+    mg.addColorStop(0.60, `rgba(${cfg.r},${cfg.g},${cfg.b},${cfg.a * 0.72})`);
+    mg.addColorStop(1,    `rgba(${cfg.r},${cfg.g},${cfg.b},0)`);
+    ctx.fillStyle = mg;
+    ctx.fillRect(0, my - mh * 0.55 + wave, W, mh * 1.65);
+  }
+
+  function drawMilkyWay() {
+    if (isMobile) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const x0 = W * 0.06, y0 = H * 0.76, x1 = W * 0.90, y1 = H * 0.05;
+    const dx = x1-x0, dy = y1-y0, len = Math.sqrt(dx*dx+dy*dy);
+    const nx = -dy/len, ny = dx/len, bw = W * 0.15;
+    // Diffuse band glow
+    const bg = ctx.createLinearGradient(x0+nx*bw, y0+ny*bw, x0-nx*bw, y0-ny*bw);
+    bg.addColorStop(0,    'rgba(85,98,168,0)');
+    bg.addColorStop(0.3,  'rgba(102,115,188,0.042)');
+    bg.addColorStop(0.5,  'rgba(115,130,205,0.068)');
+    bg.addColorStop(0.7,  'rgba(102,115,188,0.042)');
+    bg.addColorStop(1,    'rgba(85,98,168,0)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    // Dense micro-stars within band
+    for (let i = 0; i < 180; i++) {
+      const prog = i / 180;
+      const cx = x0 + dx * prog, cy = y0 + dy * prog;
+      const sc = bw * (Math.sin(i * 2.71) * 0.45 + Math.sin(i * 0.91) * 0.28);
+      const sx = cx + nx * sc + Math.sin(i * 3.79) * bw * 0.26;
+      const sy = cy + ny * sc + Math.cos(i * 2.33) * bw * 0.16;
+      if (sx < 0 || sx > W || sy < 0 || sy > H * 0.72) continue;
+      const twk = 0.28 + 0.72 * Math.abs(Math.sin(t * 0.00055 + i * 0.83));
+      const sr = 0.10 + (i % 4) * 0.065;
+      ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(205,215,242,${0.055 * twk})`; ctx.fill();
+    }
+    ctx.restore();
+  }
 
   let t = 0;
   function draw() {
@@ -4009,6 +4150,30 @@ const GEMATRIA_CODES = {
     ctx.clearRect(0, 0, W, H);
     const col = phaseColors[phase] || phaseColors.origin;
     const isShadow = phase === 'shadow';
+
+    // === SKY FILL — paints the full canvas background so the transparent phase-bg top
+    //     shows the correct sky color rather than the body cream background.
+    //     Crossfades between phases during transitions.
+    const SKY_STOPS = {
+      origin:        [[0,'#08071a'],[0.15,'#150e2e'],[0.30,'#241640'],[0.48,'#5a3018'],[0.62,'#b88820'],[0.75,'#3a5a28'],[1,'#1e3815']],
+      meeting:       [[0,'#120806'],[0.18,'#341608'],[0.36,'#8a4a1e'],[0.52,'#d07828'],[0.64,'#e09038'],[0.76,'#3a2a18'],[1,'#1a1210']],
+      summer:        [[0,'#060c16'],[0.18,'#0e2840'],[0.36,'#185878'],[0.52,'#c89838'],[0.64,'#a0c860'],[0.78,'#2e6618'],[1,'#1a4a15']],
+      shadow:        [[0,'#020101'],[0.22,'#060202'],[0.44,'#120606'],[0.62,'#0c0302'],[0.80,'#080202'],[1,'#040101']],
+      transmutation: [[0,'#080c16'],[0.20,'#182a3c'],[0.38,'#305e72'],[0.52,'#c0a050'],[0.64,'#88b468'],[0.78,'#386428'],[1,'#2a5025']],
+    };
+    function paintSkyFill(ph, alpha) {
+      const stops = SKY_STOPS[ph] || SKY_STOPS.origin;
+      const sg = ctx.createLinearGradient(0, 0, 0, H);
+      stops.forEach(([p, c]) => sg.addColorStop(p, c));
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = sg;
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 1;
+    }
+    if (phaseBlend < 1 && prevPhase !== phase) {
+      paintSkyFill(prevPhase, 1 - phaseBlend);
+    }
+    paintSkyFill(phase, phaseBlend);
 
     // Phase blend fade-in — new phase elements fade in over ~55 frames (~0.9s at 60fps)
     ctx.save();
@@ -4304,17 +4469,87 @@ const GEMATRIA_CODES = {
     }
     ctx.restore();
 
-    // Stars (shadow + origin phases)
+    // Stars (shadow + origin phases) — golden-ratio distributed, proper twinkle
     if (isShadow || phase === 'origin') {
-      for (let i = 0; i < 40; i++) {
-        const sx = ((42 * (i+1) * 7.31) % 1) * W;
-        const sy = ((42 * (i+1) * 3.71) % 1) * H * 0.4;
-        const sr = 0.3 + ((i*17) % 10) * 0.06;
-        const sa = 0.06 + 0.04 * Math.sin(t * 0.001 + i);
-        ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI*2);
-        ctx.fillStyle = isShadow ? `rgba(180,140,100,${sa})` : `rgba(201,168,76,${sa*0.6})`;
+      const starCount = isMobile ? 55 : 110;
+      const PHI_ANGLE = 137.50776 * (Math.PI / 180);
+      ctx.save();
+      for (let i = 0; i < starCount; i++) {
+        // Golden-ratio sunflower distribution across top 42% of screen
+        const frac = (i + 0.5) / starCount;
+        const sx = ((Math.sin(i * PHI_ANGLE) * 0.5 + 0.5 + frac * 2.618) % 1) * W;
+        const sy = (Math.abs(Math.cos(i * PHI_ANGLE * 1.618)) * 0.42) * H;
+        const sr = 0.25 + (i % 5) * 0.14;
+        // Each star twinkles at its own pace
+        const twinkle = 0.45 + 0.55 * Math.sin(t * 0.0008 + i * 1.618);
+        const baseA = isShadow
+          ? (sr > 0.7 ? 0.32 : 0.18) * twinkle
+          : (sr > 0.7 ? 0.22 : 0.12) * twinkle;
+        ctx.beginPath();
+        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+        ctx.fillStyle = isShadow
+          ? `rgba(210, 175, 120, ${baseA})`
+          : `rgba(230, 205, 160, ${baseA})`;
         ctx.fill();
+        // Bright stars (every 9th) get a soft radial halo
+        if (i % 9 === 0 && sr > 0.5) {
+          const halo = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 7);
+          const hA = baseA * 0.35;
+          halo.addColorStop(0, isShadow ? `rgba(220,180,110,${hA})` : `rgba(240,215,160,${hA})`);
+          halo.addColorStop(1, 'rgba(200,180,140,0)');
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr * 7, 0, Math.PI * 2);
+          ctx.fillStyle = halo;
+          ctx.fill();
+        }
       }
+      ctx.restore();
+    }
+
+    // Aurora borealis — Origin (green/violet wisps) & Transmutation (gold-green dawn bands)
+    if (phase === 'origin' || phase === 'transmutation') {
+      const isOrigin = phase === 'origin';
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      const auroraTime = t * 0.00022;
+      const bands = isOrigin
+        ? [
+            { y: 0.04, h: 0.13, c1: [60, 185, 115], c2: [55, 110, 190], alpha: 0.055 },
+            { y: 0.11, h: 0.09, c1: [80, 130, 200], c2: [100, 185, 130], alpha: 0.035 },
+            { y: 0.17, h: 0.06, c1: [120, 80, 180], c2: [60, 160, 140], alpha: 0.022 },
+          ]
+        : [
+            { y: 0.05, h: 0.10, c1: [185, 215, 135], c2: [210, 185, 95],  alpha: 0.042 },
+            { y: 0.12, h: 0.07, c1: [200, 175, 100], c2: [160, 210, 140], alpha: 0.026 },
+          ];
+
+      bands.forEach((band, bi) => {
+        // Build a wavy polygon for the aurora band
+        const yTop = band.y * H;
+        const yBot = (band.y + band.h) * H;
+        ctx.beginPath();
+        // Top edge — sinusoidal wave
+        for (let xi = 0; xi <= W; xi += 16) {
+          const wy = yTop + Math.sin(auroraTime + xi * 0.004 + bi * 2.3) * band.h * H * 0.38;
+          xi === 0 ? ctx.moveTo(xi, wy) : ctx.lineTo(xi, wy);
+        }
+        // Bottom edge (reverse) — offset wave
+        for (let xi = W; xi >= 0; xi -= 16) {
+          const wy = yBot + Math.sin(auroraTime + xi * 0.004 + bi * 2.3 + 0.9) * band.h * H * 0.28;
+          ctx.lineTo(xi, wy);
+        }
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(0, yTop, 0, yBot);
+        const [r1, g1, b1] = band.c1;
+        const [r2, g2, b2] = band.c2;
+        grad.addColorStop(0,   `rgba(${r1},${g1},${b1},0)`);
+        grad.addColorStop(0.4, `rgba(${r1},${g1},${b1},${band.alpha})`);
+        grad.addColorStop(0.7, `rgba(${r2},${g2},${b2},${band.alpha * 0.6})`);
+        grad.addColorStop(1,   `rgba(${r2},${g2},${b2},0)`);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      });
+      ctx.restore();
     }
 
     // Close phase blend save
