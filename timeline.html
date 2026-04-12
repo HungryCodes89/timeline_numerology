@@ -1883,14 +1883,15 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   margin-bottom: 14px;
 }
 .fib-header .fib-sub {
-  font-family: 'IM Fell English', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 1.15rem;
-  color: #d4c8b4;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: #e8dcc8;
   line-height: 1.9;
   max-width: 720px;
   margin: 0 auto;
-  text-shadow: 0 1px 16px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 20px rgba(0,0,0,1), 0 0 60px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,1);
 }
 
 /* ═══ SEQUENCE STRIP, prominent glowing gold ═══ */
@@ -1899,11 +1900,15 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   flex-wrap: wrap;
   justify-content: center;
   align-items: baseline;
-  gap: 10px;
+  gap: 12px;
   max-width: 960px;
   margin: 0 auto 50px;
-  padding: 30px 20px;
+  padding: 30px 20px 36px;
   position: relative;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 6px;
 }
 .fib-seq::before {
   content: '';
@@ -1917,22 +1922,33 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   bottom: 0; left: 10%; right: 10%; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
 }
+.fib-seq-caption {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.45);
+  margin-bottom: 18px;
+}
 .fib-seq-num {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
   font-weight: 700;
-  color: #e8d5a0;
-  padding: 6px 10px;
+  color: #f0ddb0;
+  padding: 10px 14px 8px;
   cursor: pointer;
-  transition: all 0.4s ease;
+  transition: all 0.35s ease;
   position: relative;
   letter-spacing: 0.04em;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
-  border: 1px solid rgba(201,168,76,0.18);
-  border-radius: 4px;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(8px);
+  text-shadow: 0 1px 10px rgba(0,0,0,0.9);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 5px;
+  background: rgba(0,0,0,0.55);
   line-height: 1.2;
+  user-select: none;
 }
 .fib-seq-num:hover {
   color: #fff;
@@ -2101,11 +2117,12 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .fib-explain-close:hover { color: rgba(201,168,76,0.7); border-color: rgba(201,168,76,0.25); }
 .fib-explain-num {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 400;
   color: var(--gold);
-  text-shadow: 0 0 50px rgba(201,168,76,0.25);
-  margin-bottom: 4px;
+  text-shadow: 0 0 60px rgba(201,168,76,0.4), 0 2px 20px rgba(0,0,0,1);
+  margin-bottom: 6px;
+  line-height: 1;
 }
 .fib-explain-title {
   font-family: 'Cinzel', serif;
@@ -2138,36 +2155,44 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 }
 .fib-prop-formula {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.88rem;
-  color: rgba(201,168,76,0.6);
+  font-size: 1.05rem;
+  color: rgba(201,168,76,0.8);
   margin-bottom: 16px;
   font-style: italic;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
 }
 .fib-explain-body {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  line-height: 2.1;
-  color: rgba(210,195,175,0.88);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 2.15;
+  color: rgba(230,215,195,1);
 }
-.fib-explain-body em { color: rgba(201,168,76,0.65); }
-body.dark .fib-explain-body { color: rgba(190,175,155,0.78); }
-body.dark .fib-explain { background: rgba(6,4,2,0.92); border-color: rgba(201,168,76,0.12); }
+.fib-explain-body em { color: rgba(201,168,76,0.9); }
+body.dark .fib-explain-body { color: rgba(215,200,180,0.95); }
+body.dark .fib-explain { background: rgba(6,4,2,0.96); border-color: rgba(201,168,76,0.15); }
 
 .fib-intro {
-  max-width: 700px;
+  max-width: 720px;
   margin: 0 auto 50px;
   text-align: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 32px 44px;
+  border-radius: 6px;
+  border: 1px solid rgba(201,168,76,0.1);
 }
 .fib-intro p {
-  font-size: 1.1rem;
-  line-height: 2.2;
-  color: rgba(220,205,185,0.95);
-  margin-bottom: 16px;
-  text-shadow: 0 1px 12px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.8);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 2.1;
+  color: rgba(235,220,200,1);
+  margin-bottom: 18px;
 }
-.fib-intro p em { color: rgba(201,168,76,0.65); }
-body.dark .fib-intro p { color: rgba(180,165,145,0.7); }
+.fib-intro p em { color: rgba(201,168,76,0.9); }
+body.dark .fib-intro p { color: rgba(210,195,175,0.9); }
 
 /* node colors by story meaning */
 .fib-c-void { background: radial-gradient(circle at 30% 30%, #2a2220, #0d0b0a); box-shadow: 0 0 20px rgba(30,20,15,0.6), 0 0 50px rgba(201,168,76,0.04); }
@@ -3417,7 +3442,9 @@ body.dark .mn-content p { color: #9a8880; }
   </div>
 
   <!-- Prominent sequence strip -->
-  <div class="fib-seq" id="fib-seq"></div>
+  <div class="fib-seq" id="fib-seq">
+    <span class="fib-seq-caption">Each number encodes a chapter — tap to decode</span>
+  </div>
 
   <div class="fib-spiral-section" id="fib-spiral-section">
     <canvas id="fib-canvas"></canvas>
@@ -6061,13 +6088,13 @@ function initFibSpiral() {
     const p = spiralXY(frac * 0.9 + 0.02);
 
     const scale = 0.65 + (i / FIB_DATA.length) * 0.85;
-    const size = Math.round(60 * scale);
-    const numFs = (0.72 * scale).toFixed(2);
-    const labelFs = (0.38 * scale).toFixed(2);
+    const size = Math.round(66 * scale);
+    const numFs = (0.85 * scale).toFixed(2);
+    const labelFs = Math.max(0.55, 0.6 * scale).toFixed(2);
 
     const nd = document.createElement('div');
     nd.className = 'fib-node ' + fib.cls;
-    nd.innerHTML = '<span class="nd-num">' + fib.label + '</span><span class="nd-label" style="font-size:' + labelFs + 'rem">' + fib.title + '</span>';
+    nd.innerHTML = '<span class="nd-num">' + fib.label + '</span><span class="nd-label" style="font-size:' + labelFs + 'rem;font-family:\'Cinzel\',serif;font-style:normal;letter-spacing:0.04em;opacity:0.85">' + fib.title + '</span>';
     nd.style.width = size + 'px'; nd.style.height = size + 'px';
     nd.style.fontSize = numFs + 'rem';
     nd.style.left = (p.x - size/2) + 'px'; nd.style.top = (p.y - size/2) + 'px';
@@ -6162,7 +6189,12 @@ window.addEventListener('resize', fibPartResize);
 // ═══════════════════════════════
 function buildFibSeq() {
   var strip = document.getElementById('fib-seq');
-  if (!strip || strip.children.length > 0) return;
+  if (!strip) return;
+  // Remove any previously built number items (keep the caption span)
+  Array.from(strip.children).forEach(function(c) {
+    if (!c.classList.contains('fib-seq-caption')) strip.removeChild(c);
+  });
+  if (strip.querySelector('.fib-seq-num')) return; // already built
   for (var i = 0; i < FIB_DATA.length; i++) {
     var d = FIB_DATA[i];
     var num = document.createElement('span');
