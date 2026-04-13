@@ -1707,9 +1707,15 @@ body.dark .gw { color: #d4a84c; }
 /* Collapsible intro sections */
 .intro-section {
   margin-bottom: 8px;
-  border: 1px solid rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.15);
   border-radius: 4px;
   overflow: hidden;
+  background: rgba(245,240,232,0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+body.dark .intro-section {
+  background: rgba(20,14,10,0.96);
 }
 .intro-section summary {
   font-family: 'Cinzel', serif;
@@ -1725,9 +1731,16 @@ body.dark .gw { color: #d4a84c; }
   align-items: center;
   transition: background 0.3s;
   position: relative;
+  background: rgba(245,240,232,0.96);
+}
+body.dark .intro-section summary {
+  background: rgba(20,14,10,0.96);
 }
 .intro-section summary:hover {
-  background: rgba(201,168,76,0.04);
+  background: rgba(235,228,218,1);
+}
+body.dark .intro-section summary:hover {
+  background: rgba(28,20,14,1);
 }
 .intro-section summary::after {
   content: '+';
@@ -2568,7 +2581,7 @@ body.dark .mn-content p { color: #9a8880; }
 </header>
 
 <!-- ═══════════════ INTRODUCTION: THE LANGUAGE OF NUMBER ═══════════════ -->
-<div style="max-width:720px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;">
+<div style="max-width:720px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;background:rgba(245,240,232,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:6px;">
 
   <div style="text-align:center;margin-bottom:30px;">
     <div class="sigil" style="margin-bottom:16px;">&#10022;</div>
@@ -4303,7 +4316,7 @@ const GEMATRIA_CODES = {
     const g = ctx.createLinearGradient(0, 0, 0, H);
     pts.forEach(([pos, col]) => g.addColorStop(pos, col));
     ctx.save();
-    ctx.globalAlpha = alpha * 0.42;
+    ctx.globalAlpha = alpha * 0.28;
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
     ctx.restore();
