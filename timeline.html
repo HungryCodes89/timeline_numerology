@@ -1865,7 +1865,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   pointer-events: none;
   background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
 }
-#fib-view > *:not(#fib-bg-video):not(#fib-bg-video-b):not(#fib-bg-vignette):not(#fib-overlay):not(#fib-explain) {
+#fib-view > *:not(#fib-bg-video):not(#fib-bg-video-b):not(#fib-bg-vignette):not(#fib-overlay):not(#fib-explain):not(#fib-decode-panel) {
   position: relative;
   z-index: 1;
 }
@@ -1994,6 +1994,78 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .fib-seq-num.active .fib-seq-label {
   color: rgba(201,168,76,0.9);
 }
+
+/* ═══ INLINE DECODE PANEL ═══ */
+#fib-decode-panel {
+  display: none;
+  max-width: 720px;
+  margin: 0 auto 50px;
+  padding: 36px 44px 40px;
+  background: rgba(4,2,1,0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 6px;
+  box-shadow: 0 8px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(201,168,76,0.06);
+  position: relative;
+  overflow: hidden;
+}
+#fib-decode-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+}
+#fib-decode-panel.open { display: block; animation: fdpIn 0.38s cubic-bezier(0.2,0,0.2,1) both; }
+@keyframes fdpIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#fdp-close {
+  position: absolute; top: 14px; right: 18px;
+  font-family: 'Cinzel', serif; font-size: 0.72rem;
+  letter-spacing: 0.18em; color: rgba(201,168,76,0.5);
+  background: none; border: 1px solid rgba(201,168,76,0.15);
+  padding: 4px 14px; cursor: pointer; border-radius: 20px;
+  transition: all 0.3s;
+}
+#fdp-close:hover { color: rgba(201,168,76,0.9); border-color: rgba(201,168,76,0.35); }
+#fdp-num {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3.5rem; font-weight: 400;
+  color: var(--gold);
+  text-shadow: 0 0 60px rgba(201,168,76,0.35), 0 2px 20px rgba(0,0,0,1);
+  line-height: 1; margin-bottom: 6px;
+}
+#fdp-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.65);
+  margin-bottom: 18px;
+}
+#fdp-formula {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-style: italic;
+  color: rgba(201,168,76,0.75);
+  margin-bottom: 16px; letter-spacing: 0.04em;
+}
+#fdp-props {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 22px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+#fdp-props .fib-prop {
+  font-size: 0.72rem;
+}
+#fdp-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem; font-weight: 400;
+  line-height: 2.15;
+  color: rgba(230,215,195,1);
+}
+#fdp-body em { color: rgba(201,168,76,0.9); }
 
 /* ═══ FULL-SCREEN SPIRAL MAP ═══ */
 .fib-spiral-section {
@@ -3448,6 +3520,16 @@ body.dark .mn-content p { color: #9a8880; }
   <!-- Prominent sequence strip -->
   <div class="fib-seq" id="fib-seq">
     <span class="fib-seq-caption">Each number encodes a chapter — tap to decode</span>
+  </div>
+
+  <!-- Inline decode panel — expands below the strip when a number is clicked -->
+  <div id="fib-decode-panel">
+    <button id="fdp-close" onclick="closeFibExplain()">CLOSE &#215;</button>
+    <div id="fdp-num"></div>
+    <div id="fdp-title"></div>
+    <div id="fdp-formula"></div>
+    <div id="fdp-props"></div>
+    <div id="fdp-body"></div>
   </div>
 
   <div class="fib-spiral-section" id="fib-spiral-section">
@@ -6218,15 +6300,16 @@ function buildFibSeq() {
 document.addEventListener('DOMContentLoaded', buildFibSeq);
 
 function showFibExplain(idx) {
-  const panel = document.getElementById('fib-explain');
   const fib = FIB_DATA[idx];
-  document.getElementById('fib-ex-num').textContent = fib.label;
-  document.getElementById('fib-ex-title').textContent = fib.title;
-  document.getElementById('fib-ex-formula').textContent = fib.formula;
-  document.getElementById('fib-ex-body').innerHTML = fib.body;
+  if (!fib) return;
 
-  // Build properties tags
-  const propsEl = document.getElementById('fib-ex-props');
+  // Populate inline decode panel
+  document.getElementById('fdp-num').textContent = fib.label;
+  document.getElementById('fdp-title').textContent = fib.title;
+  document.getElementById('fdp-formula').textContent = fib.formula || '';
+  document.getElementById('fdp-body').innerHTML = fib.body || '';
+
+  const propsEl = document.getElementById('fdp-props');
   propsEl.innerHTML = '';
   if (fib.props) {
     fib.props.forEach(p => {
@@ -6237,24 +6320,26 @@ function showFibExplain(idx) {
     });
   }
 
-  panel.classList.add('open');
-  const ov = document.getElementById('fib-overlay');
-  if (ov) ov.classList.add('open');
+  const dp = document.getElementById('fib-decode-panel');
+  dp.classList.remove('open');
+  void dp.offsetWidth; // force reflow so animation replays
+  dp.classList.add('open');
 
-  // Highlight active node on spiral
-  document.querySelectorAll('.fib-node').forEach((n, i) => {
-    n.classList.toggle('active', i === idx);
-  });
-  // Highlight active number in sequence strip
-  document.querySelectorAll('.fib-seq-num').forEach((n, i) => {
-    n.classList.toggle('active', i === idx);
-  });
+  // Scroll panel into view
+  setTimeout(() => dp.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 40);
+
+  // Highlight active elements
+  document.querySelectorAll('.fib-node').forEach((n, i) => n.classList.toggle('active', i === idx));
+  document.querySelectorAll('.fib-seq-num').forEach((n, i) => n.classList.toggle('active', i === idx));
 }
 
 function closeFibExplain() {
-  document.getElementById('fib-explain').classList.remove('open');
+  document.getElementById('fib-decode-panel').classList.remove('open');
+  // Also close legacy overlay if somehow open
   const ov = document.getElementById('fib-overlay');
   if (ov) ov.classList.remove('open');
+  const lp = document.getElementById('fib-explain');
+  if (lp) lp.classList.remove('open');
   document.querySelectorAll('.fib-node').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.fib-seq-num').forEach(n => n.classList.remove('active'));
 }
