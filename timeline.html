@@ -295,13 +295,8 @@ body.dark::after { opacity: 0.26; }
 .cover-lotus .lotus-bloom circle:nth-child(13) { animation: petalCircleIn 0.5s ease 1.82s forwards; }
 .cover-lotus .lotus-bloom circle:nth-child(14) { animation: petalCircleIn 0.5s ease 1.92s forwards; }
 
-/* SVG name text fades in after petals bloom (names only — numbers handled by JS draw) */
-.cover-lotus text:nth-child(3) { animation: svgTextIn 0.9s ease 2.05s forwards; } /* October */
-.cover-lotus text:nth-child(4) { animation: svgTextIn 0.6s ease 2.20s forwards; } /* & */
-.cover-lotus text:nth-child(5) { animation: svgTextIn 0.9s ease 2.15s forwards; } /* Sean */
-
-/* Number texts: JS injects per-character elements; original source texts stay hidden.
-   No nth-child stroke rules here — JS owns all stroke/fill on the char elements. */
+/* All SVG text handled by JS quill-write — clip-rect sweep + nib glow for names and numbers.
+   fill-opacity: 0 initial state is set above (line ~253). No CSS text animations. */
 
 /* ═══════════════════════════════
    COVER TEXT SHIMMER ON ARRIVAL
@@ -4356,135 +4351,189 @@ const GEMATRIA_CODES = {
 
 
 // ═══════════════════════════════════════════════════
-// NUMBER DRAW-IN — character by character, left→right
-// Each glyph traced then filled individually so the
-// sacred numbers are written one stroke at a time
+// QUILL WRITE — clip-rect sweeps left→right like a pen
+// Names: whole-word sweep.  Numbers: char-by-char sweep.
+// A nib glow travels the leading edge of every reveal.
 // ═══════════════════════════════════════════════════
-(function initNumberDraw() {
+(function initQuillWrite() {
   document.fonts.ready.then(function() {
-    var svg = document.querySelector('.cover-lotus');
+    var svg  = document.querySelector('.cover-lotus');
     if (!svg) return;
-    var ns = 'http://www.w3.org/2000/svg';
-    var allTexts = Array.from(svg.querySelectorAll('text'));
-    // allTexts indices (querySelectorAll order):
-    //   0=October, 1=&, 2=Sean, 3=666solid, 4=666outline, 5=55·34·27·777, 6=43·72
+    var ns   = 'http://www.w3.org/2000/svg';
+    var defs = svg.querySelector('defs');
+    var T    = Array.from(svg.querySelectorAll('text'));
+    // T[0]=October T[1]=& T[2]=Sean T[3]=666solid T[4]=666outline
+    // T[5]=55·34·27·777  T[6]=43·72
 
-    // Hide the source text elements and the 666 outline permanently
-    [3, 4, 5, 6].forEach(function(i) {
-      var el = allTexts[i];
-      el.style.animation   = 'none';
-      el.style.fillOpacity = '0';
-      el.style.strokeOpacity = '0';
+    // Cancel ALL CSS text animations; hide everything to start
+    T.forEach(function(el) { el.style.animation = 'none'; el.style.fillOpacity = '0'; });
+    T[4].style.display = 'none'; // 666 outline: never needed now
+
+    // ── Nib glow — single shared radialGradient + circle ─
+    var ng = document.createElementNS(ns, 'radialGradient');
+    ng.id = 'nib-g'; ng.setAttribute('gradientUnits', 'userSpaceOnUse');
+    [[0,'#fffbe6',1],[0.42,'#d4a84c',0.78],[1,'#c9a84c',0]].forEach(function(s) {
+      var st = document.createElementNS(ns, 'stop');
+      st.setAttribute('offset', s[0]);
+      st.setAttribute('stop-color', s[1]);
+      st.setAttribute('stop-opacity', s[2]);
+      ng.appendChild(st);
     });
+    defs.appendChild(ng);
+    var nibEl = document.createElementNS(ns, 'circle');
+    nibEl.setAttribute('fill', 'url(#nib-g)');
+    nibEl.style.opacity = '0'; nibEl.style.pointerEvents = 'none';
+    svg.appendChild(nibEl);
 
-    // writeChars: splits srcEl into per-character <text> nodes,
-    // fires them sequentially starting at startMs.
-    // Returns the approximate ms when the last character's gap elapses.
-    function writeChars(srcEl, startMs) {
-      var raw        = srcEl.textContent;
-      var n          = raw.length;
-      var fontSize   = parseFloat(srcEl.getAttribute('font-size'));
-      var fill       = srcEl.getAttribute('fill') || '#c9a84c';
-      var filter     = srcEl.getAttribute('filter') || '';
-      var y          = srcEl.getAttribute('y');
-      var targetFill = srcEl.getAttribute('opacity') || '0.9';
-      var isLarge    = fontSize >= 30;
-
-      // Gather SVG-unit x position of every character's left edge
-      var chars = [];
-      for (var i = 0; i < n; i++) {
-        try {
-          var cx = srcEl.getStartPositionOfChar(i).x;
-          chars.push({ ch: raw[i], x: cx });
-        } catch (e) { /* skip unmeasurable chars */ }
-      }
-
-      var curMs = startMs;
-
-      chars.forEach(function(c) {
-        var isSpace = (c.ch === ' ');
-        var isDot   = (c.ch === '\u00B7'); // middle dot ·
-
-        // Spaces are invisible — just advance timing a little
-        if (isSpace) {
-          curMs += isLarge ? 55 : 32;
-          return;
-        }
-
-        // Per-character timing values
-        var charDur = isLarge ? 460 : (isDot ? 130 : 210);
-        var charGap = isLarge ? 310 : (isDot ? 65  : 145);
-        // Stroke path length estimate: Cinzel Decorative glyphs are complex;
-        // 7× font-size for large, 6× for small gives partial-to-full trace coverage
-        var dash    = Math.round(fontSize * (isLarge ? 7.0 : 6.0));
-
-        // Create an individual <text> for this character, positioned absolutely
-        var el = document.createElementNS(ns, 'text');
-        el.setAttribute('font-family', srcEl.getAttribute('font-family'));
-        el.setAttribute('font-size',   fontSize);
-        el.setAttribute('text-anchor', 'start');
-        el.setAttribute('x', c.x);
-        el.setAttribute('y', y);
-        if (filter) el.setAttribute('filter', filter);
-        // All visual properties as inline styles (override any CSS nth-child rules)
-        el.style.fill             = fill;
-        el.style.fillOpacity      = '0';
-        el.style.stroke           = 'rgba(201,168,76,0.92)';
-        el.style.strokeWidth      = isLarge ? '0.7' : '0.40';
-        el.style.strokeLinecap    = 'round';
-        el.style.strokeLinejoin   = 'round';
-        el.style.strokeDasharray  = String(dash);
-        el.style.strokeDashoffset = String(dash);
-        el.style.strokeOpacity    = '0';
-        el.textContent = c.ch;
-        srcEl.parentNode.insertBefore(el, srcEl);
-
-        var delay = curMs;
-
-        // IIFE to capture el/dash/charDur/targetFill per iteration
-        (function(charEl, d, cd, tf) {
-          setTimeout(function() {
-            // Step 1 — stroke traces the glyph outline
-            charEl.style.strokeOpacity = '1';
-            charEl.animate(
-              [{ strokeDashoffset: String(d) }, { strokeDashoffset: '0' }],
-              { duration: cd, easing: 'cubic-bezier(0.12, 0, 0.38, 1)', fill: 'forwards' }
-            );
-
-            // Step 2 — fill appears at ~45% through the stroke animation
-            setTimeout(function() {
-              charEl.animate(
-                [{ fillOpacity: '0' }, { fillOpacity: String(tf) }],
-                { duration: Math.round(cd * 0.72), easing: 'ease-out', fill: 'forwards' }
-              );
-            }, Math.round(cd * 0.42));
-
-            // Step 3 — stroke fades out after fill is settled
-            setTimeout(function() {
-              charEl.animate(
-                [{ strokeOpacity: '0.92' }, { strokeOpacity: '0' }],
-                { duration: 360, easing: 'ease-in', fill: 'forwards' }
-              );
-            }, Math.round(cd * 0.82));
-
-          }, delay);
-        })(el, dash, charDur, targetFill);
-
-        curMs += charGap;
-      });
-
-      return curMs; // caller uses this to chain the next line
+    // ── Clip-path factory ─────────────────────────────────
+    var cid = 0;
+    function makeClip(x, y, h) {
+      var id = 'qc' + (cid++);
+      var cp = document.createElementNS(ns, 'clipPath'); cp.id = id;
+      var r  = document.createElementNS(ns, 'rect');
+      r.setAttribute('x', x); r.setAttribute('y', y);
+      r.setAttribute('width', '0'); r.setAttribute('height', h);
+      cp.appendChild(r); defs.appendChild(cp);
+      return { id: id, r: r };
     }
 
-    // ── Sequence ──────────────────────────────────────
-    // 666 : 3 large chars, 310ms apart → starts 2400ms
-    var t1 = writeChars(allTexts[3], 2400);
+    // ── Core sweep — grows a clip rect left→right over ms ─
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
 
-    // 55·34·27·777 : small chars, starts 500ms after last 666 gap
-    var t2 = writeChars(allTexts[5], t1 + 500);
+    function sweepClip(clipRect, toW, anchorX, nibY, nibR, ms, done) {
+      var t0 = null;
+      (function tick(ts) {
+        if (!t0) t0 = ts;
+        var p  = Math.min((ts - t0) / ms, 1);
+        var w  = ease(p) * toW;
+        var nx = anchorX + w;
+        clipRect.setAttribute('width', String(w));
+        // move nib glow to leading edge
+        ng.setAttribute('cx', String(nx)); ng.setAttribute('cy', String(nibY)); ng.setAttribute('r', String(nibR));
+        nibEl.setAttribute('cx', String(nx)); nibEl.setAttribute('cy', String(nibY)); nibEl.setAttribute('r', String(nibR));
+        nibEl.style.opacity = p > 0.88 ? String((1 - p) / 0.12) : '1';
+        if (p < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          clipRect.setAttribute('width', String(toW));
+          nibEl.style.opacity = '0';
+          done && done();
+        }
+      })();
+    }
 
-    // 43·72 : small chars, starts 380ms after last small-line gap
-    writeChars(allTexts[6], t2 + 380);
+    // ── writeLine — reveal an entire element in one sweep ─
+    function writeLine(el, ms, done) {
+      var bb = el.getBBox();
+      var cl = makeClip(bb.x - 1, bb.y - 2, bb.height + 4);
+      el.setAttribute('clip-path', 'url(#' + cl.id + ')');
+      el.style.fillOpacity = el.getAttribute('opacity') || '1';
+      sweepClip(cl.r, bb.width + 3, bb.x - 1,
+                bb.y + bb.height * 0.38, bb.height * 0.56,
+                ms, done);
+    }
+
+    // ── writeChars — reveal each glyph separately, left→right ─
+    function writeChars(srcEl, perMs, gapMs, done) {
+      var raw    = srcEl.textContent;
+      var fsize  = parseFloat(srcEl.getAttribute('font-size'));
+      var fill   = srcEl.getAttribute('fill')    || '#c9a84c';
+      var filt   = srcEl.getAttribute('filter')  || '';
+      var ay     = srcEl.getAttribute('y');
+      var alpha  = srcEl.getAttribute('opacity') || '1';
+      var bb     = srcEl.getBBox();
+      var clipY  = bb.y - 2;
+      var clipH  = bb.height + 4;
+      var nibY   = bb.y + bb.height * 0.38;
+      var nibR   = bb.height * 0.58;
+
+      // Gather per-glyph x + advance-width using SVG DOM methods
+      var chars = [];
+      for (var i = 0; i < raw.length; i++) {
+        try {
+          chars.push({
+            ch: raw[i],
+            x:  srcEl.getStartPositionOfChar(i).x,
+            w:  srcEl.getSubStringLength(i, 1)
+          });
+        } catch(e) {}
+      }
+
+      // Pre-create all non-space char <text> elements with their clip paths.
+      // They start invisible because clip width = 0.
+      var slots = chars.map(function(c) {
+        if (c.ch === ' ') return null;
+        var el = document.createElementNS(ns, 'text');
+        el.setAttribute('font-family', srcEl.getAttribute('font-family'));
+        el.setAttribute('font-size',   fsize);
+        el.setAttribute('text-anchor', 'start');
+        el.setAttribute('x', c.x); el.setAttribute('y', ay);
+        if (filt) el.setAttribute('filter', filt);
+        el.style.fill = fill; el.style.fillOpacity = alpha;
+        el.textContent = c.ch;
+        srcEl.parentNode.insertBefore(el, srcEl);
+        var cl = makeClip(c.x - 1, clipY, clipH);
+        el.setAttribute('clip-path', 'url(#' + cl.id + ')');
+        return { r: cl.r };
+      });
+
+      // Fire one character at a time, waiting for each sweep to finish
+      var i = 0;
+      function next() {
+        if (i >= chars.length) { done && done(); return; }
+        var c = chars[i], sl = slots[i]; i++;
+
+        if (c.ch === ' ') { setTimeout(next, 24); return; }
+
+        var isDot = (c.ch === '\u00B7');
+        var ms2   = isDot ? Math.round(perMs  * 0.42) : perMs;
+        var gap2  = isDot ? Math.round(gapMs  * 0.35) : gapMs;
+
+        sweepClip(sl.r, c.w + 2, c.x - 1, nibY, nibR, ms2, function() {
+          setTimeout(next, gap2);
+        });
+      }
+      next();
+    }
+
+    // ── Sequence: names then numbers, chained via callbacks ─
+    setTimeout(function() {
+
+      // October — word sweep
+      writeLine(T[0], 500, function() {
+        setTimeout(function() {
+
+          // & — single character word sweep
+          writeLine(T[1], 130, function() {
+            setTimeout(function() {
+
+              // Sean — word sweep
+              writeLine(T[2], 360, function() {
+                setTimeout(function() {
+
+                  // 666 — each digit drawn one at a time (the sacred number)
+                  writeChars(T[3], 390, 105, function() {
+                    setTimeout(function() {
+
+                      // 55·34·27·777 — digit by digit
+                      writeChars(T[5], 160, 58, function() {
+                        setTimeout(function() {
+
+                          // 43·72 — digit by digit
+                          writeChars(T[6], 150, 52, null);
+
+                        }, 240);
+                      });
+                    }, 320);
+                  });
+                }, 340);
+              });
+            }, 68);
+          });
+        }, 68);
+      });
+
+    }, 2050);
   });
 })();
 
