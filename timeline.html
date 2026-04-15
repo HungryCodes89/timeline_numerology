@@ -295,14 +295,16 @@ body.dark::after { opacity: 0.26; }
 .cover-lotus .lotus-bloom circle:nth-child(13) { animation: petalCircleIn 0.5s ease 1.82s forwards; }
 .cover-lotus .lotus-bloom circle:nth-child(14) { animation: petalCircleIn 0.5s ease 1.92s forwards; }
 
-/* SVG name / number text fades in after petals bloom */
+/* SVG name text fades in after petals bloom (names only — numbers handled by JS draw) */
 .cover-lotus text:nth-child(3) { animation: svgTextIn 0.9s ease 2.05s forwards; } /* October */
 .cover-lotus text:nth-child(4) { animation: svgTextIn 0.6s ease 2.20s forwards; } /* & */
 .cover-lotus text:nth-child(5) { animation: svgTextIn 0.9s ease 2.15s forwards; } /* Sean */
-.cover-lotus text:nth-child(6) { animation: svgTextIn 1.2s ease 2.45s forwards; } /* 666 solid */
-.cover-lotus text:nth-child(7) { animation: svgTextIn 0.8s ease 2.55s forwards; } /* 666 outline */
-.cover-lotus text:nth-child(8) { animation: svgTextIn 0.8s ease 2.75s forwards; } /* 55·34·27·777 */
-.cover-lotus text:nth-child(9) { animation: svgTextIn 0.8s ease 2.88s forwards; } /* 43·72 */
+
+/* Number texts: JS handles draw-in. Stroke provides the tracing line. */
+.cover-lotus text:nth-child(6) { stroke: rgba(201,168,76,0.0); stroke-width: 0.5; } /* 666 solid — fill floods after outline draws */
+.cover-lotus text:nth-child(7) { stroke: rgba(201,168,76,0.90); stroke-width: 0.55; } /* 666 outline — stroke traces */
+.cover-lotus text:nth-child(8) { stroke: rgba(201,168,76,0.80); stroke-width: 0.42; } /* 55·34·27·777 */
+.cover-lotus text:nth-child(9) { stroke: rgba(201,168,76,0.80); stroke-width: 0.42; } /* 43·72 */
 
 /* ═══════════════════════════════
    COVER TEXT SHIMMER ON ARRIVAL
@@ -4352,6 +4354,78 @@ const GEMATRIA_CODES = {
     }, 380);
 
     setTimeout(() => { cover.style.display = 'none'; cancelAnimationFrame(raf); }, 2400);
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════
+// NUMBER DRAW-IN — stroke-traces each sacred number
+// onto the cover lotus, then floods the fill
+// ═══════════════════════════════════════════════════
+(function initNumberDraw() {
+  // SVG text child order inside .cover-lotus:
+  //   nth-child(3)=October, (4)=&, (5)=Sean
+  //   nth-child(6)=666 solid fill
+  //   nth-child(7)=666 stroke-outline
+  //   nth-child(8)=55·34·27·777
+  //   nth-child(9)=43·72
+
+  // Config: { selector, drawDelay, drawDur, fillDelay, fillDur, targetFillOpacity }
+  // drawDelay/fillDelay are ms from page load
+  // null drawDur = skip stroke draw (just fill flood)
+  // null fillDelay = skip fill flood (keep as outline only)
+  const NUM_CFG = [
+    // 666 outline traces first — glowing gold calligraphy stroke
+    { idx: 4, drawDelay: 2500, drawDur: 1700, fillDelay: null,  fillDur: null, targetFill: null },
+    // 666 solid floods in after outline is mostly drawn
+    { idx: 3, drawDelay: null, drawDur: null,  fillDelay: 3800, fillDur: 900,  targetFill: '0.9' },
+    // 55 · 34 · 27 · 777
+    { idx: 5, drawDelay: 4100, drawDur: 1300, fillDelay: 5000, fillDur: 700,  targetFill: '0.7' },
+    // 43 · 72
+    { idx: 6, drawDelay: 4500, drawDur: 1000, fillDelay: 5200, fillDur: 600,  targetFill: '0.6' },
+  ];
+
+  document.fonts.ready.then(function() {
+    const svg = document.querySelector('.cover-lotus');
+    if (!svg) return;
+    const texts = Array.from(svg.querySelectorAll('text'));
+    // texts[0-6] = October, &, Sean, 666solid, 666outline, 55·34·27·777, 43·72
+
+    NUM_CFG.forEach(function(cfg) {
+      const el = texts[cfg.idx];
+      if (!el) return;
+
+      // Cancel any CSS svgTextIn animation so it doesn't fight WAAPI
+      el.style.animation = 'none';
+      // Keep fill invisible until we deliberately reveal it
+      el.style.fillOpacity = '0';
+
+      if (cfg.drawDelay !== null) {
+        // Measure actual text advance width and scale to estimate stroke outline length.
+        // Stroke path ≈ advance width × 4 for Cinzel at these sizes (confirmed empirically).
+        const advance = el.getComputedTextLength();
+        const dashLen = Math.ceil(advance * 4.2);
+
+        el.style.strokeDasharray = dashLen;
+        el.style.strokeDashoffset = dashLen;
+
+        setTimeout(function() {
+          el.animate(
+            [{ strokeDashoffset: dashLen + '' }, { strokeDashoffset: '0' }],
+            { duration: cfg.drawDur, easing: 'cubic-bezier(0.28, 0, 0.48, 1)', fill: 'forwards' }
+          );
+        }, cfg.drawDelay);
+      }
+
+      if (cfg.fillDelay !== null) {
+        setTimeout(function() {
+          el.animate(
+            [{ fillOpacity: '0' }, { fillOpacity: cfg.targetFill }],
+            { duration: cfg.fillDur, easing: 'ease', fill: 'forwards' }
+          );
+        }, cfg.fillDelay);
+      }
+    });
   });
 })();
 
