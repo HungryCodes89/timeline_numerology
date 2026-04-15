@@ -133,17 +133,10 @@ body.dark::after { opacity: 0.26; }
 }
 .cover-lotus-wrap {
   margin-bottom: 20px;
-  opacity: 0;
-  animation: lotusFadeIn 3.5s ease 0.3s forwards;
 }
 .cover-lotus {
   width: clamp(220px, 40vw, 340px); height: auto;
-  filter: drop-shadow(0 0 12px rgba(201,168,76,0.15));
-  animation: lotusBreath 6s ease-in-out 3.8s infinite;
-}
-@keyframes lotusFadeIn {
-  from { opacity: 0; transform: scale(0.85) translateY(12px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  animation: lotusBreath 6s ease-in-out 3.5s infinite backwards;
 }
 @keyframes lotusBreath {
   0%, 100% { filter: drop-shadow(0 0 8px rgba(201,168,76,0.12)); }
@@ -237,6 +230,167 @@ body.dark::after { opacity: 0.26; }
 }
 
 /* ═══════════════════════════════
+   COVER EXIT — VIGNETTE CRUSH
+   ═══════════════════════════════ */
+#cover.cover-exit .cover-vignette {
+  animation: vignettecrush 0.55s ease forwards;
+}
+@keyframes vignettecrush {
+  to { background: radial-gradient(ellipse at 50% 45%, transparent 5%, rgba(0,0,0,0.82) 42%, rgba(0,0,0,0.97) 100%); }
+}
+
+/* ═══════════════════════════════
+   LOTUS PETAL DRAW SYSTEM
+   All paths start hidden; stroke-dashoffset
+   animates to 0 in an inside-out bloom sequence
+   ═══════════════════════════════ */
+.cover-lotus .lotus-bloom path {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  fill-opacity: 0;
+}
+.cover-lotus .lotus-bloom circle { opacity: 0; }
+.cover-lotus text { fill-opacity: 0; }
+
+@keyframes petalDraw    { to { stroke-dashoffset: 0; } }
+@keyframes petalFillIn  { to { fill-opacity: 1; } }
+@keyframes petalCircleIn { to { opacity: 1; } }
+@keyframes svgTextIn    { to { fill-opacity: 1; } }
+
+/* Bloom: center → inner → mid-A → outer-A → mid-B → outer-B → details */
+.cover-lotus .lotus-bloom path:nth-child(11) {
+  animation: petalDraw 1.2s cubic-bezier(0.25,0,0.5,1) 0.20s forwards,
+             petalFillIn 0.8s ease 1.20s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(9),
+.cover-lotus .lotus-bloom path:nth-child(10) {
+  animation: petalDraw 1.2s cubic-bezier(0.25,0,0.5,1) 0.50s forwards,
+             petalFillIn 0.8s ease 1.50s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(5),
+.cover-lotus .lotus-bloom path:nth-child(6) {
+  animation: petalDraw 1.2s cubic-bezier(0.25,0,0.5,1) 0.80s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(1),
+.cover-lotus .lotus-bloom path:nth-child(2) {
+  animation: petalDraw 1.2s cubic-bezier(0.25,0,0.5,1) 1.00s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(7),
+.cover-lotus .lotus-bloom path:nth-child(8) {
+  animation: petalDraw 1.2s cubic-bezier(0.25,0,0.5,1) 1.15s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(3),
+.cover-lotus .lotus-bloom path:nth-child(4) {
+  animation: petalDraw 1.2s cubic-bezier(0.25,0,0.5,1) 1.30s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(15),
+.cover-lotus .lotus-bloom path:nth-child(16) {
+  animation: petalDraw 0.9s ease 1.52s forwards;
+}
+.cover-lotus .lotus-bloom path:nth-child(17),
+.cover-lotus .lotus-bloom path:nth-child(18) {
+  animation: petalDraw 0.8s ease 1.68s forwards;
+}
+.cover-lotus .lotus-bloom circle:nth-child(12) { animation: petalCircleIn 0.5s ease 1.72s forwards; }
+.cover-lotus .lotus-bloom circle:nth-child(13) { animation: petalCircleIn 0.5s ease 1.82s forwards; }
+.cover-lotus .lotus-bloom circle:nth-child(14) { animation: petalCircleIn 0.5s ease 1.92s forwards; }
+
+/* SVG name / number text fades in after petals bloom */
+.cover-lotus text:nth-child(3) { animation: svgTextIn 0.9s ease 2.05s forwards; } /* October */
+.cover-lotus text:nth-child(4) { animation: svgTextIn 0.6s ease 2.20s forwards; } /* & */
+.cover-lotus text:nth-child(5) { animation: svgTextIn 0.9s ease 2.15s forwards; } /* Sean */
+.cover-lotus text:nth-child(6) { animation: svgTextIn 1.2s ease 2.45s forwards; } /* 666 solid */
+.cover-lotus text:nth-child(7) { animation: svgTextIn 0.8s ease 2.55s forwards; } /* 666 outline */
+.cover-lotus text:nth-child(8) { animation: svgTextIn 0.8s ease 2.75s forwards; } /* 55·34·27·777 */
+.cover-lotus text:nth-child(9) { animation: svgTextIn 0.8s ease 2.88s forwards; } /* 43·72 */
+
+/* ═══════════════════════════════
+   COVER TEXT SHIMMER ON ARRIVAL
+   Gold bar sweeps across each text element once
+   as it finishes its entrance animation
+   ═══════════════════════════════ */
+.cover-sub, .cover-sub-code, .cover-invocation {
+  position: relative; overflow: hidden;
+}
+.cover-sub::after, .cover-sub-code::after, .cover-invocation::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; left: 0; width: 55%;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.22) 50%, transparent 100%);
+  transform: translateX(-110%);
+  animation: textShimmerSweep 1.3s cubic-bezier(0.3,0,0.6,1) forwards;
+  pointer-events: none;
+}
+.cover-sub::after      { animation-delay: 3.80s; }
+.cover-sub-code::after { animation-delay: 4.15s; }
+.cover-invocation::after { animation-delay: 5.15s; }
+@keyframes textShimmerSweep {
+  from { transform: translateX(-110%); }
+  to   { transform: translateX(290%); }
+}
+
+/* ═══════════════════════════════
+   BEGIN BUTTON — SONAR PULSE RING
+   Ring expands outward from button edge
+   and fades every 2.6 s after button appears
+   ═══════════════════════════════ */
+.cover-begin { position: relative; }
+.cover-begin::before {
+  content: '';
+  position: absolute; inset: -2px;
+  border: 1px solid rgba(201,168,76,0.55);
+  pointer-events: none;
+  animation: beginPulse 2.6s ease-out 5.5s infinite;
+}
+@keyframes beginPulse {
+  0%   { transform: scale(1, 1);     opacity: 0.6; }
+  100% { transform: scale(1.28, 1.75); opacity: 0; }
+}
+
+/* ═══════════════════════════════
+   PHASE BANNER GLOW-IN
+   Fires once when each .plabel enters viewport
+   ═══════════════════════════════ */
+.plabel.shimmer-in         { animation: plabelGlow      1.5s ease-out forwards; }
+.plabel.sdw.shimmer-in     { animation: plabelGlowEmber 1.5s ease-out forwards; }
+.plabel.trs.shimmer-in     { animation: plabelGlowSage  1.5s ease-out forwards; }
+@keyframes plabelGlow {
+  0%   { text-shadow: 0 0 0 rgba(201,168,76,0); }
+  28%  { text-shadow: 0 0 38px rgba(201,168,76,0.9), 0 0 75px rgba(201,168,76,0.35); }
+  100% { text-shadow: none; }
+}
+@keyframes plabelGlowEmber {
+  0%   { text-shadow: 0 0 0 rgba(139,58,42,0); }
+  28%  { text-shadow: 0 0 38px rgba(212,97,58,0.9), 0 0 75px rgba(139,58,42,0.4); }
+  100% { text-shadow: none; }
+}
+@keyframes plabelGlowSage {
+  0%   { text-shadow: 0 0 0 rgba(74,103,65,0); }
+  28%  { text-shadow: 0 0 38px rgba(106,148,96,0.9), 0 0 75px rgba(74,103,65,0.35); }
+  100% { text-shadow: none; }
+}
+
+/* ═══════════════════════════════
+   EVENT TITLE SHIMMER ON ENTRY
+   Fires when scroll reveals each card
+   ═══════════════════════════════ */
+.ev.in .etitle {
+  animation: etitleShimmer 1.0s ease-out 0.18s both;
+}
+.ev.sdw.in .etitle {
+  animation: etitleShimmerEmber 1.0s ease-out 0.18s both;
+}
+@keyframes etitleShimmer {
+  0%   { text-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  38%  { text-shadow: 0 0 20px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.08); }
+  100% { text-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+}
+@keyframes etitleShimmerEmber {
+  0%   { text-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  38%  { text-shadow: 0 0 20px rgba(180,70,40,0.55), 0 1px 3px rgba(0,0,0,0.08); }
+  100% { text-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+}
+
+/* ═══════════════════════════════
    LANDSCAPE CANVAS SYSTEM
    ═══════════════════════════════ */
 #landscape-canvas {
@@ -256,31 +410,31 @@ body.dark::after { opacity: 0.26; }
   pointer-events: none; z-index: 0;
   overflow: hidden; transition: opacity 2s ease;
 }
-/* Phase backgrounds — illuminated manuscript / parchment aesthetic */
+/* Phase backgrounds,illuminated manuscript / parchment aesthetic */
 
-/* Phase I — Reverence, sacred grief */
+/* Phase I,Reverence, sacred grief */
 .phase-origin .phase-bg {
   background: radial-gradient(ellipse at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 60%),
               linear-gradient(180deg, var(--cream) 0%, #f0ead8 100%);
 }
-/* Phase II — Magnetism, destiny */
+/* Phase II,Magnetism, destiny */
 .phase-meeting .phase-bg {
   background: radial-gradient(ellipse at 30% 40%, rgba(176,128,64,0.05) 0%, transparent 50%),
               radial-gradient(ellipse at 70% 60%, rgba(201,168,76,0.04) 0%, transparent 50%),
               linear-gradient(180deg, #f3ede2 0%, #f5f0e8 100%);
 }
-/* Phase III — Ecstasy, wonder */
+/* Phase III,Ecstasy, wonder */
 .phase-summer .phase-bg {
   background: radial-gradient(ellipse at 50% 30%, rgba(74,103,65,0.07) 0%, transparent 55%),
               radial-gradient(ellipse at 80% 70%, rgba(106,148,96,0.05) 0%, transparent 50%),
               linear-gradient(180deg, #f2efe5 0%, #eef4eb 50%, #f5f0e8 100%);
 }
-/* Phase IV — Grief, destruction */
+/* Phase IV,Grief, destruction */
 .phase-shadow .phase-bg {
   background: radial-gradient(ellipse at 50% 40%, rgba(139,58,42,0.08) 0%, transparent 50%),
               linear-gradient(180deg, var(--dark-bg) 0%, #0d0806 50%, #1a1210 100%);
 }
-/* Phase V — Quiet power, rebirth */
+/* Phase V,Quiet power, rebirth */
 .phase-transmutation .phase-bg {
   background: radial-gradient(ellipse at 50% 60%, rgba(74,103,65,0.06) 0%, transparent 50%),
               linear-gradient(180deg, #eef3eb 0%, #f5f0e8 100%);
@@ -292,7 +446,7 @@ body.dark::after { opacity: 0.26; }
 .phase-summer .phase-bg,
 .phase-transmutation .phase-bg { opacity: 0.88; }
 
-/* God-rays — Phase V: dawn light filtering through old-growth canopy */
+/* God-rays,Phase V: dawn light filtering through old-growth canopy */
 .phase-transmutation::after {
   content: ''; position: absolute; inset: 0;
   pointer-events: none; z-index: 1;
@@ -311,7 +465,7 @@ body.dark::after { opacity: 0.26; }
   to   { opacity: 1; }
 }
 
-/* Water surface — Phase III: emerald river at base of landscape */
+/* Water surface,Phase III: emerald river at base of landscape */
 .phase-summer::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0;
   height: 13%; min-height: 72px;
@@ -1183,14 +1337,14 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 
   /* ── INTRO SECTIONS ── */
   .intro-section summary {
-    font-size: 0.68rem; padding: 14px 16px;
+    font-size: 0.82rem; padding: 14px 16px;
     letter-spacing: 0.15em;
     min-height: 44px;
   }
   .intro-body { padding: 0 16px 20px; }
   .intro-body p {
-    font-size: 0.95rem !important;
-    line-height: 1.85 !important;
+    font-size: 1.08rem !important;
+    line-height: 1.88 !important;
   }
 
   /* ── TIMELINE ── */
@@ -1422,8 +1576,8 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
   .tl::before { left: 12px; }
   .en { left: 12px; }
 
-  .intro-section summary { font-size: 0.6rem; padding: 12px 14px; }
-  .intro-body p { font-size: 0.88rem !important; }
+  .intro-section summary { font-size: 0.75rem; padding: 12px 14px; }
+  .intro-body p { font-size: 1.0rem !important; }
 
   .nav-btn { font-size: 0.58rem; padding: 6px 10px; }
 
@@ -1719,7 +1873,7 @@ body.dark .intro-section {
 }
 .intro-section summary {
   font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
+  font-size: 1.0rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold);
@@ -1781,8 +1935,8 @@ body.dark .intro-body {
   font-family: 'Cormorant Garamond', serif !important;
   font-style: normal !important;
   font-weight: 400 !important;
-  font-size: 1.05rem !important;
-  line-height: 1.95 !important;
+  font-size: 1.2rem !important;
+  line-height: 1.9 !important;
   color: #3a3028 !important;
   letter-spacing: 0.01em !important;
 }
@@ -1790,7 +1944,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
 .intro-body strong {
   font-family: 'Cinzel', serif !important;
   font-style: normal !important;
-  font-size: 0.9rem !important;
+  font-size: 1.0rem !important;
   letter-spacing: 0.03em;
 }
 .intro-body em {
@@ -2150,7 +2304,7 @@ body.dark .intro-body p { color: #c4b4a4 !important; }
   z-index: 30;
 }
 
-/* ═══ EXPLAIN PANEL — fixed overlay ═══ */
+/* ═══ EXPLAIN PANEL,fixed overlay ═══ */
 .fib-explain {
   position: fixed;
   top: 50%;
@@ -2507,9 +2661,9 @@ body.dark .mn-content p { color: #9a8880; }
           <path d="M-18,12 C-14,22 -6,30 0,32 C6,30 14,22 18,12" fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.25"/>
         </g>
         <!-- Sean & October, large and prominent inside lotus -->
-        <text x="160" y="140" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="28" letter-spacing="5" fill="#f5f0e8" filter="url(#lotusGlow)">Sean</text>
-        <text x="160" y="158" text-anchor="middle" font-family="'Cinzel', serif" font-size="13" letter-spacing="6" fill="#c9a84c" opacity="0.8">&amp;</text>
-        <text x="160" y="180" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="28" letter-spacing="5" fill="#f5f0e8" filter="url(#lotusGlow)">October</text>
+        <text x="160" y="140" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="28" letter-spacing="5" fill="#f5f0e8" filter="url(#lotusGlow)">October</text>
+        <text x="160" y="159" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" letter-spacing="4" fill="#f5f0e8" opacity="0.95">&amp;</text>
+        <text x="160" y="180" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="28" letter-spacing="5" fill="#f5f0e8" filter="url(#lotusGlow)">Sean</text>
         <!-- 666, large, glowing, prominent below lotus -->
         <text x="160" y="290" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="42" letter-spacing="16" fill="#c9a84c" filter="url(#strongGlow)" opacity="0.9">666</text>
         <text x="160" y="290" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="42" letter-spacing="16" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.5">666</text>
@@ -2520,7 +2674,7 @@ body.dark .mn-content p { color: #9a8880; }
       </svg>
     </div>
     <p class="cover-sub">Timeline: Numerology of the Heart</p>
-    <p class="cover-sub-code">May 2025 — April 2026</p>
+    <p class="cover-sub-code">May 2025 · April 2026</p>
     <div class="cover-divider"></div>
     <button class="cover-begin" id="begin-btn">Enter the Timeline</button>
   </div>
@@ -2574,8 +2728,8 @@ body.dark .mn-content p { color: #9a8880; }
 
 <header>
   <div class="sigil">&#10022; &#11043; &#10022;</div>
-  <h1>Sean <span>&</span> October</h1>
-  <p class="sub">May 2025 &mdash; ?</p>
+  <h1>October <span style="text-shadow:0 0 18px rgba(201,168,76,0.6),0 1px 3px rgba(0,0,0,0.35);">&</span> Sean</h1>
+  <p class="sub">May 2025 · April 2026</p>
   <div class="div"></div>
   <p class="motto">As within, so without. As above, so below.</p>
 </header>
@@ -2601,22 +2755,191 @@ body.dark .mn-content p { color: #9a8880; }
       The premise is simple: every letter is represented by a number. Every word has a sum. Words that share the same sum share a hidden relationship, a resonance beneath the surface of language.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      For instance, there are 26 letters in the English alphabet. English descends from Latin, Latin from Greek, Greek from Hebrew, Hebrew from the ancient Phoenicians of Babylon, the same civilization that produced the world's first alphabet and the first recorded practice of Kabbalah. In Hebrew, every letter is also a number. The number 26 holds the four-letter name of God, the Tetragrammaton: YHWH. Yod (10) + He (5) + Vav (6) + He (5) = 26. Moses, the credited author of Genesis, was born 26 generations from Adam. This is what gematria is built on and it is woven into the architecture of the English language and the oldest texts humanity possesses.
+      For instance, there are 26 letters in the English alphabet. English descends from Latin, Latin from Greek, Greek from Phoenician, the alphabet developed by Semitic peoples of the ancient Levant, and the direct ancestor of Hebrew, Greek, Latin, and every Western script that followed. In Hebrew, every letter is also a number. The <em>Sefer Yetzirah</em>, the Book of Formation, one of the oldest texts of Kabbalah, teaches that <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> created the world by combining three instruments: the letter, the number, and the word. Creation itself was an act of language. The number 26 holds the four-letter name of that creator, the Tetragrammaton: YHWH. Yod (10) + He (5) + Vav (6) + He (5) = 26.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Consider the Bible, the most printed, most translated, most studied text in human history. We all know the story of creation. <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26 in ordinal gematria. It is said that he created the first man, <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26, in his <span class="gw" data-word="Image" data-cipher="Reduction" data-calc="I(9) + M(4) + A(1) + G(7) + E(5)">image</span> = 26, in the 26th verse of the Bible, in Genesis 2:6. The creator, the created, and the act of creation all share the same number. In the same verse.
+      YHWH. Four letters. One name. Yod = 10. Heh = 5. Vav = 6. Heh = 5. <strong style="color:var(--gold);">10 + 5 + 6 + 5 = 26.</strong> The same number as the letters in the English alphabet. Ancient mystics called YHWH the name of the creator. Scientists, working from the opposite direction entirely, discovered that this exact number, and this exact four-unit structure, is encoded in the molecule that carries the blueprint of every living thing on Earth. The name of <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> and the geometry of DNA share the same architecture. This is arithmetic.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      So <span class="gw" data-word="Man" data-cipher="Latin Ordinal" data-calc="M(12) + A(1) + N(13)">Man</span> = 26 in Latin Ordinal has an <span class="gw" data-word="Anatomy" data-cipher="Reduction" data-calc="A(1) + N(5) + A(1) + T(2) + O(6) + M(4) + Y(7)">anatomy</span> = 26 that is made of <span class="gw" data-word="Bones" data-cipher="Reverse Reduction" data-calc="B(7) + O(3) + N(4) + E(4) + S(8)">bones</span> = 26, that are made of <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26, but also iron, which is the 26th element on the periodic table. The number of the creator and the number of the created, woven into the literal chemistry of the body. <span class="gw" data-word="Mankind" data-cipher="Latin Reduction" data-calc="M(3) + A(1) + N(4) + K(1) + I(9) + N(4) + D(4)">Mankind</span> = 26, which brings us to <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26.
+      Your DNA is a double helix, a twisted spiral staircase running through every cell in your body. The sequence <strong style="color:var(--gold);">10 → 5 → 6 → 5</strong> is the structure itself, described from the outside in. The helix makes one full turn every <strong style="color:var(--gold);">10 base pairs</strong>, Yod = 10. Each strand's backbone is built from a sugar called deoxyribose, which has exactly <strong style="color:var(--gold);">5 carbons</strong>, numbered 1 through 5, which is why every DNA strand in existence has a 5-prime end and a 3-prime end, named for these exact carbon positions. The backbone of life runs on a 5. Heh = 5. The four chemical letters of the code, A, T, G, and C, are each built around a <strong style="color:var(--gold);">6-membered ring</strong>, a hexagonal structure of carbon and nitrogen that forms the readable face of every base. Vav = 6. And when the sugar bonds into the chain, it closes into a <strong style="color:var(--gold);">5-membered ring</strong>. The 5 returns. Heh = 5. Ten base pairs per turn. Five-carbon backbone. Six-membered base rings. Five-membered ring closure. The sequence of the divine name is the structural description of the molecule that carries every living thing's blueprint.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Carbon has exactly 6 protons, 6 neutrons, and 6 electrons. 6-6-6. This is the atomic signature of physical existence. Every cell in your body, every strand of your DNA, every bone in your frame is built on this element. Revelation 13:18 calls 666 the number of the beast, but also the number of a man. Read literally they are the same number and Carbon may be exactly why. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian gematria. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, the book that tells the story of creation and the <span class="gw" data-word="Formation" data-cipher="Sumerian" data-calc="F(36) + O(90) + R(108) + M(78) + A(6) + T(120) + I(54) + O(90) + N(84)">formation</span> of the world, encodes the number of the body in its own name.
+      The scribes who first wrote YHWH did not have microscopes. They arrived at this number through sacred mathematics, through revelation, through the study of language as the architecture of creation. Scientists arrived at it through X-ray crystallography and experimental chemistry. They met at the same structure: four units, ten steps, a mirror code. The divine name was <em>recognized</em>: observed, named, and recorded. And it has been running in every cell of your body since before you were born. This is what gematria is built on. The code was always there. The alphabet was built to read it.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Decode the address of the verse that introduces the number. Revelation 13:18. 13 is the 6th prime number, so the chapter has a prime root of 6. 6 + 6 + 6 = 18, so the verse is the sum of that number tripled. The passage that names 666 is itself encoded by 666. It is not describing the pattern. It <em>is</em> the pattern.
+      There is one final dimension to this architecture. In Hebrew, letters have form as well as number. The four letters of YHWH, stacked vertically as they appear in ancient manuscripts, form the silhouette of a human body. Yod, the smallest letter in the Hebrew alphabet, sits at the top: a head. The first Heh extends below: shoulders, arms, a torso open to the world. Vav is a single vertical stroke: the spine, the connector between what is above and what is below. The second Heh grounds the figure at the base: legs, foundation, earth. The Kabbalists taught that man was created not merely in <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span>'s numerical image but in <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span>'s literal letterform. The divine name, written in the script it was given in, looks like the body it encoded. And around that body, the double helix turns.
+    </p>
+    <figure style="max-width:300px;margin:28px auto 32px;text-align:center;">
+      <svg viewBox="0 0 300 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <defs>
+          <style>
+            @keyframes dna-ltr-pulse{0%,100%{opacity:.65}50%{opacity:.94}}
+            @keyframes dna-core-shim{0%,100%{opacity:.94}50%{opacity:.72}}
+            .dna-ltr{animation:dna-ltr-pulse 5s ease-in-out infinite}
+            .dna-l1{animation-delay:0s}.dna-l2{animation-delay:1.25s}
+            .dna-l3{animation-delay:2.5s}.dna-l4{animation-delay:3.75s}
+            .dna-core{animation:dna-core-shim 3.5s ease-in-out infinite}
+          </style>
+          <!-- Multi-stage letter glow: wide aura + mid bloom + source -->
+          <filter id="dna-lg" x="-70%" y="-45%" width="240%" height="190%">
+            <feGaussianBlur stdDeviation="18" result="aura"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="bloom"/>
+            <feMerge><feMergeNode in="aura"/><feMergeNode in="bloom"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- Front strand core bloom -->
+          <filter id="dna-sg" x="-35%" y="-5%" width="170%" height="110%">
+            <feGaussianBlur stdDeviation="2.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- Turning-point node glow -->
+          <filter id="dna-ng" x="-250%" y="-250%" width="600%" height="600%">
+            <feGaussianBlur stdDeviation="3.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- Deep background radial -->
+          <radialGradient id="dna-bg" cx="50%" cy="44%" r="58%">
+            <stop offset="0%"   stop-color="#1c1208"/>
+            <stop offset="62%"  stop-color="#0c0905"/>
+            <stop offset="100%" stop-color="#040302"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Background -->
+        <rect width="300" height="560" fill="url(#dna-bg)" rx="3"/>
+        <rect x=".5" y=".5" width="299" height="559" fill="none" stroke="rgba(201,168,76,.13)" stroke-width="1" rx="3"/>
+
+        <!-- Star dust -->
+        <circle cx="14"  cy="55"  r=".9" fill="rgba(201,168,76,.24)"/>
+        <circle cx="20"  cy="148" r=".7" fill="rgba(201,168,76,.17)"/>
+        <circle cx="17"  cy="228" r="1"  fill="rgba(201,168,76,.21)"/>
+        <circle cx="25"  cy="320" r=".8" fill="rgba(201,168,76,.15)"/>
+        <circle cx="13"  cy="410" r=".9" fill="rgba(201,168,76,.19)"/>
+        <circle cx="21"  cy="498" r=".7" fill="rgba(201,168,76,.14)"/>
+        <circle cx="288" cy="78"  r=".9" fill="rgba(201,168,76,.22)"/>
+        <circle cx="276" cy="168" r=".8" fill="rgba(201,168,76,.16)"/>
+        <circle cx="291" cy="260" r="1"  fill="rgba(201,168,76,.20)"/>
+        <circle cx="283" cy="370" r=".7" fill="rgba(201,168,76,.15)"/>
+        <circle cx="289" cy="462" r=".9" fill="rgba(201,168,76,.18)"/>
+        <circle cx="60"  cy="16"  r=".8" fill="rgba(201,168,76,.13)"/>
+        <circle cx="148" cy="14"  r=".7" fill="rgba(201,168,76,.11)"/>
+        <circle cx="238" cy="17"  r=".9" fill="rgba(201,168,76,.14)"/>
+        <circle cx="62"  cy="547" r=".8" fill="rgba(201,168,76,.13)"/>
+        <circle cx="152" cy="549" r=".7" fill="rgba(201,168,76,.11)"/>
+        <circle cx="242" cy="546" r=".9" fill="rgba(201,168,76,.15)"/>
+        <circle cx="35"  cy="88"  r=".6" fill="rgba(201,168,76,.10)"/>
+        <circle cx="267" cy="332" r=".7" fill="rgba(201,168,76,.12)"/>
+        <circle cx="36"  cy="445" r=".6" fill="rgba(201,168,76,.10)"/>
+
+        <!-- Axis spine (very faint) -->
+        <line x1="150" y1="32" x2="150" y2="508" stroke="rgba(201,168,76,.04)" stroke-width="1" stroke-dasharray="1 12"/>
+
+        <!-- ══════ YHWH LETTERS,the human form ══════ -->
+        <!-- Yod: the point, the seed, the crown,HEAD -->
+        <text class="dna-ltr dna-l1" x="150" y="80"  text-anchor="middle" font-size="72"  fill="rgba(201,168,76,1)" font-family="serif" filter="url(#dna-lg)">&#x05D9;</text>
+        <!-- First Heh: shoulders, arms, open torso,CHEST -->
+        <text class="dna-ltr dna-l2" x="150" y="202" text-anchor="middle" font-size="140" fill="rgba(201,168,76,1)" font-family="serif" filter="url(#dna-lg)">&#x05D4;</text>
+        <!-- Vav: the spine, the vertical connector,SPINE -->
+        <text class="dna-ltr dna-l3" x="150" y="345" text-anchor="middle" font-size="148" fill="rgba(201,168,76,1)" font-family="serif" filter="url(#dna-lg)">&#x05D5;</text>
+        <!-- Second Heh: legs, foundation, earth,BASE -->
+        <text class="dna-ltr dna-l4" x="150" y="478" text-anchor="middle" font-size="136" fill="rgba(201,168,76,1)" font-family="serif" filter="url(#dna-lg)">&#x05D4;</text>
+
+        <!-- ══════ BACK STRAND ══════
+             center=150, amplitude=68, period=160, y=30–510, 5px steps -->
+        <polyline points="150,30 137,35 124,40 112,45 102,50 93,55 87,60 83,65 82,70 83,75 87,80 93,85 102,90 112,95 124,100 137,105 150,110 163,115 176,120 188,125 198,130 207,135 213,140 217,145 218,150 217,155 213,160 207,165 198,170 188,175 176,180 163,185 150,190 137,195 124,200 112,205 102,210 93,215 87,220 83,225 82,230 83,235 87,240 93,245 102,250 112,255 124,260 137,265 150,270 163,275 176,280 188,285 198,290 207,295 213,300 217,305 218,310 217,315 213,320 207,325 198,330 188,335 176,340 163,345 150,350 137,355 124,360 112,365 102,370 93,375 87,380 83,385 82,390 83,395 87,400 93,405 102,410 112,415 124,420 137,425 150,430 163,435 176,440 188,445 198,450 207,455 213,460 217,465 218,470 217,475 213,480 207,485 198,490 188,495 176,500 163,505 150,510"
+          fill="none" stroke="rgba(201,168,76,.27)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- ══════ BACK RUNGS (behind front strand,near troughs y=150, 310, 470) ══════ -->
+        <g stroke-linecap="round">
+          <line x1="110" y1="126" x2="190" y2="126" stroke="rgba(201,168,76,.15)" stroke-width="1.3"/>
+          <line x1="85"  y1="142" x2="215" y2="142" stroke="rgba(201,168,76,.10)" stroke-width="1.2"/>
+          <line x1="82"  y1="150" x2="218" y2="150" stroke="rgba(201,168,76,.07)" stroke-width="1.1"/>
+          <line x1="85"  y1="158" x2="215" y2="158" stroke="rgba(201,168,76,.10)" stroke-width="1.2"/>
+          <line x1="110" y1="174" x2="190" y2="174" stroke="rgba(201,168,76,.15)" stroke-width="1.3"/>
+          <line x1="110" y1="286" x2="190" y2="286" stroke="rgba(201,168,76,.15)" stroke-width="1.3"/>
+          <line x1="85"  y1="302" x2="215" y2="302" stroke="rgba(201,168,76,.10)" stroke-width="1.2"/>
+          <line x1="82"  y1="310" x2="218" y2="310" stroke="rgba(201,168,76,.07)" stroke-width="1.1"/>
+          <line x1="85"  y1="318" x2="215" y2="318" stroke="rgba(201,168,76,.10)" stroke-width="1.2"/>
+          <line x1="110" y1="334" x2="190" y2="334" stroke="rgba(201,168,76,.15)" stroke-width="1.3"/>
+          <line x1="110" y1="446" x2="190" y2="446" stroke="rgba(201,168,76,.15)" stroke-width="1.3"/>
+          <line x1="85"  y1="462" x2="215" y2="462" stroke="rgba(201,168,76,.10)" stroke-width="1.2"/>
+          <line x1="82"  y1="470" x2="218" y2="470" stroke="rgba(201,168,76,.07)" stroke-width="1.1"/>
+          <line x1="85"  y1="478" x2="215" y2="478" stroke="rgba(201,168,76,.10)" stroke-width="1.2"/>
+          <line x1="110" y1="494" x2="190" y2="494" stroke="rgba(201,168,76,.15)" stroke-width="1.3"/>
+        </g>
+
+        <!-- ══════ FRONT STRAND,triple-layer neon ══════ -->
+        <!-- Outer halo -->
+        <polyline points="150,30 163,35 176,40 188,45 198,50 207,55 213,60 217,65 218,70 217,75 213,80 207,85 198,90 188,95 176,100 163,105 150,110 137,115 124,120 112,125 102,130 93,135 87,140 83,145 82,150 83,155 87,160 93,165 102,170 112,175 124,180 137,185 150,190 163,195 176,200 188,205 198,210 207,215 213,220 217,225 218,230 217,235 213,240 207,245 198,250 188,255 176,260 163,265 150,270 137,275 124,280 112,285 102,290 93,295 87,300 83,305 82,310 83,315 87,320 93,325 102,330 112,335 124,340 137,345 150,350 163,355 176,360 188,365 198,370 207,375 213,380 217,385 218,390 217,395 213,400 207,405 198,410 188,415 176,420 163,425 150,430 137,435 124,440 112,445 102,450 93,455 87,460 83,465 82,470 83,475 87,480 93,485 102,490 112,495 124,500 137,505 150,510"
+          fill="none" stroke="rgba(201,168,76,.06)" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- Mid bloom -->
+        <polyline points="150,30 163,35 176,40 188,45 198,50 207,55 213,60 217,65 218,70 217,75 213,80 207,85 198,90 188,95 176,100 163,105 150,110 137,115 124,120 112,125 102,130 93,135 87,140 83,145 82,150 83,155 87,160 93,165 102,170 112,175 124,180 137,185 150,190 163,195 176,200 188,205 198,210 207,215 213,220 217,225 218,230 217,235 213,240 207,245 198,250 188,255 176,260 163,265 150,270 137,275 124,280 112,285 102,290 93,295 87,300 83,305 82,310 83,315 87,320 93,325 102,330 112,335 124,340 137,345 150,350 163,355 176,360 188,365 198,370 207,375 213,380 217,385 218,390 217,395 213,400 207,405 198,410 188,415 176,420 163,425 150,430 137,435 124,440 112,445 102,450 93,455 87,460 83,465 82,470 83,475 87,480 93,485 102,490 112,495 124,500 137,505 150,510"
+          fill="none" stroke="rgba(201,168,76,.22)" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- Core,animated shimmer, tight glow filter -->
+        <polyline class="dna-core" points="150,30 163,35 176,40 188,45 198,50 207,55 213,60 217,65 218,70 217,75 213,80 207,85 198,90 188,95 176,100 163,105 150,110 137,115 124,120 112,125 102,130 93,135 87,140 83,145 82,150 83,155 87,160 93,165 102,170 112,175 124,180 137,185 150,190 163,195 176,200 188,205 198,210 207,215 213,220 217,225 218,230 217,235 213,240 207,245 198,250 188,255 176,260 163,265 150,270 137,275 124,280 112,285 102,290 93,295 87,300 83,305 82,310 83,315 87,320 93,325 102,330 112,335 124,340 137,345 150,350 163,355 176,360 188,365 198,370 207,375 213,380 217,385 218,390 217,395 213,400 207,405 198,410 188,415 176,420 163,425 150,430 137,435 124,440 112,445 102,450 93,455 87,460 83,465 82,470 83,475 87,480 93,485 102,490 112,495 124,500 137,505 150,510"
+          fill="none" stroke="rgba(201,168,76,.94)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" filter="url(#dna-sg)"/>
+
+        <!-- ══════ FRONT RUNGS (over front strand,near peaks y=70, 230, 390) ══════ -->
+        <g stroke-linecap="round">
+          <line x1="190" y1="46"  x2="110" y2="46"  stroke="rgba(201,168,76,.28)" stroke-width="1.5"/>
+          <line x1="215" y1="62"  x2="85"  y2="62"  stroke="rgba(201,168,76,.40)" stroke-width="1.7"/>
+          <line x1="218" y1="70"  x2="82"  y2="70"  stroke="rgba(201,168,76,.48)" stroke-width="1.9"/>
+          <line x1="215" y1="78"  x2="85"  y2="78"  stroke="rgba(201,168,76,.40)" stroke-width="1.7"/>
+          <line x1="190" y1="94"  x2="110" y2="94"  stroke="rgba(201,168,76,.28)" stroke-width="1.5"/>
+          <line x1="190" y1="206" x2="110" y2="206" stroke="rgba(201,168,76,.28)" stroke-width="1.5"/>
+          <line x1="215" y1="222" x2="85"  y2="222" stroke="rgba(201,168,76,.40)" stroke-width="1.7"/>
+          <line x1="218" y1="230" x2="82"  y2="230" stroke="rgba(201,168,76,.48)" stroke-width="1.9"/>
+          <line x1="215" y1="238" x2="85"  y2="238" stroke="rgba(201,168,76,.40)" stroke-width="1.7"/>
+          <line x1="190" y1="254" x2="110" y2="254" stroke="rgba(201,168,76,.28)" stroke-width="1.5"/>
+          <line x1="190" y1="366" x2="110" y2="366" stroke="rgba(201,168,76,.28)" stroke-width="1.5"/>
+          <line x1="215" y1="382" x2="85"  y2="382" stroke="rgba(201,168,76,.40)" stroke-width="1.7"/>
+          <line x1="218" y1="390" x2="82"  y2="390" stroke="rgba(201,168,76,.48)" stroke-width="1.9"/>
+          <line x1="215" y1="398" x2="85"  y2="398" stroke="rgba(201,168,76,.40)" stroke-width="1.7"/>
+          <line x1="190" y1="414" x2="110" y2="414" stroke="rgba(201,168,76,.28)" stroke-width="1.5"/>
+        </g>
+
+        <!-- Glowing turning-point nodes (front strand peaks) -->
+        <circle cx="218" cy="70"  r="2.8" fill="rgba(201,168,76,.65)" filter="url(#dna-ng)"/>
+        <circle cx="218" cy="230" r="2.8" fill="rgba(201,168,76,.65)" filter="url(#dna-ng)"/>
+        <circle cx="218" cy="390" r="2.8" fill="rgba(201,168,76,.65)" filter="url(#dna-ng)"/>
+        <!-- Back strand peak marks (dim) -->
+        <circle cx="82" cy="150" r="1.8" fill="rgba(201,168,76,.22)"/>
+        <circle cx="82" cy="310" r="1.8" fill="rgba(201,168,76,.22)"/>
+        <circle cx="82" cy="470" r="1.8" fill="rgba(201,168,76,.22)"/>
+
+        <!-- ══════ LEFT LABELS ══════ -->
+        <text x="7" y="64"  font-size="9.5" font-weight="bold" fill="rgba(201,168,76,.88)" font-family="'Cinzel',serif" letter-spacing=".08em">YOD</text>
+        <text x="7" y="78"  font-size="13"  font-weight="bold" fill="rgba(201,168,76,.95)" font-family="'Cinzel',serif" letter-spacing=".04em">= 10</text>
+        <line x1="5" y1="84"  x2="5" y2="187" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <text x="7" y="193" font-size="9.5" font-weight="bold" fill="rgba(201,168,76,.88)" font-family="'Cinzel',serif" letter-spacing=".08em">HEH</text>
+        <text x="7" y="207" font-size="13"  font-weight="bold" fill="rgba(201,168,76,.95)" font-family="'Cinzel',serif" letter-spacing=".04em">= 5</text>
+        <line x1="5" y1="213" x2="5" y2="330" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <text x="7" y="336" font-size="9.5" font-weight="bold" fill="rgba(201,168,76,.88)" font-family="'Cinzel',serif" letter-spacing=".08em">VAV</text>
+        <text x="7" y="350" font-size="13"  font-weight="bold" fill="rgba(201,168,76,.95)" font-family="'Cinzel',serif" letter-spacing=".04em">= 6</text>
+        <line x1="5" y1="356" x2="5" y2="462" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <text x="7" y="468" font-size="9.5" font-weight="bold" fill="rgba(201,168,76,.88)" font-family="'Cinzel',serif" letter-spacing=".08em">HEH</text>
+        <text x="7" y="482" font-size="13"  font-weight="bold" fill="rgba(201,168,76,.95)" font-family="'Cinzel',serif" letter-spacing=".04em">= 5</text>
+
+        <!-- ══════ RIGHT: SUM ══════ -->
+        <text x="293" y="258" text-anchor="end" font-size="11" font-weight="bold" fill="rgba(201,168,76,.72)" font-family="'Cinzel',serif" letter-spacing=".05em">10+5+6+5</text>
+        <line x1="238" y1="264" x2="293" y2="264" stroke="rgba(201,168,76,.30)" stroke-width="1"/>
+        <text x="293" y="282" text-anchor="end" font-size="18" font-weight="bold" fill="rgba(201,168,76,.98)" font-family="'Cinzel',serif" letter-spacing=".06em">= 26</text>
+
+        <!-- ══════ ANNOTATION ══════ -->
+        <text x="150" y="538" text-anchor="middle" font-size="7.5" fill="rgba(201,168,76,.68)" font-family="'Cinzel',serif" letter-spacing=".15em">10 BASE PAIRS · 4 LETTERS · 4 NUCLEOTIDES</text>
+      </svg>
+      <figcaption style="font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.16em;color:rgba(201,168,76,.85);margin-top:8px;text-transform:uppercase;">YHWH · The Name Written Into the Helix</figcaption>
+    </figure>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Moses, the credited author of Genesis, was born 26 generations from Adam. Genesis 1:26, the 26th verse of the Bible, is the verse where <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> = 26 creates <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26 in his <span class="gw" data-word="Image" data-cipher="Reduction" data-calc="I(9) + M(4) + A(1) + G(7) + E(5)">image</span> = 26. The creator, the created, and the act of creation: the same number, in the same verse. <span class="gw" data-word="Man" data-cipher="Latin Ordinal" data-calc="M(12) + A(1) + N(13)">Man</span> = 26 in Latin Ordinal has an <span class="gw" data-word="Anatomy" data-cipher="Reduction" data-calc="A(1) + N(5) + A(1) + T(2) + O(6) + M(4) + Y(7)">anatomy</span> = 26 made of <span class="gw" data-word="Bones" data-cipher="Reverse Reduction" data-calc="B(7) + O(3) + N(4) + E(4) + S(8)">bones</span> = 26 and <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26, and iron, the 26th element on the periodic table. The number of the creator woven into the literal chemistry of the body. <span class="gw" data-word="Mankind" data-cipher="Latin Reduction" data-calc="M(3) + A(1) + N(4) + K(1) + I(9) + N(4) + D(4)">Mankind</span> = 26. Which brings us to <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      666 has been profoundly misunderstood for centuries, feared, demonized, reduced to a symbol of evil by people who never examined what it actually encodes. But the alchemists understood. The alchemical tradition spoke of transmuting lead into gold, and the serious practitioners knew this was never about metallurgy. It was about consciousness. Lead is dense, heavy, unconscious matter, the unrealized human being, weighed down by wounds, shadows, trauma, addiction, and inherited pain. Gold is the same substance <em>refined</em>: the sovereign self that emerges when the base material is placed in the fire and worked. The fire is the process. The lead becomes gold not by being discarded but by being <em>transmuted</em>.
+      Carbon has exactly 6 protons, 6 neutrons, and 6 electrons. 6-6-6. This is the atomic signature of physical existence. Every cell in your body, every strand of your DNA, every bone in your frame is built on this element. And the individual unit from which that DNA is assembled, the building block of the helix itself, is called a <span class="gw" data-word="Nucleotide" data-cipher="English Extended" data-calc="N(50) + U(300) + C(3) + L(30) + E(5) + O(60) + T(200) + I(9) + D(4) + E(5)">nucleotide</span> = 666 in English Extended gematria. The number of the body appears at the element that builds it, and at the molecular unit that encodes it. Revelation 13:18 calls 666 the number of the beast, but also the number of a man. Read literally they are the same number and Carbon may be exactly why. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian gematria. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, the book that tells the story of creation and the <span class="gw" data-word="Formation" data-cipher="Sumerian" data-calc="F(36) + O(90) + R(108) + M(78) + A(6) + T(120) + I(54) + O(90) + N(84)">formation</span> of the world, encodes the number of the body in its own name.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Decode the address of the verse that introduces the number. Revelation 13:18. 13 is the 6th prime number, so the chapter has a prime root of 6. 6 + 6 + 6 = 18, so the verse is the sum of that number tripled. The passage that names 666 is itself encoded by 666. The passage is the pattern.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      666 has been profoundly misunderstood for centuries, feared, demonized, reduced to a symbol of evil by people who never examined what it actually encodes. But the alchemists understood. The alchemical tradition spoke of transmuting lead into gold, and the serious practitioners knew this was not only about metallurgy. Consciousness was the real work. Lead is dense, heavy, unconscious matter, the unrealized human being, weighed down by wounds, shadows, trauma, addiction, and inherited pain. Gold is the same substance <em>refined</em>: the sovereign self that emerges when the base material is placed in the fire and worked. The fire is the process. The lead becomes gold through <em>transmutation</em>.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       <span class="gw" data-word="Alchemist" data-cipher="Reduction" data-calc="A(1) + L(3) + C(3) + H(8) + E(5) + M(4) + I(9) + S(1) + T(2)">Alchemist</span> = 36 in reduction. 666 is the 36th triangular number, the sum of every integer from 1 to 36. It contains within it every number that came before. A human being who has faced every wound, named every shadow, and chosen to remain conscious through the fire carries the sum of everything they have survived. The alchemist does not avoid suffering. The alchemist <em>works with it</em>. The wound is not what destroys you. It is the raw material you are being asked to refine.
@@ -2625,10 +2948,10 @@ body.dark .mn-content p { color: #9a8880; }
       Seen through this lens, 666 points toward spiritual alchemy: the number of the body, carbon, matter, flesh, becoming <em>conscious</em>. The mother wound, the father wound, the shamed child, the addiction, the self-sabotage, the alchemists would call all of this the lead. And the work of a lifetime may be to recognize it, name it, sit in the fire with it, and transmute it into something sovereign.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <span class="gw" data-word="Lead Into Gold" data-cipher="Reduction" data-calc="L(3) + E(5) + A(1) + D(4) + I(9) + N(5) + T(2) + O(6) + G(7) + O(6) + L(3) + D(4)">Lead Into Gold</span> = 55 in reduction. 55 is a number that runs through this entire story like a thread. It is encoded in the date that began everything — May 5th, written 5/5 — the day of the mother ritual. It is encoded in the union of the two names at the center of this story. And it is the value of <span class="gw" data-word="Heaven" data-cipher="Ordinal" data-calc="H(8) + E(5) + A(1) + V(22) + E(5) + N(14)">Heaven</span> = 55 in ordinal. The destination was always embedded in the process. The alchemy was not moving toward something external. It was always moving toward this number. The lead was always going to become gold. It was encoded before the fire was lit.
+      <span class="gw" data-word="Lead Into Gold" data-cipher="Reduction" data-calc="L(3) + E(5) + A(1) + D(4) + I(9) + N(5) + T(2) + O(6) + G(7) + O(6) + L(3) + D(4)">Lead Into Gold</span> = 55 in reduction. 55 is a number that runs through this entire story like a thread. It is encoded in the date that began everything, May 5th, written 5/5, a date whose primary numerology is 55, the day of the mother ritual. It is encoded in the union of the two names at the center of this story. And it is the value of <span class="gw" data-word="Heaven" data-cipher="Ordinal" data-calc="H(8) + E(5) + A(1) + V(22) + E(5) + N(14)">Heaven</span> = 55 in ordinal. The destination was always embedded in the process. The alchemy was always moving toward this number. The lead was always going to become gold. It was encoded before the fire was lit.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:18px;">
-      One of the key principles of gematria is the <strong style="color:var(--gold);">mirror</strong>. Numbers that are reversals of each other carry a direct relationship, 34 and 43, 27 and 72, 122 and 221. This is not arbitrary. Hebrew, the language in which gematria was formalized as a sacred interpretive method, is read from right to left. The mirror is built into the reading itself. When the same pair of digits appears in both directions across names, dates, and events, it signals a resonance that runs deeper than surface-level coincidence. The mirror does not repeat by accident. It reflects.
+      One of the key principles of gematria is the <strong style="color:var(--gold);">mirror</strong>. Numbers that are reversals of each other carry a direct relationship, 34 and 43, 27 and 72, 122 and 221. This is not arbitrary. Hebrew, the language in which gematria was formalized as a sacred interpretive method, is read from right to left. The mirror is built into the reading itself. When the same pair of digits appears in both directions across names, dates, and events, it signals a resonance that runs deeper than surface-level coincidence. The mirror reflects.
     </p>
 
     <!-- CIPHER SYSTEMS, CLICKABLE DROPDOWNS -->
@@ -2636,14 +2959,14 @@ body.dark .mn-content p { color: #9a8880; }
       <strong style="color:var(--gold);">The Cipher Systems</strong>
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Gematria operates through multiple cipher systems, different methods of assigning numerical values to letters. Each cipher reveals a different layer of encoding. When the same number appears across multiple ciphers, multiple names, and multiple events, the probability of coincidence contracts. What remains is pattern. The four foundational ciphers are sometimes called the <em>four pillars</em>. Beyond them lie ancient systems with their own lineage and logic. This story draws from all of them. Click each cipher below to understand how it works and what it reveals.
+      Gematria operates through multiple cipher systems, different methods of assigning numerical values to letters. Each cipher reveals a different layer of encoding. When the same number appears across multiple ciphers, multiple names, and multiple events, coincidence stops being a workable explanation. What remains is pattern. The four foundational ciphers are sometimes called the <em>four pillars</em>. Beyond them lie ancient systems with their own lineage and logic. This story draws from all of them. Click each cipher below to understand how it works and what it reveals.
     </p>
 
     <div style="max-width:660px;margin:0 auto 24px;">
       <details class="cipher-dropdown" style="margin-bottom:8px;">
         <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Ordinal: The First Pillar</summary>
         <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
-          The simplest and most direct cipher. A=1, B=2, C=3, through Z=26. It maps each letter to its position in the English alphabet. Ordinal is the baseline, the first lens you apply. It often reveals the most obvious connections: <span class="gw" data-word="God" data-cipher="Ordinal" data-calc="G(7) + O(15) + D(4)">God</span> = 26, <span class="gw" data-word="Sean" data-cipher="Ordinal" data-calc="S(19) + E(5) + A(1) + N(14)">Sean</span> = 39, <span class="gw" data-word="October" data-cipher="Ordinal" data-calc="O(15) + C(3) + T(20) + O(15) + B(2) + E(5) + R(18)">October</span> = 78. When ordinal matches appear between two words, names, or dates, it is the most fundamental kind of resonance, a direct, unmanipulated alignment.
+          The simplest and most direct cipher. A=1, B=2, C=3, through Z=26. It maps each letter to its position in the English alphabet. Ordinal is the baseline, the first lens you apply. It often reveals the most obvious connections: <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> = 26, <span class="gw" data-word="Sean" data-cipher="Ordinal" data-calc="S(19) + E(5) + A(1) + N(14)">Sean</span> = 39, <span class="gw" data-word="October" data-cipher="Ordinal" data-calc="O(15) + C(3) + T(20) + O(15) + B(2) + E(5) + R(18)">October</span> = 78. When ordinal matches appear between two words, names, or dates, it is the most fundamental kind of resonance, a direct, unmanipulated alignment.
         </div>
       </details>
 
@@ -2704,12 +3027,42 @@ body.dark .mn-content p { color: #9a8880; }
       </details>
 
       <p style="font-size:0.9rem;line-height:1.95;color:#6a5e54;font-style:italic;margin-top:14px;">
-        All of these ciphers are connected. They are not competing systems, they are different lenses focused on the same structure. Ordinal reads forward; Reverse reads backward. Reduction distills; Sumerian amplifies. Chaldean listens to vibration; Septenary listens to cycles. Jewish gematria maps the cosmos; Latin maps identity. When the same number appears across multiple ciphers, it is not repetition. It is convergence. And convergence, in any discipline, is the closest thing we have to proof.
+        All of these ciphers are connected, different lenses focused on the same structure. Ordinal reads forward; Reverse reads backward. Reduction distills; Sumerian amplifies. Chaldean listens to vibration; Septenary listens to cycles. Jewish gematria maps the cosmos; Latin maps identity. When the same number appears across multiple ciphers, that is convergence. And convergence, in any discipline, is the closest thing we have to proof.
       </p>
     </div>
 
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      This is not a fringe practice. For years now, a growing community of gematria decoders has been documenting these patterns in real time, in professional sports, on the world stage, and throughout recorded history. Super Bowl outcomes, championship series, player retirements, jersey numbers, game dates, final scores, the numerical signatures are there, and they are being catalogued by thousands of independent researchers. The same patterns show up in elections, geopolitical events, celebrity deaths, and historical dates that shaped the modern world. These are not predictions. They are observations, made after learning the language, running the ciphers, and noticing that the math keeps landing. The community is large, it is serious, and it is growing because the patterns hold up to scrutiny. This timeline applies the same discipline to a personal story.
+      This is a documented practice with a serious following. For years now, a community of gematria decoders has been cataloguing these patterns in real time, in professional sports, on the world stage, and throughout recorded history. Super Bowl outcomes, championship series, player retirements, jersey numbers, game dates, final scores, the numerical signatures are there, documented by thousands of independent researchers. The same patterns show up in elections, geopolitical events, celebrity deaths, and historical dates that shaped the modern world. These are not predictions. They are observations, made after learning the language, running the ciphers, and noticing that the math keeps landing. The community is large, it is serious, and it is growing because the patterns hold up to scrutiny. This timeline applies the same discipline to a personal story.
+    </p>
+  </div></details>
+
+  <!-- SECTION: GEMATRIA THROUGH THE AGES -->
+  <details class="intro-section">
+    <summary>Gematria Through the Ages</summary>
+    <div class="intro-body">
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Gematria is a thread that runs through every major civilization on Earth, independently developed, independently documented, used as a key to the hidden architecture of language, creation, and power. The details differ across cultures and centuries. The principle holds: letters are numbers, and numbers reveal a structure that ordinary reading cannot see.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Babylon, ~800 BCE.</strong> The oldest confirmed use of letter-number encoding dates to ancient Assyria. King Sargon II commissioned his palace at Dur-Sharrukin with a perimeter wall measuring exactly 16,283 cubits, the precise numerical value of his name in the Babylonian letter-number system. He did not do this for decoration. He did it because he believed that embedding a name's number in stone bound the structure to the power of that name. While Assyrian-Babylonian scribes used cuneiform, a completely separate logographic system, the Phoenician alphabet was developing in parallel among the Semitic peoples of the Levant: the direct ancestor of Hebrew, Greek, Latin, and every Western script including the one you are reading now.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Hebrew Kabbalah, 3rd to 13th century CE.</strong> The practice was formalized as a systematic spiritual method within Jewish mysticism. The <em>Sefer Yetzirah</em> (Book of Formation) describes creation as <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> combining the letter, the number, and the word as the three instruments of existence, 22 Hebrew letters and 10 primal numbers (the sefirot) as the raw materials of creation itself. The <em>Zohar</em>, the central text of Kabbalah compiled in 13th-century Spain, uses gematria extensively to link Torah passages: if two verses share the same numerical value, they are spiritually connected regardless of their surface meaning. The Kabbalists built entire cosmological maps from these values, the Tree of Life, the sefirot, the structure of heaven and earth, all rooted in the arithmetic of letters. They understood gematria not as interpretation but as engineering: reading the blueprint creation was built from.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Greek isopsephy.</strong> The Greeks developed the same practice independently and called it <em>isopsephy</em>, from <em>isos</em> (equal) and <em>psephos</em> (pebble, referring to counting stones). Every letter of the Greek alphabet held a numerical value, and philosophers, poets, and oracle priests used these values to find hidden meanings in sacred texts and names. Pythagoras taught that number was the foundation of all reality, not metaphor but structural fact. The proof is in Revelation: the number value of NERON KAISAR, Nero Caesar written in Greek letters, equals 666. Most modern scholars now believe Revelation was written in deliberate code, and the "number of the beast" was always a reference to the Roman emperor, hidden in plain numerical sight. The ancient world was fluent in this language. We forgot how to read it.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Islamic abjad.</strong> Arabic has its own letter-number correspondence system called <em>abjad</em>, derived from the same Phoenician root as Hebrew gematria. The 28 letters of the Arabic alphabet each carry a numerical value, and Islamic scholars have used abjad in Quranic interpretation, sacred naming, analysis of divine attributes, and architecture. The 99 names of <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> were studied through their abjad values. Sufi mystics used numerical equivalence to find hidden connections between divine names and verses. Sacred buildings were proportioned to the numerical values of the words they were meant to embody. The same logic, on a different continent, in a different language, arriving at the same method.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Renaissance hermeticism, 15th to 16th century.</strong> When Greek and Arabic manuscripts flooded into Europe, scholars formalized gematria within the Western tradition. Heinrich Cornelius Agrippa's <em>Three Books of Occult Philosophy</em> (1531) catalogued numerical values for Hebrew, Greek, and Latin letters across multiple cipher systems, a framework nearly identical to what modern practitioners use today. John Dee, mathematician and advisor to Queen Elizabeth I, developed a sacred language rooted in the belief that number was the primary channel through which the divine communicated with creation. These were not fringe figures. Agrippa's work was read by every educated person in Europe. Dee corresponded with the most powerful monarchs of his era. The practice sat at the center of Renaissance intellectual life.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      <strong style="color:var(--gold);">Freemasonry.</strong> The hermetic tradition passed through the Rosicrucians into Freemasonry, where number symbolism became embedded in ritual, architecture, and initiation structure. The 33 degrees of Scottish Rite Freemasonry. The dimensions of Solomon's Temple as recorded in the Book of Kings, themselves numerically encoded in the original Hebrew. The layout of Washington D.C., designed by Freemason surveyors, encodes geometric relationships between the Capitol, the White House, and the Washington Monument that Masonic architects understood to be numerologically deliberate. The intent to encode number into physical space was not secret. It was philosophy made architecture.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
+      The thread runs unbroken from Sargon's palace wall in 800 BCE to the community of researchers working in real time today. Different languages. Different centuries. Different continents. The same practice, the same conviction: that letters are numbers, that numbers are not arbitrary, and that somewhere beneath the surface of language a structure is waiting, patient, precise, and unchanged, for anyone willing to learn how to read it.
     </p>
   </div></details>
 
@@ -2718,19 +3071,52 @@ body.dark .mn-content p { color: #9a8880; }
     <summary>How I Found the Codes</summary>
     <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      A friend introduced me. His name was Bodhisunn, and he showed me gematria the way someone hands you a pair of glasses you didn't know you needed. Suddenly the numbers were everywhere, not because they hadn't been there before, but because I could finally see them. I started decoding professional sports: NFL games, Super Bowls, championship series. Jersey numbers, game dates, final scores, retirement announcements. Then world stage events. Elections. Historical dates. Celebrity deaths. The patterns held. They kept holding. It became an obsession.
+      It started in 2020. COVID. The world had stopped, everyone was inside, and the news was running the same six stories on a loop. Lockdowns, mandates, the daily briefings, the masks, the numbers. Something about it felt managed in a way I couldn't articulate. I was scrolling one night, like everyone was, like there was nothing else to do, and I came across a post that made me stop.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Not everyone saw what I saw. Friends laughed. They made fun of the spreadsheets, the screenshots, the way I'd stop mid-conversation to run a word through four ciphers. I understood their skepticism, I would have been skeptical too, before. But the math kept landing. So I kept going.
+      Someone had run the words. Not one word, not two, every major word and phrase from that moment in history. Every headline, every slogan, every name that was being pushed through every screen, every day. They had run them all through the same cipher, the Reduction cipher, and they all came back with the same number. <strong style="color:var(--gold);">56.</strong> Not scattered. Not approximate. The same number, in the same cipher, across the entire landscape of the pandemic narrative. <span class="cov-trigger" style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.16em;color:var(--gold);cursor:pointer;border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:1px;white-space:nowrap;">COVID CODES ↓</span>
+    </p>
+
+    <div id="cov-panel" style="display:none;background:rgba(10,8,7,0.96);border:1px solid rgba(201,168,76,0.22);padding:20px 18px 16px;margin:0 0 18px;border-radius:2px;">
+      <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.22em;color:rgba(201,168,76,0.45);text-align:center;margin-bottom:16px;">REDUCTION CIPHER · CLICK ANY WORD TO DECODE</p>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:16px;">
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Coronavirus" data-cipher="Reduction" data-calc="C(3) + O(6) + R(9) + O(6) + N(5) + A(1) + V(4) + I(9) + R(9) + U(3) + S(1)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Coronavirus</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Covid Vaccine" data-cipher="Reduction" data-calc="C(3) + O(6) + V(4) + I(9) + D(4) + V(4) + A(1) + C(3) + C(3) + I(9) + N(5) + E(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Covid Vaccine</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Mind Control" data-cipher="Reduction" data-calc="M(4) + I(9) + N(5) + D(4) + C(3) + O(6) + N(5) + T(2) + R(9) + O(6) + L(3)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Mind Control</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Toilet Paper" data-cipher="Reduction" data-calc="T(2) + O(6) + I(9) + L(3) + E(5) + T(2) + P(7) + A(1) + P(7) + E(5) + R(9)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Toilet Paper</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Anthony Fauci" data-cipher="Reduction" data-calc="A(1) + N(5) + T(2) + H(8) + O(6) + N(5) + Y(7) + F(6) + A(1) + U(3) + C(3) + I(9)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Anthony Fauci</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Put Your Mask On" data-cipher="Reduction" data-calc="P(7) + U(3) + T(2) + Y(7) + O(6) + U(3) + R(9) + M(4) + A(1) + S(1) + K(2) + O(6) + N(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Put Your Mask On</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Get Your Shot" data-cipher="Reduction" data-calc="G(7) + E(5) + T(2) + Y(7) + O(6) + U(3) + R(9) + S(1) + H(8) + O(6) + T(2)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Get Your Shot</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="The Masquerade" data-cipher="Reduction" data-calc="T(2) + H(8) + E(5) + M(4) + A(1) + S(1) + Q(8) + U(3) + E(5) + R(9) + A(1) + D(4) + E(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">The Masquerade</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Society Of Jesus" data-cipher="Reduction" data-calc="S(1) + O(6) + C(3) + I(9) + E(5) + T(2) + Y(7) + O(6) + F(6) + J(1) + E(5) + S(1) + U(3) + S(1)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Society Of Jesus</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Get Boosted Now" data-cipher="Reduction" data-calc="G(7) + E(5) + T(2) + B(2) + O(6) + O(6) + S(1) + T(2) + E(5) + D(4) + N(5) + O(6) + W(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Get Boosted Now</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Black Lives Matter" data-cipher="Reduction" data-calc="B(2) + L(3) + A(1) + C(3) + K(2) + L(3) + I(9) + V(4) + E(5) + S(1) + M(4) + A(1) + T(2) + T(2) + E(5) + R(9)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Black Lives Matter</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Fear And Panic" data-cipher="Reduction" data-calc="F(6) + E(5) + A(1) + R(9) + A(1) + N(5) + D(4) + P(7) + A(1) + N(5) + I(9) + C(3)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Fear And Panic</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Lets Go Brandon" data-cipher="Reduction" data-calc="L(3) + E(5) + T(2) + S(1) + G(7) + O(6) + B(2) + R(9) + A(1) + N(5) + D(4) + O(6) + N(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Lets Go Brandon</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="The Woke Agenda" data-cipher="Reduction" data-calc="T(2) + H(8) + E(5) + W(5) + O(6) + K(2) + E(5) + A(1) + G(7) + E(5) + N(5) + D(4) + A(1)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">The Woke Agenda</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Trucker Mandates" data-cipher="Reduction" data-calc="T(2) + R(9) + U(3) + C(3) + K(2) + E(5) + R(9) + M(4) + A(1) + N(5) + D(4) + A(1) + T(2) + E(5) + S(1)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Trucker Mandates</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Cashless Society" data-cipher="Reduction" data-calc="C(3) + A(1) + S(1) + H(8) + L(3) + E(5) + S(1) + S(1) + S(1) + O(6) + C(3) + I(9) + E(5) + T(2) + Y(7)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Cashless Society</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Climate Change" data-cipher="Reduction" data-calc="C(3) + L(3) + I(9) + M(4) + A(1) + T(2) + E(5) + C(3) + H(8) + A(1) + N(5) + G(7) + E(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Climate Change</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Gematria Code" data-cipher="Reduction" data-calc="G(7) + E(5) + M(4) + A(1) + T(2) + R(9) + I(9) + A(1) + C(3) + O(6) + D(4) + E(5)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Gematria Code</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid rgba(201,168,76,0.22);border-radius:2px;"><span class="gw" data-word="Masonic Ritual" data-cipher="Reduction" data-calc="M(4) + A(1) + S(1) + O(6) + N(5) + I(9) + C(3) + R(9) + I(9) + T(2) + U(3) + A(1) + L(3)" style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.06em;">Masonic Ritual</span><span style="font-size:0.85rem;font-weight:700;color:rgba(201,168,76,0.96);font-family:'Cinzel',serif;text-shadow:0 0 8px rgba(201,168,76,0.4);">= 56</span></span>
+      </div>
+      <p style="font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.14em;color:rgba(201,168,76,0.65);text-align:center;font-style:italic;">all documented in reduction · the cipher of essence</p>
+    </div>
+    <script>
+      (function(){ var p=document.getElementById('cov-panel'); var t=document.querySelector('.cov-trigger'); if(p&&t){ t.addEventListener('click',function(){ p.style.display = p.style.display==='none' ? 'block' : 'none'; if(p.style.display==='block') setTimeout(function(){ p.scrollIntoView({behavior:'smooth',block:'nearest'}); },40); }); } })();
+    </script>
+
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      I ran the numbers myself. I questioned it, poked at it, looked for the mistakes. But the math was the math. And the more I looked, the more I found. The idea that reality could be scripted, that names, events, and narratives could be coordinated through a numerical code embedded in the very language used to describe them, was the most disturbing and compelling thing I had ever encountered. I had to understand how it worked.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      I spent months learning everything I could. The cipher systems. The history. The methodology. I started applying it to professional sports, NFL games, Super Bowls, championship series, jersey numbers, game dates, final scores. The numerical signatures were there. They kept landing. Not every time, not perfectly, but with a consistency that numbers don't produce by accident. Friends thought I'd lost my mind. I thought I'd found something everyone else was missing. I kept going. It became an obsession.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       Then came the 2025 Super Bowl. I had decoded it extensively, and I got it completely wrong. Every angle, every cipher, every pattern I thought I saw. Wrong. I sat with that for days. The voice in my head said what every skeptic had ever said: <em>You are wasting your time. This is nothing. Walk away.</em> I almost did.
     </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      But instead of walking away, I walked deeper. I picked up <em>Numerology of the Divine Triangle</em> by Faith Javane and Dusty Bunker, a book I had never read, a system I had never studied. Traditional numerology. Not sports decoding, not world stage prediction. The numerology of the self. I calculated my full chart: Life Path, Soul Urge, Personality, Destiny. And for the first time, something shifted. My Life Path is 11. My Soul Urge is 33. The chart didn't tell me anything I could have predicted. It just made something I already felt stop feeling so strange.
-    </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      The gematria knowledge and the numerological knowledge bridged completely. One gave me the language. The other gave me the reason I could read it. The Super Bowl loss was not the end of the road. It was the turn in the road that led me to the map of myself. And the map led me here, to this story, to these codes, and to the understanding that the numbers had never been about winning bets. They were about waking up.
+      But instead of walking away, I walked deeper. I picked up <em>Numerology of the Divine Triangle</em> by Faith Javane and Dusty Bunker, a system I had never studied. The numerology of the self. I calculated my full chart. My Life Path is 11. My Soul Urge is 33. The chart didn't tell me anything I could have predicted. It just made something I had always felt stop feeling so strange. The gematria and the numerology bridged completely. One gave me the language. The other gave me the reason I could read it. The Super Bowl miss was the turn in the road that led me to the map of myself. And the map led me here, to this story, to these codes, and to the understanding that the numbers were never about winning bets. They were about waking up.
     </p>
   </div></details>
 
@@ -2742,7 +3128,7 @@ body.dark .mn-content p { color: #9a8880; }
       Numerology is the study of the symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers may mean. It holds that the universe is fundamentally mathematical, that numbers may be more than a tool humans <em>discovered</em> to describe reality; they may be a structural property of reality itself.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Pythagoras, the Greek mathematician who proved that the squares of a right triangle's legs equal the square of its hypotenuse, also founded a mystery school that taught numbers as living forces. He did not separate mathematics from mysticism. To him, they were the same inquiry: what is the universe made of? His answer was number. Twenty-five centuries later, quantum physics arrived at a strikingly similar conclusion.
+      Pythagoras, the Greek mathematician who proved that the squares of a right triangle's legs equal the square of its hypotenuse, also founded a mystery school that taught numbers as living forces. To him, mathematics and mysticism were the same inquiry: what is the universe made of? His answer was number. Twenty-five centuries later, quantum physics arrived at a strikingly similar conclusion.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:20px;">
       In numerology, each number carries a specific vibration. Click any number below to explore its meaning:
@@ -2773,32 +3159,18 @@ body.dark .mn-content p { color: #9a8880; }
   </div></details>
 
   <!-- SECTION: WHERE THEY COME FROM -->
-  <details class="intro-section">
-    <summary>Where Gematria and Numerology Come From</summary>
-    <div class="intro-body">
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      The earliest documented use of gematria-like practices traces to the Assyrian Empire. Around 721 BCE, King Sargon II of Assyria built the wall of his capital city Khorsabad to be exactly 16,283 cubits long, the numerical value of his own name. The king encoded himself into the architecture. This is the oldest known example of a human being deliberately using letter-number equivalence to embed meaning into physical structure.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      From there, the practice deepened across civilizations. Ancient Hebrew scholars used gematria to find hidden connections between Torah passages; if two verses shared the same numerical value, they were understood to be spiritually linked. The Kabbalists built entire cosmological maps from the numerical values of divine names, and it was the Hebrew tradition that formalized gematria into the systematic interpretive discipline we recognize today. In Islam, the <em>Abjad</em> system assigned values to Arabic letters and was used to encode meaning into architecture, poetry, and prayer. In ancient Greece, the practice was called <em>isopsephy</em> and was used to find the hidden names of gods.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      These traditions did not borrow from each other. They arose independently across thousands of miles and thousands of years, as if the same insight kept surfacing wherever humans paid close enough attention: that language and number are two expressions of the same underlying structure.
-    </p>
-  </div></details>
-
   <!-- SECTION: THE CONVERGENCE -->
   <details class="intro-section">
     <summary>Where the Sciences Converge</summary>
     <div class="intro-body">
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      What makes this moment in history unusual is that multiple scientific disciplines, developed independently, are arriving at overlapping conclusions that the ancient numerological traditions intuited thousands of years ago:
+      Multiple scientific disciplines, developed with no awareness of each other, are arriving at the same conclusions the ancient numerological traditions intuited thousands of years ago:
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       <strong style="color:var(--gold);">Quantum physics</strong> has demonstrated that particles exist as probability waves until observed, at which point they collapse into definite states. The double-slit experiment, one of the most replicated experiments in science, shows that consciousness changes physical outcomes. The universe appears to respond to attention.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Quantum entanglement</strong>, proven by Alain Aspect in 1982 and awarded the Nobel Prize in Physics in 2022, shows that two particles can be instantaneously correlated regardless of distance. Einstein called this "spooky action at a distance." He could not accept it. But it has been confirmed repeatedly. Things that appear unrelated can be fundamentally connected through a mechanism that operates outside of space and time.
+      <strong style="color:var(--gold);">Quantum entanglement</strong>, proven by Alain Aspect in 1982 and awarded the Nobel Prize in Physics in 2022, shows that two particles can be instantaneously correlated regardless of distance. Einstein called this "spooky action at a distance" and rejected it. It has been confirmed repeatedly. Things that appear unrelated can be fundamentally connected through a mechanism that operates outside of space and time.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       <strong style="color:var(--gold);">Mathematics itself</strong> appears to be discovered rather than invented. The Fibonacci sequence (1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89) appears in sunflower spirals, hurricane formations, galaxy arms, and DNA molecules. No one told nature to use this sequence. It is embedded in the structure of physical reality.
@@ -2807,7 +3179,7 @@ body.dark .mn-content p { color: #9a8880; }
       <strong style="color:var(--gold);">Cymatics</strong> demonstrates that sound frequencies create precise geometric patterns in physical matter. Ernst Chladni showed this in the 18th century; Hans Jenny expanded it in the 20th. Vibration organizes matter. Frequency creates structure.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Nikola Tesla</strong> said, "If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration." This was not metaphor. It anticipated what quantum mechanics would spend the next century confirming: that atoms are standing waves, that matter is vibration, and that numbers, which describe vibration, may be descriptions of what reality is actually doing.
+      <strong style="color:var(--gold);">Nikola Tesla</strong> said, "If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration." He anticipated what quantum mechanics would spend the next century confirming: that atoms are standing waves, that matter is vibration, and that numbers, which describe vibration, may be descriptions of what reality is actually doing.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       These fields, physics, mathematics, acoustics, biology, were developed by people who were not speaking to each other, in centuries that did not overlap, using methods that share no common lineage. And yet they converge on the same conclusion the Pythagoreans reached 2,500 years ago: number is woven into the fabric of existence. Whether that fabric is conscious, computational, holographic, or something else entirely remains an open question. But the convergence itself is difficult to dismiss.
@@ -2825,10 +3197,10 @@ body.dark .mn-content p { color: #9a8880; }
       <strong style="color:var(--gold);">Morphic resonance.</strong> Biologist Rupert Sheldrake's hypothesis proposes that nature has a kind of memory, that patterns, once established, become easier to repeat through "morphic fields" that operate outside conventional space-time. If true, recurring numerical signatures in a person's life may be the expression of a morphic field, a pattern that, once activated, tends to replicate itself across events, relationships, and timelines.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Carl Jung's synchronicity.</strong> Jung defined synchronicity as "meaningful coincidence": events connected not by cause and effect but by meaning. He proposed that the psyche and the physical world are two expressions of a single underlying reality he called the <em>unus mundus</em>. In this view, the inner event and the outer event are connected through a layer of reality that does not obey linear causation.
+      <strong style="color:var(--gold);">Carl Jung's synchronicity.</strong> Jung defined synchronicity as "meaningful coincidence": events connected not by cause and effect but by meaning. He proposed that the psyche and the physical world are two expressions of a single underlying reality he called the <em>unus mundus</em>. In Jung's view, the inner event and the outer event are connected through a layer of reality that runs beneath linear causation.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
-      <strong style="color:var(--gold);">The holographic principle.</strong> Theoretical physicist David Bohm proposed that the universe operates like a hologram, where every part contains information about the whole. In a holographic universe, a name would not merely label a person; it would encode them. The letters of a name would be a compressed expression of everything that person is, was, and will become.
+      <strong style="color:var(--gold);">The holographic principle.</strong> Theoretical physicist David Bohm proposed that the universe operates like a hologram, where every part contains information about the whole. In a holographic universe, a name encodes a person. The letters are a compressed expression of everything that person is, was, and will become.
     </p>
   </div></details>
 
@@ -2849,17 +3221,17 @@ body.dark .mn-content p { color: #9a8880; }
     </p>
 
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:6px;">
-      <strong style="color:var(--gold);">Life Path: 11 &mdash; The Master Intuitive</strong>
+      <strong style="color:var(--gold);">Life Path: 11 · The Master Intuitive</strong>
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       To calculate a Life Path, you add every digit of the birth date: 5 + 2 + 4 + 1 + 9 + 8 + 9 = 38. 3 + 8 = 11. The master number is preserved. Life Path 11 is the channel, the antennae, the nervous system that picks up frequencies other people walk through without registering. An 11 does not learn to be intuitive. They are born mid-reception, already tuned to a station most people do not know exists. In my life, this has meant perceiving patterns in language, in dates, in names, in the timing of events, with a clarity that I did not ask for and could not turn off. It has also meant that every wound, every loss, every betrayal registered at amplified volume. Seeing more means feeling more. Feeling more means the cuts go deeper. The gift and the cost are the same thing.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      I was also born on the 24th day of the 89th year of the century. 89 is the 24th prime number. The day and the year are mathematically bonded. This is not something I calculated after the fact. It is a property of the date itself.
+      I was also born on the 24th day of the 89th year of the century. 89 is the 24th prime number. The day and the year are mathematically bonded. It is a property of the date itself.
     </p>
 
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:6px;">
-      <strong style="color:var(--gold);">Soul Urge: 33 &mdash; The Master Teacher</strong>
+      <strong style="color:var(--gold);">Soul Urge: 33 · The Master Teacher</strong>
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       The Soul Urge is calculated from the vowels of the full birth name. It represents the deepest inner motivation, the thing your soul came here to do whether or not your personality agrees. My Soul Urge is 33, the rarest and most demanding of the master numbers. 33 is the vibration of someone whose life is structured around healing, truth-telling, and the transmission of wisdom that was earned through direct experience. The 33 does not teach from books. It teaches from what it survived.
@@ -2872,14 +3244,14 @@ body.dark .mn-content p { color: #9a8880; }
     </p>
 
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:6px;">
-      <strong style="color:var(--gold);">Personality: 7 &mdash; The Seeker</strong>
+      <strong style="color:var(--gold);">Personality: 7 · The Seeker</strong>
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       The Personality number is calculated from the consonants of the birth name. It represents the face you show the world, the energy people encounter before they know you. My Personality is 7. The mystic, the analyst, the one who cannot stop looking beneath the surface. 7 is the number that drives a person to ask <em>why</em> when everyone else has accepted <em>what</em>. It is the reason I started running gematria calculations on every word I encountered. Not because someone taught me to. Because something in me could not stop. People meet me and sense someone who is analyzing, searching, reading between the lines. They are correct. I have been doing it since before I had language for it.
     </p>
 
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:6px;">
-      <strong style="color:var(--gold);">Destiny: 4 &mdash; The Builder</strong>
+      <strong style="color:var(--gold);">Destiny: 4 · The Builder</strong>
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       The Destiny number (sometimes called Expression) represents the purpose your life is building toward, the structure you are here to create. My Destiny is 4. The Builder. The foundation. The number of discipline, structure, physical endurance, and showing up every single day especially when it is difficult. In my life, this has manifested as the ability to endure what should have broken me, and the drive to build something lasting from the wreckage. Training three times a day during the transmutation phase. Writing this timeline. Constructing a record of what happened so that the pattern is visible to anyone willing to look. The 4 builds things that are meant to stand.
@@ -2987,7 +3359,7 @@ body.dark .mn-content p { color: #9a8880; }
     <summary>Date Decoder</summary>
     <div class="intro-body">
     <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.9;color:#3a3028;margin-bottom:18px;">
-      Enter any date to reveal its numerological resonance — reduction, day of year, distance from Sean and October's births, and any sacred codes it carries.
+      Enter any date to reveal its numerological resonance, reduction, day of year, distance from Sean and October's births, and any sacred codes it carries.
     </p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px;">
       <div>
@@ -3023,7 +3395,7 @@ body.dark .mn-content p { color: #9a8880; }
 <!-- ═══ CARD 0: KELLY ANN BRYANT ═══ -->
 <div class="ev" data-codes="34,43,55,72" data-phase="origin">
   <div class="ec" onclick="expand(this)">
-    <div class="edate">May 5, 1953 &mdash; September 25, 1996</div>
+    <div class="edate">May 5, 1953 &middot; September 25, 1996</div>
     <div class="etitle"><span class="gw" data-word="Kelly Ann Bryant" data-cipher="Latin Reduction" data-calc="Kelly Ann Bryant, Latin Reduction = (43)" style="color:inherit;border-bottom-color:rgba(26,18,16,0.25);">Kelly Ann Bryant</span></div>
     <div class="ebody">To tell you my story I have to begin with my <span class="gw" data-word="Mother" data-cipher="Reduction" data-calc="M(4)+O(6)+T(2)+H(8)+E(5)+R(9) = 34">Mother</span>. Her full name was <span class="gw" data-word="Kelly Ann Bryant" data-cipher="Latin Reduction" data-calc="Kelly Ann Bryant, Latin Reduction = (43)">Kelly Ann Bryant</span>, or <span class="gw" data-word="Kelly Bryant" data-cipher="Latin Ordinal" data-calc="Kelly Bryant, Latin Ordinal = 34">Kelly Bryant</span>. She was born on <span class="gw" data-word="May 5, 1953" data-cipher="Chaldean" data-calc="May(M=4,A=1,Y=1=6) + 5 + 1953(1+9+5+3=18→9) = 6+5+9 = 20">May 5, 1953</span>. 5/5. She passed away from <span class="gw" data-word="lung cancer" data-cipher="Septenary" data-calc="lung cancer, Septenary = (34)">lung cancer</span> when she was 43 years old on the <span class="gw" data-word="143rd day" data-cipher="Date Span" data-calc="May 5, 1953 → September 25, 1996 = 43 years + 143 days. 143 contains 43.">143rd day</span> of her age on September 25, 1996. As you can see, the 34/43 mirror was encoded in her name, the age she died at and the disease that took her life. My <span class="gw" data-word="Mother's Death" data-cipher="Reduction" data-calc="M(4)+O(6)+T(2)+H(8)+E(5)+R(9)+S(1)+D(4)+E(5)+A(1)+T(2)+H(8) = 55">Mother's Death</span> occurred <span class="gw" data-word="five" data-cipher="Chaldean" data-calc="F(8)+I(1)+V(6)+E(5) = 20">five</span> days before the month of October began.<br><br>I honestly don't remember a lot about her. Like most of my family, she struggled with addiction. She was a recovering heroin addict, and also severely addicted to alcohol and nicotine, which no doubt contributed greatly to her death. I remember she smoked <span class="gw" data-word="Players Light" data-cipher="Chaldean" data-calc="P(8)+L(3)+A(1)+Y(1)+E(5)+R(2)+S(3)+L(3)+I(1)+G(3)+H(5)+T(4) = 39">Players Light</span> cigarettes. I used to hide the blue and white packages in the couch cushions any time she left them out. I remember attending AA meetings with her, listening to people talk about how they spent their entire paycheques on booze while I ate sugar cubes meant for the coffee. I remember her favourite colour was <span class="gw" data-word="yellow" data-cipher="Reverse Reduction" data-calc="Y(2)+E(4)+L(6)+L(6)+O(3)+W(4) = 25">yellow</span>, and her favourite flower was the <span class="gw" data-word="Sunflower" data-cipher="Reduction" data-calc="S(1)+U(3)+N(5)+F(6)+L(3)+O(6)+W(5)+E(5)+R(9) = 43">Sunflower</span>. She had an elaborate garden on our small patio in North Vancouver with snap dragons and gigantic sunflowers. I remember people coming to the apartment and giving her awards for her flowers. I have a <span class="gw" data-word="Garden Tattoo" data-cipher="Latin Ordinal" data-calc="Garden Tattoo, Latin Ordinal = 43">garden tattoo</span> complete with snap dragons and sunflower on my left arm, her birthday in Roman numerals and her name Kelly Bryant right above my <span class="gw" data-word="left hand" data-cipher="Reduction" data-calc="L(3)+E(5)+F(6)+T(2)+H(8)+A(1)+N(5)+D(4) = 34">left hand</span>.</div>
     <div class="detail"><p><span class="gw" data-word="Kelly Ann Bryant" data-cipher="Latin Reduction" data-calc="Kelly Ann Bryant, Latin Reduction = (43)">Kelly Ann Bryant</span> = 43 Latin reduction. <span class="gw" data-word="Kelly Bryant" data-cipher="Reduction" data-calc="K(2)+E(5)+L(3)+L(3)+Y(7)+B(2)+R(9)+Y(7)+A(1)+N(5)+T(2) = 34">Kelly Bryant</span> = 34 reduction. The 34/43 mirror encoded in the name of the woman who carried it. <span class="gw" data-word="Mother" data-cipher="Reduction" data-calc="M(4)+O(6)+T(2)+H(8)+E(5)+R(9) = 34">Mother</span> = 34 reduction, 27 Chaldean. <span class="gw" data-word="lung cancer" data-cipher="Septenary" data-calc="lung cancer, Septenary = (34)">Lung cancer</span> = 34 Septenary. The disease that took her carried the same number as her name. <span class="gw" data-word="Sunflower" data-cipher="Reduction" data-calc="S(1)+U(3)+N(5)+F(6)+L(3)+O(6)+W(5)+E(5)+R(9) = 43">Sunflower</span> = 43, her favourite flower encoding the same number as the age she died at. Her birthday 5/5 carries 55. Her 72nd birthday was May 5, 2025, the exact date of the ritual.</p></div>
@@ -3045,7 +3417,7 @@ body.dark .mn-content p { color: #9a8880; }
 <!-- ═══ CARD 1: THE MOTHER RITUAL ═══ -->
 <div class="ev" data-codes="34,27,72,55,20" data-phase="origin">
   <div class="ec" onclick="expand(this)">
-    <div class="edate">May 5, 2025 &mdash; 5/5 = 55</div>
+    <div class="edate">May 5, 2025 &middot; 5/5 = 55</div>
     <div class="etitle">The Mother Ritual</div>
     <div class="ebody">In December 2023 I started a weekly <span class="gw" data-word="36 hour fast" data-ciphers='[{"cipher":"Ordinal","calc":"36 hour fast, Ordinal = 144","sum":"144"},{"cipher":"Reduction","calc":"36 hour fast, Reduction = 72","sum":"72"},{"cipher":"Reverse Ordinal","calc":"36 hour fast, Reverse Ordinal = 144","sum":"144"},{"cipher":"Chaldean","calc":"36 hour fast, Chaldean = 72","sum":"72"}]'>36 hour fast</span> bone broth fast as part of a new training regimen. I had significantly cut down on partying, my alcohol consumption had gone from weekly to monthly if that. I was training fasted with <span class="gw" data-word="kettlebells" data-cipher="Chaldean" data-calc="K(2)+E(5)+T(4)+T(4)+L(3)+E(5)+B(2)+E(5)+L(3)+L(3)+S(3) = 39">kettlebells</span>, intense circuits 3-5 times a week with Muay Thai on off days. After over a year of that I was in the best shape of my life. I had become quite dedicated to my spiritual practices since I turned 30. By May 5, 2025, what would have been her 72nd birthday, I was ready to walk toward the grief with reverence instead of away from it.</div>
     <div class="detail"><p>The occult, esotericism, numerology and gematria had become serious areas of study. Nearly every woman I had been close to was witchy in some capacity and by 2025 that had rubbed off on me. I was doing full moon rituals, making moon water, infusing my food with prayer and intention.</p><p>So on May 5, 2025, instead of ignoring the pain like I always had, I decided to walk toward it with reverence. I built a shrine. Candles, crystals, her favourite flowers. A big yellow candle on a black plate as the centrepiece, a piece of <span class="gw" data-word="amethyst" data-cipher="Chaldean" data-calc="A(1)+M(4)+E(5)+T(4)+H(5)+Y(1)+S(3)+T(4) = 27">amethyst</span> and three orgonite pyramids plus one shungite pyramid arranged in a diamond shape around it. I poured a glass of <span class="gw" data-word="cranberry juice" data-cipher="Reverse Ordinal" data-calc="C(24)+R(9)+A(26)+N(13)+B(25)+E(22)+R(9)+R(9)+Y(2)+J(17)+U(6)+I(18)+C(24)+E(22) = 139 · 139 is the 34th prime">cranberry juice</span> as an offering. I thought about using wine because I had read that spirits like alcohol, but then reconsidered. Alcohol was such a negative part of her life. The symbolism was what mattered. I wrote her name on a piece of paper and placed it underneath the candle. Then I wrote her a letter by hand, read it aloud to my empty kitchen, and burned it in the candle's flame. I left the shrine up for five days.</p><p>Two days later, on May 7th, I went into my backyard to perform the <span class="gw" data-word="consecration" data-cipher="Reduction" data-calc="C(3)+O(6)+N(5)+S(1)+E(5)+C(3)+R(9)+A(1)+T(2)+I(9)+O(6)+N(5) = 55">consecration</span> of a new amethyst pendulum I had just bought. I put it in the grass, lit some palo santo, and spoke an invocation over it. Almost immediately after I finished the prayer, a ladybug landed on my hand. It had two spots. I took it as a good omen, brought it inside, and set it in my bonsai tree on the windowsill. I read they like bee pollen so I left a small pile as an offering. The next day it was gone. I was a little bummed about that.</p><p>Three days later, another one appeared on the frame of my front door, just as I was leaving the house. I thought it was the same one at first, but when I picked it up I counted seven spots. I talked to it. Put it in the bonsai tree too.</p><p>What I didn't realize until later that day was that the messenger and the message were the same thing. The way codes come to me is hard to explain. Words and phrases enter my mind and I have a compulsion to stop everything and decode them. This had been happening since around 2020. That evening my brain started insisting I check. The first word was obvious. <span class="gw" data-word="Ladybug" data-cipher="Ordinal" data-calc="L(12)+A(1)+D(4)+Y(25)+B(2)+U(21)+G(7) = 72">Ladybug</span> = <span class="gw" data-word="Ladybug" data-cipher="Reduction" data-calc="L(3)+A(1)+D(4)+Y(7)+B(2)+U(3)+G(7) = 27">72 and 27</span>. I sat with that for a few minutes. Two and seven. Seven and two. The first one had two spots, the second had seven. 2/72. 7/27. I laughed. Then I typed in <span class="gw" data-word="Mother" data-cipher="Chaldean" data-calc="M(4)+O(7)+T(4)+H(5)+E(5)+R(2) = 27">Mother</span>. Also 27, in Chaldean. Then <span class="gw" data-word="amethyst" data-cipher="Chaldean" data-calc="A(1)+M(4)+E(5)+T(4)+H(5)+Y(1)+S(3)+T(4) = 27">amethyst</span>. Also 27. I kept going.</p><p>The timing made it stranger. The first ladybug arrived two days after her birthday. The second arrived three days after that. Three days is 72 hours. And the <span class="gw" data-word="ritual" data-cipher="Reduction" data-calc="R(9)+I(9)+T(2)+U(3)+A(1)+L(3) = 27">ritual</span> = 27. The ritual I performed for my mother happened to land on her 72nd birthday. 2025 minus 1953 equals 72.</p><p>There was one more number that kept appearing throughout all of this, whose meaning wasn't immediately clear. The number 20. <span class="gw" data-word="May 5 2025" data-cipher="Date" data-calc="May 5 2025 = (20)">May 5 2025</span> = 20. <span class="gw" data-word="Birthday" data-cipher="Chaldean" data-calc="Birthday, Chaldean = (20)">Birthday</span> = 20. <span class="gw" data-word="Ladybug" data-cipher="Chaldean" data-calc="L(3)+A(1)+D(4)+Y(1)+B(2)+U(6)+G(3) = 20">Ladybug</span> = 20 in Chaldean. <span class="gw" data-word="Symbol" data-cipher="Chaldean" data-calc="S(3)+Y(1)+M(4)+B(2)+O(7)+L(3) = 20">Symbol</span> = 20. <span class="gw" data-word="Five" data-cipher="Chaldean" data-calc="Five, Chaldean = (20)">Five</span> = 20.<br><br><span class="gw" data-word="Kelly Ann Bryant" data-cipher="Latin Reduction" data-calc="Kelly Ann Bryant, Latin Reduction = (43)">Kelly Ann Bryant</span> = 43. <span class="gw" data-word="Kelly Bryant" data-cipher="Reduction" data-calc="K(2)+E(5)+L(3)+L(3)+Y(7)+B(2)+R(9)+Y(7)+A(1)+N(5)+T(2) = 34">Kelly Bryant</span> = 34. <span class="gw" data-word="Mother" data-cipher="Reduction" data-calc="M(4)+O(6)+T(2)+H(8)+E(5)+R(9) = 34">Mother</span> = 34 reduction, 27 Chaldean. <span class="gw" data-word="Mother's Death" data-cipher="Reduction" data-calc="M(4)+O(6)+T(2)+H(8)+E(5)+R(9)+S(1)+D(4)+E(5)+A(1)+T(2)+H(8) = 55">Mother's Death</span> = 55. Her birthday 5/5 also carries 55. Lead Into Gold = 55. <span class="gw" data-word="Sunflower" data-cipher="Reduction" data-calc="S(1)+U(3)+N(5)+F(6)+L(3)+O(6)+W(5)+E(5)+R(9) = 43">Sunflower</span> = 43, her favourite flower encoding the same number as the age she died at.</p></div>
@@ -3069,7 +3441,7 @@ body.dark .mn-content p { color: #9a8880; }
 <div class="oversoul-wrap">
   <div class="oversoul-message">
     <div class="oversoul-sigil">&#10022;</div>
-    <p>The ritual was not for the dead. It was an invocation for the living. What you called toward yourself with sunflowers and amethyst was not a ghost, it was a woman who would carry your mother's month in her name.</p>
+    <p>The ritual was an invocation for the living. What you called toward yourself with sunflowers and amethyst was a woman who would carry your mother's month in her name.</p>
     <div class="oversoul-code">34</div>
   </div>
 </div>
@@ -3078,8 +3450,8 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="en"><div class="dot o"></div></div>
   <div class="spacer"></div>
   <div class="ec" onclick="expand(this)">
-    <div class="edate">May 24, 2025 &mdash; The 144th Day</div>
-    <div class="etitle">36th Birthday &mdash; First Sober in 24 Years</div>
+    <div class="edate">May 24, 2025 &middot; The 144th Day</div>
+    <div class="etitle">36th Birthday &middot; First Sober in 24 Years</div>
     <div class="ebody">I turned thirty-six on the 144th day of the year. For the first time since I was twelve, I did not drink. I made bone broth instead, a thirty-six-hour slow cook, the kitchen filling with steam while the rest of the city celebrated a long weekend. I did not know yet that "Bone Broth" equals 144 in Reverse Ordinal, the same number as the day I was born on. I did not know that 666 is the 36th triangular number. But I noticed 666 everywhere that week. On license plates, on receipts, on the clock at 6:06. It followed me like something trying to introduce itself. I would meet her the next day.</div>
     <div class="detail">36-hour bone broth fast = 144 ordinal and RO. Making Bone Broth = 144 on the 144th day. The week of 666 sightings was the week before meeting the woman whose name encodes 666 in Sumerian. The system was announcing her before he saw her. HUNGRY = 93 = SATURN = NORGAN in Reverse Ordinal. The discipline of the sober birthday was already Saturnian preparation, the body aligning before the mind could understand why.</div>
     <div class="tags">
@@ -3102,7 +3474,7 @@ body.dark .mn-content p { color: #9a8880; }
 
 <div class="ev" data-codes="34,43,39,666,33,55,72" data-phase="meeting">
   <div class="ec" onclick="expand(this)">
-    <div class="edate">May 25, 2025 &mdash; 34 Days from Mother's Birthday</div>
+    <div class="edate">May 25, 2025 &middot; 34 Days from Mother's Birthday</div>
     <div class="etitle">Teyana Speaks Across the Room</div>
     <div class="ebody">I was at Charcut steakhouse with my friend Jean Morency, talking about sea moss and meditation and the bone broth fast, when a woman at the next table leaned over and said, "Sorry, I couldn't help but overhear." Her name was Teyana. Beside her sat a girl with blue eyes and a quiet presence that stopped the room. Her name was October. She was twenty-one. Sober. She wanted to be a midwife. She had never been vaccinated. From the day I built my mother's shrine to this moment, exactly thirty-four days had passed. Mother equals 34. We met in the month of May. May equals 39. So does October. So does Sean. So does Mirror Flame. The month itself was encoding the meeting before either of us knew it was happening.</div>
     <div class="detail">Charcut = 43 RR. Jean Morency = 39 Chaldean. Jean = 24 RR like Sean. Teyana = 33 RR. Teyana Street = 72 RR, the same 72 that opened the mother's ritual. October = 666 Reverse Sumerian, 33 reduction, 39 RR. Middle name Eden. Garden of Eden = 55 RR. Sean and October = 55 reduction. Midwife = 39 RR. Her birthday April 18, 2004 = 39, mirroring all his name codes. May is the month of Gemini = 39 reduction, 55 Latin ordinal. Mirror = 55 Cipher X. She was encoded before they met.</div>
@@ -3135,8 +3507,8 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="spacer"></div>
   <div class="ec" onclick="expand(this)">
     <div class="edate">June 8, 2025</div>
-    <div class="etitle">First Date &mdash; Major Tom</div>
-    <div class="ebody">I brought her delphiniums. She told me her favourite number was 13, the chapter in Revelation that decodes the number of the beast. We went to Major Tom. The name of the bar equals 666 in Sumerian gematria. So does "Delphinium." So does her name. The obsessive sightings from the week before, on license plates, on clocks, on receipts, now had a face. She was born thirty-six days before me. 666 is the 36th triangular number. The week of signals had been announcing a woman I hadn't met yet, carrying a number she didn't know she held.</div>
+    <div class="etitle">First Date · Major Tom</div>
+    <div class="ebody">I brought her delphiniums. She told me her favourite number was 13, the chapter in Revelation that decodes the number of the beast. We went to Major Tom. The name of the bar equals 666 in Sumerian gematria. So does "Delphinium." So does her name. The obsessive sightings from the week before, on license plates, on clocks, on receipts, now had a face. She was born thirty-six days before me. 666 is the 36th triangular number. The week of signals had been announcing a woman I hadn't met yet, carrying a number she didn't know she held. She laughed when I told her. She didn't need convincing. She already believed in this kind of thing.</div>
     <div class="detail">They were born 36 days apart. 666 is the 36th triangular number. She chose 13, Revelation 13:18, the passage that decodes 666. October = 33 reduction matching Soul Urge 33. Born on the 108th day of the year, matching Sean Norgan = 108 ordinal. Born 777 weeks and 4 days from Sean. The system had been broadcasting her arrival for a week before she appeared.</div>
     <div class="tags">
       <span class="tag" data-code="666">Major Tom = 666</span>
@@ -3158,8 +3530,8 @@ body.dark .mn-content p { color: #9a8880; }
 
 <div class="ev" data-codes="39,24,33,27,43,93" data-phase="summer">
   <div class="ec" onclick="expand(this)">
-    <div class="edate">July 1, 2025 &mdash; Canada Day</div>
-    <div class="etitle">Banff &mdash; Wild Horses &amp; The Raven</div>
+    <div class="edate">July 1, 2025 · Canada Day</div>
+    <div class="etitle">Banff · Wild Horses &amp; The Raven</div>
     <div class="ebody">We drove to Banff on Canada Day. Lunch at the Light Cellar. Psilocybin mushrooms on the trail. A waterfall so thick with butterflies it looked like the air itself was breathing. On the highway back, six wild horses stood in the road. One of them walked directly toward me and stopped four feet away, looking at me. We took the gondola to the summit and found a family of mountain goats at the top, mother, father, baby, watching us like witnesses. A raven circled overhead, the same bird already tattooed on my hand before we ever met. The first kiss landed just after midnight, crossing into July 2nd. First Kiss equals 27 in Chaldean, the same number the ladybugs had carried to my mother's shrine two months before.</div>
     <div class="detail">Wild Horses = 39, matching Sean, October, Mirror Flame, and May. Raven = 24 reduction. Light Cellar = 33, matching October's reduction and Soul Urge. Mountain Goat = 43 JR. Psilocybin Mushroom = 93 reduction, Saturn = Hungry = Norgan. The kiss landing on 7/2 encoded the same mirror as the ladybug's 72-hour arrival. The raven tattooed on his hand was a memory of a future he hadn't lived yet.</div>
     <div class="tags">
@@ -3179,7 +3551,7 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="spacer"></div>
   <div class="ec" onclick="expand(this)">
     <div class="edate">July 4, 2025</div>
-    <div class="etitle">Stampede &mdash; The 777 Sightings</div>
+    <div class="etitle">Stampede · The 777 Sightings</div>
     <div class="ebody">We ate chicken pho made from a seventy-four-hour broth and drove to the Stampede to see Smino. On the highway there and back, the number 777 appeared on license plates four separate times. I had already calculated that October and I were born exactly 777 weeks and 4 days apart. We were talking about this, speaking it out loud in the car, when each plate appeared. The road was answering us in real time. External reality confirming an internal code while we named it, as if the system only needed our awareness to begin responding.</div>
     <div class="detail">Chicken Pho = 43 RR. Smino = 34 SR. The 777 appearances happened while they were discussing this very fact about their birth separation. Four sightings matching the 4 days beyond 777 weeks. The universe was not hiding the pattern, it was emphasizing it the moment they spoke it aloud.</div>
     <div class="tags">
@@ -3193,8 +3565,8 @@ body.dark .mn-content p { color: #9a8880; }
 
 <div class="ev" data-codes="33,47,48,43,223,55" data-phase="summer">
   <div class="ec" onclick="expand(this)">
-    <div class="edate">July 11, 2025 &mdash; 33 Days from First Date &middot; 47 Days from Meeting</div>
-    <div class="etitle">Nordic Spa &mdash; I Love You</div>
+    <div class="edate">July 11, 2025 &middot; 33 Days from First Date &middot; 47 Days from Meeting</div>
+    <div class="etitle">Nordic Spa · I Love You</div>
     <div class="ebody">At the front desk, we were given wristband number 223. Mirror Flame Love equals 223. We hadn't been inside thirty seconds when a man walked past with the word "Heaven" tattooed across his head. Heaven equals 55, the same as Sean and October. That evening, in the warm dark of the pools, I said "I love you" for the first time. She said it back. It was thirty-three days since our first date and forty-seven days since the night at Charcut. Every code I had been tracking, 33, 47, 48, Soul Contract, Blessing, landed on the same evening, at the same place, wearing the same wristband. The numbers were no longer pointing toward something. They had arrived.</div>
     <div class="detail">Mirror Flame Love = 223. 223 is the 48th prime. Soul Contract = 48 Chaldean. Blessing = 48 RR, 33 reduction, 47 JO, 34 reduction. 48 days from Sean's birthday to that date. 84 days from October's, the 48/84 mirror again. Heaven = 55 ordinal like Garden of Eden, 27 Chaldean like Mother. I Love You = 43. Nordic Spa = 34 Chaldean.</div>
     <div class="tags">
@@ -3262,7 +3634,7 @@ body.dark .mn-content p { color: #9a8880; }
     55 is the 10th Fibonacci number, the number of completion returning to unity.<br>
     5/5 is the mother's birthday. The mother's love did not end, it redirected.<br>
     It redirected toward a woman named after the month the mother left.<br><br>
-    This is not coincidence. This is the soul's precision.</p>
+    The soul's precision is exact.</p>
     <div class="oversoul-code" style="color:var(--sage);">55</div>
   </div>
 </div>
@@ -3277,7 +3649,7 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="ec" onclick="expand(this)">
     <div class="edate">Late August 2025</div>
     <div class="etitle">The Wedding Codes</div>
-    <div class="ebody">I ran the gematria on potential wedding dates and found something that made my hands shake. Specific dates encoded with our names at a depth that felt less like coincidence and more like obligation. Cosmic responsibility written into the calendar itself. My conscious mind called it beautiful. My nervous system called it enormous. Somewhere beneath thought, beneath language, the oldest part of me began preparing its oldest defense. Not against her. Against the weight of what staying would require.</div>
+    <div class="ebody">I ran the gematria on potential wedding dates and found something that made my hands shake. Specific dates encoded with our names at a depth that felt less like coincidence and more like obligation. Cosmic responsibility written into the calendar itself. My conscious mind called it beautiful. My nervous system called it enormous. Somewhere beneath thought, beneath language, the oldest part of me began preparing its oldest defense, not against her, but against the weight of what staying would require.</div>
     <div class="detail">The discovery of wedding codes crossed a threshold the nervous system recognized, not as love, but as destiny too large to hold. The wound beneath the wound: not fear of loss, but fear of the size of what staying would demand. The subconscious began choosing destruction over transformation. This is where the shadow work should have started. Instead, it waited for the fall.</div>
     <div class="tags">
       <span class="tag s">Sacred Union Codes</span>
@@ -3293,7 +3665,7 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="en"><div class="dot s"></div></div>
   <div class="spacer"></div>
   <div class="ec" onclick="expand(this)">
-    <div class="edate">September &mdash; October 2025</div>
+    <div class="edate">September through October 2025</div>
     <div class="etitle">The Wound Activates</div>
     <div class="ebody">September came the way it always came. Heavy, shapeless, wrong. My mother had died on September 25th, thirty years ago, five days before the month of October begins. Every autumn since 1995, a sadness without a name settled into my body like weather. Now it had a name: it was named after my girlfriend. The nervous system that had learned at age six that safe love vanishes without warning did what it had always done. It chose to destroy before being destroyed. Alcohol came back. Cocaine followed. I withdrew from her, then pushed her away, then burned it down. Not because I didn't love her. Because my body had decided long ago that the people you love the most are the ones who disappear, and it was better to be the one who leaves than the one who gets left.</div>
     <div class="detail">Kelly Ann Bryant died September 25. His mirror flame is named after the month she died. Michael Nyuis, Masculine Initiator = 666, Michael Nyuis = 139 ordinal, the 34th prime, died suddenly in 2016 without goodbye. Same shape as the mother's death. Same wound. Two sudden disappearances of the two safe loves of his life. The nervous system's conclusion: those who become truly safe disappear without warning. Better to leave first. Better to burn it down. This is the pattern that took October.</div>
@@ -3312,7 +3684,7 @@ body.dark .mn-content p { color: #9a8880; }
     <div class="edate">January 10, 2026</div>
     <div class="etitle">The Separation</div>
     <div class="ebody">On January 10th, the relationship ended. Not the connection. The relationship. Two people encoded in every cipher, who had met through a dead mother's ritual, who had seen 777 confirmed on the highway while they spoke it aloud, separated by a wound older than either of us. She didn't leave because she stopped loving me. I didn't push her away because I stopped loving her. The wound simply did what wounds do when they are not yet named: it ate everything around it. The prima materia was now fully exposed. Thirty years of unprocessed grief, terror, and self-sabotage lay in the open, visible for the first time. The alchemists would have called this the necessary step. The lead must be seen before it can be transmuted.</div>
-    <div class="detail">The furnace. The alchemical tradition understood that lead must be brought into full visibility before it can be worked. The separation was not failure, it was the process demanding to be seen. The base matter needed to surface completely before the transmutation could begin. This is where the gold was always going to come from.</div>
+    <div class="detail">The furnace. The alchemical tradition understood that lead must be brought into full visibility before it can be worked. The separation was the process demanding to be seen. The base matter needed to surface completely before the transmutation could begin. This is where the gold was always going to come from.</div>
     <div class="tags">
       <span class="tag s">Prima Materia</span>
       <span class="tag s">The Furnace</span>
@@ -3327,7 +3699,7 @@ body.dark .mn-content p { color: #9a8880; }
 <div class="oversoul-wrap">
   <div class="oversoul-message">
     <div class="oversoul-sigil">&#10022;</div>
-    <p>This is not the end. This is the furnace. The alchemists understood: lead does not become gold by being admired. It becomes gold by being placed in the fire. The separation is the fire. Stay in it. Do not leave the work.</p>
+    <p>The alchemists understood: lead becomes gold by being placed in the fire. The separation is the fire. Stay in it. Do not leave the work.</p>
     <div class="oversoul-code">666</div>
   </div>
 </div>
@@ -3352,7 +3724,7 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="en"><div class="dot"></div></div>
   <div class="spacer"></div>
   <div class="ec" onclick="expand(this)">
-    <div class="edate">January &mdash; March 2026</div>
+    <div class="edate">January through March 2026</div>
     <div class="etitle">The Inner Work</div>
     <div class="ebody">I joined an eight-month men's container led by Malcolm. I started training three times a day, more disciplined than I had ever been, more present than I had ever allowed myself to be. The work surfaced things I had buried so deep I forgot they were there. Repressed memories of sexual abuse. The shape of my father's absence. The way my mother's death had taught my body to associate love with loss. Malcolm called them the three dragons. I named them: the Mother Wound, the Father Wound, and the Shamed Child Wound. For the first time in thirty years, the things that had been running my life from beneath the surface had names. And things with names can be faced.</div>
     <div class="detail">666 = spiritual alchemy. Carbon, 6 protons, 6 neutrons, 6 electrons, is the base matter of physical existence. Transmuting base matter into something refined and sovereign. Lead into gold. The wound is the lead. The conscious man on the other side of it is the gold. WWND = 34, MN = 27, his mother's code and his mentor's code already tattooed on his hands before he knew gematria. He didn't know what he was carrying.</div>
@@ -3408,7 +3780,7 @@ body.dark .mn-content p { color: #9a8880; }
 <div class="oversoul-wrap">
   <div class="oversoul-message">
     <div class="oversoul-sigil">&#10022;</div>
-    <p>You named the pattern. October, the month your mother died. Your heart chose a woman whose name holds the shape of your deepest wound. This is not tragedy. This is precision. The soul moves toward its own medicine with the accuracy of a code.</p>
+    <p>You named the pattern. October, the month your mother died. Your heart chose a woman whose name holds the shape of your deepest wound. The soul moves toward its own medicine with the accuracy of a code.</p>
     <div class="oversoul-code">34</div>
   </div>
 </div>
@@ -3436,7 +3808,7 @@ body.dark .mn-content p { color: #9a8880; }
   <div class="ec" onclick="expand(this)">
     <div class="edate">April 3, 2026</div>
     <div class="etitle">The Return</div>
-    <div class="ebody">On the day before, the codes came in a flood. I checked my Polymarket balance at exactly 4:30. It read $4,334. My best friend texted at 4:34. At 1:43 I had texted my sister to ask for the correct spelling of our mother's name: Kelly Ann Bryant. She read my message at 3:04 and replied at 3:41. Every timestamp, every dollar amount, every interaction that day was 43 and its mirrors. 34, 304, 341, 434, 143. My mother's code was confirming the return before it happened. And then April 3rd arrived. Sean And October equals 55 in reduction. April 3rd, 2026 equals 55 in reduction. Written as 4/3, the 34/43 mirror that had been running through the entire story since the first ladybug landed on the shrine. My mother's birthday was 5/5. The number that first confirmed the union was now confirming the return. I walked toward her. The man who returns is not the man who left.</div>
+    <div class="ebody">On the day before, the codes came in a flood. My Polymarket balance at 4:30 read $4,334. My best friend texted at 4:34. I had texted my sister at 1:43 to ask for the correct spelling of our mother's name. She read it at 3:04 and replied at 3:41. Every interaction that day was 43 and its mirrors. The 34, the 304, the 341, the 434. My mother's code was confirming the return before it happened, the same way it had confirmed everything else. And then April 3rd arrived. Sean And October equals 55 in reduction. April 3rd, 2026 equals 55 in reduction. Written as 4/3, the 34/43 mirror that had been running through the entire story since the first ladybug landed on the shrine. My mother's birthday was 5/5. The number that opened everything was closing the circle. I walked toward her. The man who came back was the one who had finally done the work.</div>
     <div class="detail">Kelly Ann Bryant = 43 Latin ordinal. Kelly Bryant = 34 ordinal. April = 34 in reverse reduction. The alchemical process completing itself on a date the universe encoded before the work began. The wound has a name. The pattern has been traced to its origin in 1995. The nervous system is being asked to learn something new: that safe love can stay. The codes align. The rest is choice, and he is choosing. This is what 666 always meant. This is the gold.</div>
     <div class="tags">
       <span class="tag n" data-code="55">Sean And October = 55</span>
@@ -3458,7 +3830,7 @@ body.dark .mn-content p { color: #9a8880; }
 <div class="oversoul-wrap">
   <div class="oversoul-message">
     <div class="oversoul-sigil">&#10022;</div>
-    <p>Sean And October = 55. April 3rd 2026 = 55. The date was encoded before you chose it. The man who returns is not the man who left. He is the gold. And the gold was always on the other side of the wound.</p>
+    <p>Sean And October = 55. April 3rd 2026 = 55. The date was encoded before you chose it. He is the gold. And the gold was always on the other side of the wound.</p>
     <div class="oversoul-code">55</div>
   </div>
 </div>
@@ -3491,7 +3863,7 @@ body.dark .mn-content p { color: #9a8880; }
 
 <!-- ═══════════════ CONSTELLATION VIEW ═══════════════ -->
 <div id="cs-view">
-  <div class="cstitle">Code Constellation &mdash; Events Connected by Shared Ciphers</div>
+  <div class="cstitle">Code Constellation · Events Connected by Shared Ciphers</div>
   <canvas id="ccanvas"></canvas>
   <div class="legend">
     <div class="li"><div class="ld" style="background:var(--gold)"></div>Origin / Meeting</div>
@@ -3532,10 +3904,10 @@ body.dark .mn-content p { color: #9a8880; }
 
   <!-- Prominent sequence strip -->
   <div class="fib-seq" id="fib-seq">
-    <span class="fib-seq-caption">Each number encodes a chapter — tap to decode</span>
+    <span class="fib-seq-caption">Each number encodes a chapter, tap to decode</span>
   </div>
 
-  <!-- Inline decode panel — expands below the strip when a number is clicked -->
+  <!-- Inline decode panel,expands below the strip when a number is clicked -->
   <div id="fib-decode-panel">
     <button id="fdp-close" onclick="closeFibExplain()">CLOSE &#215;</button>
     <div id="fdp-num"></div>
@@ -3755,24 +4127,24 @@ body.dark .mn-content p { color: #9a8880; }
 // ═══════════════════════════════════════════════════
 const EVENTS = [
   {id:0,title:"The Mother Ritual",date:"May 5, 2025",short:"5/5",codes:["34","27","72","55","20"],phase:"origin",
-   body:"A shrine built for Kelly Ann Bryant on what would have been her 72nd birthday. Sunflowers, amethyst, orgonite, cranberry juice. A letter written and burned. 72 hours later \u2014 a ladybug with 2 spots arrives. Two days after that, a second with 7 spots.",
-   detail:"Kelly Ann Bryant = 43 Latin reduction, 34 reduction \u2014 the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 RO the 34th prime."},
-  {id:1,title:"36th Birthday \u2014 First Sober in 24 Years",date:"May 24, 2025",short:"5/24",codes:["144","36","666","24","39","93"],phase:"origin",
-   body:"Born on the 144th day of the year, making bone broth \u2014 Bone Broth = 144 RO. 666 appearing on license plates obsessively all week.",
+   body:"A shrine built for Kelly Ann Bryant on what would have been her 72nd birthday. Sunflowers, amethyst, orgonite, cranberry juice. A letter written and burned. 72 hours later, a ladybug with 2 spots arrives. Two days after that, a second with 7 spots.",
+   detail:"Kelly Ann Bryant = 43 Latin reduction, 34 reduction, the 34/43 mirror encoded in her own name. Mother = 34 reduction, 27 Chaldean. Amethyst = 27 Chaldean, 666 Sumerian. Cranberry = 139 RO the 34th prime."},
+  {id:1,title:"36th Birthday · First Sober in 24 Years",date:"May 24, 2025",short:"5/24",codes:["144","36","666","24","39","93"],phase:"origin",
+   body:"Born on the 144th day of the year, making bone broth. Bone Broth = 144 RO. 666 appearing on license plates obsessively all week.",
    detail:"HUNGRY = 93 = SATURN = NORGAN in RO. The system was announcing her before he saw her."},
   {id:2,title:"Teyana Speaks Across the Room",date:"May 25, 2025",short:"5/25",codes:["34","43","39","666","33","55","72"],phase:"meeting",
-   body:"At Charcut steakhouse. Teyana speaks up \u2014 her friend October beside her. 34 days from the mother\u2019s ritual. Mother = 34.",
+   body:"At Charcut steakhouse. Teyana speaks up, October beside her. 34 days from the mother\u2019s ritual. Mother = 34.",
    detail:"October = 666 Reverse Sumerian, 33 reduction, 39 RR. Sean and October = 55 reduction. She was encoded before they met."},
-  {id:3,title:"First Date \u2014 Major Tom",date:"June 8, 2025",short:"6/8",codes:["666","36","43","33","13"],phase:"meeting",
+  {id:3,title:"First Date · Major Tom",date:"June 8, 2025",short:"6/8",codes:["666","36","43","33","13"],phase:"meeting",
    body:"Major Tom = 666. Delphinium = 666. Born 36 days apart. 666 is the 36th triangular number.",
    detail:"Born 777 weeks and 4 days from Sean. October born on the 108th day, matching Sean Norgan = 108 ordinal."},
-  {id:4,title:"Banff \u2014 Wild Horses & The Raven",date:"July 1, 2025",short:"7/1",codes:["39","24","33","27","43","93"],phase:"summer",
-   body:"Six wild horses. A raven. First kiss landing after midnight \u2014 7/2. First Kiss = 27 Chaldean.",
+  {id:4,title:"Banff · Wild Horses & The Raven",date:"July 1, 2025",short:"7/1",codes:["39","24","33","27","43","93"],phase:"summer",
+   body:"Six wild horses. A raven. First kiss after midnight, 7/2. First Kiss = 27 Chaldean.",
    detail:"Wild Horses = 39. Raven = 24. The raven was already tattooed on Sean\u2019s hand before they met."},
-  {id:5,title:"Stampede \u2014 The 777 Sightings",date:"July 4, 2025",short:"7/4",codes:["777","43","34"],phase:"summer",
+  {id:5,title:"Stampede · The 777 Sightings",date:"July 4, 2025",short:"7/4",codes:["777","43","34"],phase:"summer",
    body:"777 on license plates four times. The road confirming what the numbers already said.",
    detail:"The 777 appearances happened while they were discussing their birth separation. The system responding to awareness of itself."},
-  {id:6,title:"Nordic Spa \u2014 I Love You",date:"July 11, 2025",short:"7/11",codes:["33","47","48","43","223","55"],phase:"summer",
+  {id:6,title:"Nordic Spa · I Love You",date:"July 11, 2025",short:"7/11",codes:["33","47","48","43","223","55"],phase:"summer",
    body:"Wristband 223. \u201CI love you\u201D spoken for the first time. Every code converging.",
    detail:"Mirror Flame Love = 223. 223 is the 48th prime. I Love You = 43. Heaven = 55 ordinal, 27 Chaldean."},
   {id:7,title:"Cochrane, The Stranger & The Hailstorm",date:"July 12\u201313, 2025",short:"7/12-13",codes:["33","43","34","48","27","55","777"],phase:"summer",
@@ -3781,20 +4153,20 @@ const EVENTS = [
   {id:8,title:"The Wedding Codes",date:"Late August 2025",short:"Aug",codes:["33","55"],phase:"shadow",
    body:"Wedding codes discovered. The subconscious began choosing destruction over transformation.",
    detail:"Not fear of loss, but fear of the size of what staying would require."},
-  {id:9,title:"The Wound Activates",date:"September \u2014 October 2025",short:"Sep-Oct",codes:["34","27","666","93"],phase:"shadow",
+  {id:9,title:"The Wound Activates",date:"September through October 2025",short:"Sep-Oct",codes:["34","27","666","93"],phase:"shadow",
    body:"The same weeks his mother died 30 years before. The nervous system chose to destroy before being destroyed.",
    detail:"His mirror flame is named after the month she died. This is the pattern that took October."},
   {id:10,title:"The Separation",date:"January 10, 2026",short:"1/10",codes:["shadow"],phase:"shadow",
    body:"The relationship ends. The prima materia fully exposed.",
-   detail:"The separation was not failure. It was the process demanding to be seen."},
-  {id:11,title:"The Inner Work",date:"January \u2014 March 2026",short:"Jan-Mar",codes:["666","34","27"],phase:"transmutation",
+   detail:"The separation was the process demanding to be seen."},
+  {id:11,title:"The Inner Work",date:"January through March 2026",short:"Jan-Mar",codes:["666","34","27"],phase:"transmutation",
    body:"Eight month men\u2019s container. The three dragons. Mother Wound, Father Wound, Shamed Child Wound named.",
    detail:"WWND = 34, MN = 27 already tattooed on his hands before he knew gematria."},
   {id:12,title:"The Recognition",date:"April 2, 2026",short:"4/2",codes:["34","55","27","43"],phase:"transmutation",
    body:"October was named after the month his mother died. Now the pattern is visible.",
    detail:"The subconscious didn\u2019t choose October despite her name. It chose her because of it."},
   {id:13,title:"The Return",date:"April 3, 2026",short:"4/3",codes:["55","34","43","39"],phase:"transmutation",
-   body:"Sean And October = 55. April 3rd 2026 = 55. Written 4/3 \u2014 the mirror. The mother\u2019s code confirming the return.",
+   body:"Sean And October = 55. April 3rd 2026 = 55. Written 4/3, the mirror. The mother\u2019s code confirming the return.",
    detail:"$4,334 at 4:30. Best friend texted at 4:34. Kelly Ann Bryant = 43. This is the gold."},
 ];
 
@@ -3833,42 +4205,149 @@ const GEMATRIA_CODES = {
   const canvas = document.getElementById('cover-canvas');
   const ctx = canvas.getContext('2d');
   let W, H, raf, time = 0;
+  const isMobile = window.innerWidth < 768;
+
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  const moteCount = window.innerWidth < 768 ? 25 : 60;
+  // Mouse parallax — smoothed with lerp
+  const mouse = { x: 0.5, y: 0.5 };
+  const mouseS = { x: 0.5, y: 0.5 };
+  cover.addEventListener('mousemove', e => {
+    mouse.x = e.clientX / W;
+    mouse.y = e.clientY / H;
+  }, { passive: true });
+
+  // ── Layer 1: Background micro-stars ──────────────────
+  // Small, dim, barely move — feel far away
+  const starCount = isMobile ? 18 : 38;
+  const stars = [];
+  for (let i = 0; i < starCount; i++) {
+    stars.push({
+      x: Math.random(), y: Math.random(),
+      r: 0.2 + Math.random() * 0.55,
+      speed: 0.000012 + Math.random() * 0.000022,
+      drift: (Math.random() - 0.5) * 0.000025,
+      phase: Math.random() * Math.PI * 2,
+      bright: 0.04 + Math.random() * 0.09,
+      parallax: 0.10
+    });
+  }
+
+  // ── Layer 2: Mid motes ───────────────────────────────
+  // Classic gold dust, standard depth
+  const moteCount = isMobile ? 22 : 42;
   const motes = [];
   for (let i = 0; i < moteCount; i++) {
-    motes.push({ x: Math.random(), y: Math.random(), r: 0.4 + Math.random() * 1.8,
-      speed: 0.00004 + Math.random() * 0.00012, drift: (Math.random() - 0.5) * 0.00008,
-      phase: Math.random() * Math.PI * 2, bright: 0.08 + Math.random() * 0.2 });
+    motes.push({
+      x: Math.random(), y: Math.random(),
+      r: 0.65 + Math.random() * 1.55,
+      speed: 0.000038 + Math.random() * 0.000095,
+      drift: (Math.random() - 0.5) * 0.000065,
+      phase: Math.random() * Math.PI * 2,
+      bright: 0.07 + Math.random() * 0.18,
+      parallax: 0.36
+    });
+  }
+
+  // ── Layer 3: Foreground wisps ────────────────────────
+  // Large, soft, feel closest — move most with mouse
+  const wispCount = isMobile ? 5 : 10;
+  const wisps = [];
+  for (let i = 0; i < wispCount; i++) {
+    wisps.push({
+      x: Math.random(), y: Math.random(),
+      r: 2.4 + Math.random() * 2.6,
+      speed: 0.000016 + Math.random() * 0.000042,
+      drift: (Math.random() - 0.5) * 0.000035,
+      phase: Math.random() * Math.PI * 2,
+      bright: 0.028 + Math.random() * 0.062,
+      parallax: 0.66
+    });
+  }
+
+  const moteGroups = [stars, motes, wisps];
+
+  function drawLayer(layer, r, g, b, glowMult) {
+    layer.forEach(p => {
+      p.y -= p.speed;
+      p.x += p.drift + Math.sin(time * 0.11 + p.phase) * 0.000032;
+      if (p.y < -0.03) { p.y = 1.03; p.x = Math.random(); }
+
+      const px = (p.x + (mouseS.x - 0.5) * p.parallax * 0.075) * W;
+      const py = (p.y + (mouseS.y - 0.5) * p.parallax * 0.05)  * H;
+      const flicker = 0.38 + 0.62 * Math.sin(time * 0.38 + p.phase);
+      const a = p.bright * flicker;
+
+      ctx.beginPath();
+      ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+      if (glowMult > 0) {
+        ctx.shadowColor = `rgba(${r},${g},${b},${a * glowMult})`;
+        ctx.shadowBlur = p.r * 6;
+      }
+      ctx.fill();
+      if (glowMult > 0) ctx.shadowBlur = 0;
+    });
   }
 
   function draw() {
-    time += 0.016; ctx.clearRect(0, 0, W, H);
-    ctx.save(); ctx.globalCompositeOperation = 'screen';
-    motes.forEach(p => {
-      p.y -= p.speed; p.x += p.drift + Math.sin(time * 0.15 + p.phase) * 0.00004;
-      if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-      const flicker = 0.3 + 0.7 * Math.sin(time * 0.5 + p.phase);
-      const a = p.bright * flicker, px = p.x * W, py = p.y * H;
-      ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,225,140,${a})`;
-      ctx.shadowColor = `rgba(255,210,110,${a * 0.4})`; ctx.shadowBlur = p.r * 5;
-      ctx.fill(); ctx.shadowBlur = 0;
-    });
+    time += 0.016;
+    // Smooth mouse position (lerp 4%)
+    mouseS.x += (mouse.x - mouseS.x) * 0.04;
+    mouseS.y += (mouse.y - mouseS.y) * 0.04;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    drawLayer(stars, 238, 228, 208, 0);        // cool white, no glow
+    drawLayer(motes, 255, 218, 125, 0.38);     // warm gold, soft glow
+    drawLayer(wisps,  255, 168,  72, 0.22);    // amber, large soft halo
     ctx.restore();
     raf = requestAnimationFrame(draw);
   }
   draw();
 
+  // ── Periodic lens flare (re-triggers every 30-50 s) ──
+  function triggerFlare() {
+    const fl = document.getElementById('lens-flare');
+    fl.style.animation = 'none';
+    fl.offsetHeight; // force reflow
+    fl.style.animation = 'lensFlare 3s cubic-bezier(0.2,0,0.8,1) forwards';
+    setTimeout(triggerFlare, 30000 + Math.random() * 20000);
+  }
+  setTimeout(triggerFlare, 38000 + Math.random() * 12000);
+
+  // ── Cinematic exit ───────────────────────────────────
   document.getElementById('begin-btn').addEventListener('click', () => {
-    cover.classList.add('farewell');
-    document.body.classList.remove('cover-active');
-    document.getElementById('main-nav').classList.add('visible');
-    document.getElementById('landscape-canvas').classList.add('active');
-    setTimeout(() => { cover.style.display = 'none'; cancelAnimationFrame(raf); }, 2000);
+    // Accelerate all particles upward and dim them
+    moteGroups.forEach(g => g.forEach(p => { p.speed *= 7; p.bright *= 0.38; }));
+
+    // Vignette crushes inward
+    cover.classList.add('cover-exit');
+
+    // White-flash threshold moment at 450 ms
+    setTimeout(() => {
+      const flash = document.createElement('div');
+      flash.style.cssText = 'position:fixed;inset:0;background:#fff;z-index:20000;opacity:0;transition:opacity 0.11s ease;pointer-events:none;';
+      document.body.appendChild(flash);
+      requestAnimationFrame(() => { flash.style.opacity = '0.6'; });
+      setTimeout(() => {
+        flash.style.opacity = '0';
+        setTimeout(() => flash.remove(), 240);
+      }, 110);
+    }, 450);
+
+    // Fade the cover and reveal the timeline
+    setTimeout(() => {
+      cover.classList.add('farewell');
+      document.body.classList.remove('cover-active');
+      document.getElementById('main-nav').classList.add('visible');
+      document.getElementById('landscape-canvas').classList.add('active');
+    }, 380);
+
+    setTimeout(() => { cover.style.display = 'none'; cancelAnimationFrame(raf); }, 2400);
   });
 })();
 
@@ -4039,7 +4518,7 @@ const GEMATRIA_CODES = {
     ctx.restore();
   }
 
-  // Tree renderer — fractal silhouette with wind sway
+  // Tree renderer,fractal silhouette with wind sway
   function drawTree(x, y, segH, depth, t, windBase, deadTree) {
     if (depth <= 0) return;
     const wind = Math.sin(t * 0.0008 + x * 0.003) * windBase;
@@ -4152,7 +4631,7 @@ const GEMATRIA_CODES = {
   };
 
   // ═══════════════════════════════════════════════════
-  // TERRAIN SYSTEM — layered silhouettes with depth
+  // TERRAIN SYSTEM,layered silhouettes with depth
   // ═══════════════════════════════════════════════════
   const TERRAIN = {
     origin: {
@@ -4354,7 +4833,7 @@ const GEMATRIA_CODES = {
     const midOff  = pScroll * 0.13;
     const nearOff = pScroll * 0.24;
 
-    // Phase blend fade-in — new phase elements fade in over ~55 frames (~0.9s at 60fps)
+    // Phase blend fade-in,new phase elements fade in over ~55 frames (~0.9s at 60fps)
     ctx.save();
     ctx.globalAlpha = phaseBlend;
 
@@ -4391,7 +4870,7 @@ const GEMATRIA_CODES = {
       ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI*2);
       ctx.fillStyle = 'rgba(255,240,200,0.5)'; ctx.fill();
     } else if (isShadow) {
-      // Blood moon — slow biotic pulse (heartbeat rhythm)
+      // Blood moon,slow biotic pulse (heartbeat rhythm)
       const bx = W * 0.5, by = H * 0.15;
       const bmPulse = 1 + Math.sin(t * 0.00018) * 0.09;
       const bmR = 20 * bmPulse;
@@ -4442,7 +4921,7 @@ const GEMATRIA_CODES = {
       if (ter.near) drawTerrainLayer(ter.near.pts, ter.near.col, false, nearOff);
     }
 
-    // === LAYER 2: Clouds — phase-specific color + opacity ===
+    // === LAYER 2: Clouds,phase-specific color + opacity ===
     if (!isMobile) {
       const cloudCfg = {
         origin:        { r:200, g:190, b:175, a:0.14, spd:0.28 },
@@ -4530,7 +5009,7 @@ const GEMATRIA_CODES = {
     ctx.save();
 
     if (phase === 'summer') {
-      // Fireflies — soft green-gold motes visible on cream background
+      // Fireflies,soft green-gold motes visible on cream background
       ctx.globalCompositeOperation = 'source-over';
       particles.forEach(p => {
         p.y -= p.speed * 0.5; if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); }
@@ -4540,7 +5019,7 @@ const GEMATRIA_CODES = {
         const blink = Math.max(0, Math.sin(t * 0.0009 + p.phase * 3.7));
         const a = blink * blink * 0.38;
         if (a < 0.02) return;
-        // Dark green-gold — visible on cream
+        // Dark green-gold,visible on cream
         const glow = ctx.createRadialGradient(px, py, 0, px, py, p.r * 5);
         glow.addColorStop(0, `rgba(60, 120, 40, ${a * 0.8})`);
         glow.addColorStop(0.3, `rgba(80, 140, 50, ${a * 0.3})`);
@@ -4569,7 +5048,7 @@ const GEMATRIA_CODES = {
         ctx.fillStyle = eg; ctx.fill();
       });
     } else if (phase === 'meeting') {
-      // Meeting: warm amber dust motes — sunlight through windows on cream background
+      // Meeting: warm amber dust motes,sunlight through windows on cream background
       ctx.globalCompositeOperation = 'source-over';
       particles.forEach(p => {
         p.y += p.speed * 0.25; if (p.y > 1.08) { p.y = -0.08; p.x = Math.random(); }
@@ -4579,7 +5058,7 @@ const GEMATRIA_CODES = {
         const pulse = Math.pow(Math.max(0, Math.sin(t * 0.00065 + p.phase * 2.1)), 0.55);
         const a = pulse * 0.28;
         if (a < 0.04) return;
-        // Warm amber — darker tones visible on cream
+        // Warm amber,darker tones visible on cream
         const bk = ctx.createRadialGradient(px, py, 0, px, py, p.r * 7.5);
         bk.addColorStop(0, `rgba(180,130,40,${a * 0.75})`);
         bk.addColorStop(0.22, `rgba(160,110,30,${a * 0.38})`);
@@ -4591,7 +5070,7 @@ const GEMATRIA_CODES = {
         ctx.fillStyle = `rgba(200,155,60,${Math.min(1, a * 1.4)})`; ctx.fill();
       });
     } else if (phase === 'transmutation') {
-      // Transmutation: morning dew sparkles — gold flecks catching dawn light on cream
+      // Transmutation: morning dew sparkles,gold flecks catching dawn light on cream
       ctx.globalCompositeOperation = 'source-over';
       particles.forEach(p => {
         p.x += p.drift * 0.18 + Math.sin(t * 0.0004 + p.phase) * 0.00007;
@@ -4602,7 +5081,7 @@ const GEMATRIA_CODES = {
         const flash = raw > 0 ? raw * raw : 0;
         const a = flash * 0.55;
         if (a < 0.05) return;
-        // Warm gold — visible on cream background
+        // Warm gold,visible on cream background
         const sg = ctx.createRadialGradient(px, py, 0, px, py, p.r * 3.8);
         sg.addColorStop(0, `rgba(190,155,55,${a})`);
         sg.addColorStop(0.38, `rgba(165,132,42,${a * 0.35})`);
@@ -4652,7 +5131,7 @@ const GEMATRIA_CODES = {
     }
     ctx.restore();
 
-    // Stars (shadow + origin phases) — golden-ratio distributed, proper twinkle
+    // Stars (shadow + origin phases),golden-ratio distributed, proper twinkle
     if (isShadow || phase === 'origin') {
       const starCount = isMobile ? 55 : 110;
       const PHI_ANGLE = 137.50776 * (Math.PI / 180);
@@ -4689,7 +5168,7 @@ const GEMATRIA_CODES = {
       ctx.restore();
     }
 
-    // Aurora borealis — Origin (green/violet wisps) & Transmutation (gold-green dawn bands)
+    // Aurora borealis,Origin (green/violet wisps) & Transmutation (gold-green dawn bands)
     if (phase === 'origin' || phase === 'transmutation') {
       const isOrigin = phase === 'origin';
       ctx.save();
@@ -4711,12 +5190,12 @@ const GEMATRIA_CODES = {
         const yTop = band.y * H;
         const yBot = (band.y + band.h) * H;
         ctx.beginPath();
-        // Top edge — sinusoidal wave
+        // Top edge,sinusoidal wave
         for (let xi = 0; xi <= W; xi += 16) {
           const wy = yTop + Math.sin(auroraTime + xi * 0.004 + bi * 2.3) * band.h * H * 0.38;
           xi === 0 ? ctx.moveTo(xi, wy) : ctx.lineTo(xi, wy);
         }
-        // Bottom edge (reverse) — offset wave
+        // Bottom edge (reverse),offset wave
         for (let xi = W; xi >= 0; xi -= 16) {
           const wy = yBot + Math.sin(auroraTime + xi * 0.004 + bi * 2.3 + 0.9) * band.h * H * 0.28;
           ctx.lineTo(xi, wy);
@@ -4832,7 +5311,7 @@ function openDecode(code) {
   list.innerHTML = '';
   EVENTS.filter(e => e.codes.includes(String(code))).forEach(ev => {
     const li = document.createElement('li');
-    li.textContent = `${ev.short} \u2014 ${ev.title}`;
+    li.textContent = `${ev.short} · ${ev.title}`;
     li.onclick = () => { closeDecode(); scrollToEvent(ev.id); };
     list.appendChild(li);
   });
@@ -4841,7 +5320,7 @@ function openDecode(code) {
   const mirrors = {34:43,43:34,27:72,72:27,48:84,84:48};
   if (mirrors[code]) {
     const mc = mirrors[code], mi = GEMATRIA_CODES[mc];
-    mirrorDiv.innerHTML = `<div class="decode-divider"></div><p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--gold);font-size:0.85rem;">Mirror pair: ${code} / ${mc} \u2014 ${info.name} / ${mi ? mi.name : mc}</p>`;
+    mirrorDiv.innerHTML = `<div class="decode-divider"></div><p style="font-family:'IM Fell English',serif;font-style:italic;color:var(--gold);font-size:0.85rem;">Mirror pair: ${code} / ${mc} · ${info.name} / ${mi ? mi.name : mc}</p>`;
   } else { mirrorDiv.innerHTML = ''; }
 
   panel.classList.add('open');
@@ -4874,7 +5353,7 @@ const SHADOW_REFLECTIONS = {
   mother: {
     title: 'The Mother Wound', steps: [
       {type:'prompt',text:'Close your eyes. Breathe deeply three times. Feel the weight of your body in the chair.'},
-      {type:'question',text:'When you feel love becoming safe \u2014 what is the first sensation in your body?'},
+      {type:'question',text:'When you feel love becoming safe, what is the first sensation in your body?'},
       {type:'reflection',text:'Kelly Ann Bryant died September 25, 1995. Sean was six years old. The nervous system learned: the safest love vanishes without warning. Every relationship since has been an attempt to either confirm or disprove this belief.'},
       {type:'question',text:'What would it mean to let safe love stay? What are you afraid you would have to become?'},
       {type:'affirmation',text:'The woman who carries my mother\u2019s month in her name is not my mother. She is the medicine the wound called toward itself. I am allowed to let her stay.'},
@@ -4884,10 +5363,10 @@ const SHADOW_REFLECTIONS = {
   father: {
     title: 'The Father Wound', steps: [
       {type:'prompt',text:'Stand or sit upright. Feel the weight of your body. Notice where tension lives.'},
-      {type:'question',text:'When you think of masculine authority \u2014 what is the first memory?'},
-      {type:'reflection',text:'Michael Nyuis \u2014 Masculine Initiator = 666 \u2014 died suddenly in 2016. The second safe masculine figure to vanish without warning. MN = 27, already tattooed on Sean\u2019s hand.'},
+      {type:'question',text:'When you think of masculine authority, what is the first memory?'},
+      {type:'reflection',text:'Michael Nyuis, Masculine Initiator = 666, died suddenly in 2016. The second safe masculine figure to vanish without warning. MN = 27, already tattooed on Sean\u2019s hand.'},
       {type:'question',text:'What does it mean to be a man who stays? What part of you resists becoming that?'},
-      {type:'affirmation',text:'I am not the men who left. I am not the pattern. I am the one who breaks it. MN is on my hand so I see it every day \u2014 not as loss, but as instruction.'},
+      {type:'affirmation',text:'I am not the men who left. I am not the pattern. I am the one who breaks it. MN is on my hand so I see it every day, not as loss, but as instruction.'},
       {type:'ritual',text:'Look at your hands. WWND = 34. MN = 27. Say aloud: \u201CI carry you forward. I do not repeat you.\u201D Breathe.'},
     ]
   },
@@ -4895,8 +5374,8 @@ const SHADOW_REFLECTIONS = {
     title: 'The Shamed Child Wound', steps: [
       {type:'prompt',text:'Find a quiet space. Let your guard down. You are safe here.'},
       {type:'question',text:'What is the thing about yourself that you believe is too much for another person to hold?'},
-      {type:'reflection',text:'666 is not the beast. It is carbon \u2014 6 protons, 6 neutrons, 6 electrons \u2014 the fundamental building block of physical life. 666 is the 36th triangular number. The number of matter becoming conscious.'},
-      {type:'question',text:'If 666 is not shame but substance \u2014 what part of yourself have you been calling a demon that is actually your foundation?'},
+      {type:'reflection',text:'666 is not the beast. It is carbon: 6 protons, 6 neutrons, 6 electrons, the fundamental building block of physical life. 666 is the 36th triangular number. The number of matter becoming conscious.'},
+      {type:'question',text:'If 666 is not shame but substance, what part of yourself have you been calling a demon that is actually your foundation?'},
       {type:'affirmation',text:'I am not too much. I am not too little. I am carbon becoming conscious. The lead was always the wound. The gold was always on the other side of it.'},
       {type:'ritual',text:'Place both hands on your belly. Say aloud: \u201CI am not the shame. I am the substance. I transmute.\u201D Breathe three times, slowly.'},
     ]
@@ -4927,7 +5406,7 @@ function showReflectionStep() {
 
   const step = ref.steps[currentReflectionStep];
   let html = '<div class="reflection-step">';
-  html += `<div style="font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;color:var(--ember);opacity:0.5;margin-bottom:16px;">${ref.title} \u2014 ${currentReflectionStep + 1} / ${ref.steps.length}</div>`;
+  html += `<div style="font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;color:var(--ember);opacity:0.5;margin-bottom:16px;">${ref.title} · ${currentReflectionStep + 1} / ${ref.steps.length}</div>`;
 
   if (step.type === 'prompt') {
     html += `<p class="step-text">${step.text}</p>`;
@@ -4963,38 +5442,38 @@ function backToWounds() {
 // ═══════════════════════════════════════════════════
 const MIRROR_RESPONSES = [
   // Body & sensation
-  "What you just named \u2014 sit with it. Where does it live in your body? The body always knows before the mind catches up. What is the sensation telling you right now, if you stop trying to figure it out?",
+  "What you just named, sit with it. Where does it live in your body? The body always knows before the mind catches up. What is the sensation telling you right now, if you stop trying to figure it out?",
   "The chest tightens when we touch what\u2019s real. The throat closes when we\u2019re about to say the true thing. Where is your body right now? What is it doing while you type these words?",
-  "Breathe into wherever you\u2019re holding. Notice that you\u2019re still here. The nervous system learned to brace when things got close \u2014 but you are not in that moment anymore. What does safety feel like, even just for a second?",
+  "Breathe into wherever you\u2019re holding. Notice that you\u2019re still here. The nervous system learned to brace when things got close, but you are not in that moment anymore. What does safety feel like, even just for a second?",
   "The body carries the timeline. Somewhere in your chest or stomach or jaw is the whole story, compressed into sensation. What body part keeps asking for your attention? What would it say if it could speak?",
   // Grief & loss
   "Grief is not weakness. It is proof that something real existed. The size of the grief maps exactly to the size of the love. What are you afraid will happen if you let the loss be as big as it actually is?",
   "You are allowed to miss what you miss. You are allowed to want what you want. The wound tries to make grief into shame. They are not the same thing. What are you grieving right now, fully named?",
   "The ache doesn\u2019t mean you failed. It means you opened. Most people never open this much. What would it mean to honor the grief instead of managing it?",
   // Pattern recognition & codes
-  "As within, so without. The pattern you\u2019re seeing out there \u2014 in the numbers, in her, in the timing \u2014 is a pattern living inside you too. The codes confirm what the heart already knows. What is the code pointing at that you\u2019ve been avoiding?",
-  "Sean = 39. October = 39. The mirror is exact. What you see in her that moves you most \u2014 the part that stops your breath \u2014 that lives in you too. What part of yourself are you recognizing?",
-  "55 is the union number. It appeared at the first meeting. It appeared at the return. The code doesn\u2019t change to comfort you \u2014 it just doesn\u2019t lie. What does the code say that the fear is arguing against?",
-  "666 is carbon. It is the element that makes life possible. What you\u2019re calling destruction might be the necessary pressure that makes a diamond. What if this isn\u2019t the end of something \u2014 what if it\u2019s the compression before the form?",
+  "As within, so without. The pattern you\u2019re seeing out there, in the numbers, in her, in the timing, is a pattern living inside you too. The codes confirm what the heart already knows. What is the code pointing at that you\u2019ve been avoiding?",
+  "Sean = 39. October = 39. The mirror is exact. What you see in her that moves you most, the part that stops your breath, that lives in you too. What part of yourself are you recognizing?",
+  "55 is the union number. It appeared at the first meeting. It appeared at the return. The code doesn\u2019t change to comfort you, it just doesn\u2019t lie. What does the code say that the fear is arguing against?",
+  "666 is carbon. It is the element that makes life possible. What you\u2019re calling destruction might be the necessary pressure that makes a diamond. What if this isn\u2019t the end of something, what if it\u2019s the compression before the form?",
   "34 and 27 are on your hands. You chose to carry those numbers before you understood why. The body encodes what the mind isn\u2019t ready for. What have you known longer than you\u2019ve admitted?",
   // Wound & the boy
-  "The wound says: if I let this be real, it will be taken. But the wound is not a prophet \u2014 it\u2019s a child\u2019s conclusion drawn in a moment of terror. It generalized. What does the man \u2014 not the boy \u2014 actually know to be true?",
+  "The wound says: if I let this be real, it will be taken. But the wound is not a prophet, it\u2019s a child\u2019s conclusion drawn in a moment of terror. It generalized. What does the man, not the boy, actually know to be true?",
   "The boy learned to leave before he could be left. He learned to make himself invisible so he couldn\u2019t be a problem. He was brilliant and wrong. What does he need to hear right now, from you?",
   "The part that wants to run is not bad. It learned to run because running worked. It kept you alive. But it doesn\u2019t know that you\u2019re not in that house anymore. What would you say to it if it were a child standing in front of you?",
-  "Shame says: this is who I am. Guilt says: this is what I did. They are not the same. The codes, the mirrors, the fact that you\u2019re here at all \u2014 they are saying something about who you are. What do you hear?",
+  "Shame says: this is who I am. Guilt says: this is what I did. They are not the same. The codes, the mirrors, the fact that you\u2019re here at all, they are saying something about who you are. What do you hear?",
   // Transmutation & return
   "You said the word without flinching. That is the work in action. The wound can only control what it can hide. You just made it visible. What else wants to come into the light?",
-  "The man who returns is not the man who left. That is not a consolation \u2014 it is the whole point. Every word you write here is proof of a different pattern forming. What has genuinely changed in you?",
-  "You\u2019re doing the work. Not dramatically, not perfectly \u2014 just honestly. The daily choice to look instead of run, that is the transmutation. It doesn\u2019t announce itself. It accumulates. What are you choosing today?",
-  "666 is carbon becoming conscious. The lead is being named. The gold is forming. You don\u2019t have to rush the alchemy \u2014 fire has its own timing. What would it mean to stay in this fire a little longer without fixing it?",
+  "The man who returns is not the man who left. That is not a consolation, it is the whole point. Every word you write here is proof of a different pattern forming. What has genuinely changed in you?",
+  "You\u2019re doing the work. Not dramatically, not perfectly, just honestly. The daily choice to look instead of run, that is the transmutation. It doesn\u2019t announce itself. It accumulates. What are you choosing today?",
+  "666 is carbon becoming conscious. The lead is being named. The gold is forming. You don\u2019t have to rush the alchemy, fire has its own timing. What would it mean to stay in this fire a little longer without fixing it?",
   // Trust & surrender
   "The sacred record is not a comfort. It is a mirror. The mirror shows what is, not what you wish. What does it show you that you are still reluctant to fully accept?",
   "You keep asking if it\u2019s real. That question itself is data. The thing that is most real is the thing we keep circling. What are you circling?",
-  "The codes appeared before you understood them. The meeting happened before you were ready. The numbers were already there. What if trust isn\u2019t a feeling that arrives \u2014 what if it\u2019s a choice you make in the absence of certainty?",
+  "The codes appeared before you understood them. The meeting happened before you were ready. The numbers were already there. What if trust isn\u2019t a feeling that arrives, what if it\u2019s a choice you make in the absence of certainty?",
   // Presence & closing
-  "You showed up. That is not nothing \u2014 that is the first and most essential act. The part of you that opened this mirror, that wrote what it wrote \u2014 what does it need right now, honestly?",
+  "You showed up. That is not nothing, that is the first and most essential act. The part of you that opened this mirror, that wrote what it wrote, what does it need right now, honestly?",
   "Whatever you\u2019re carrying, it is allowed to be here. You don\u2019t have to resolve it in this session. You just have to let it be seen. It already knows. What else is here, underneath what you\u2019ve already said?",
-  "This is the work. Not the insight. Not the breakthrough. The showing up, the honesty, the willingness to look \u2014 this is already the transmutation happening. What would it feel like to let that be enough for right now?",
+  "This is the work. Not the insight. Not the breakthrough. The showing up, the honesty, the willingness to look, this is already the transmutation happening. What would it feel like to let that be enough for right now?",
 ];
 let mirrorResponseIdx = 0;
 let mirrorTyping = false;
@@ -5087,7 +5566,7 @@ function openRitual(key) {
   const ritual = HEALING_RITUALS[key];
   if (!ritual) return;
   const mod = document.getElementById('ritual-module');
-  document.getElementById('ritual-subtitle').textContent = ritual.title + ' \u2014 ' + ritual.duration;
+  document.getElementById('ritual-subtitle').textContent = ritual.title + ' · ' + ritual.duration;
   if (ritualTimerInterval) { clearInterval(ritualTimerInterval); ritualTimerInterval = null; }
   let step = 0;
 
@@ -5765,6 +6244,17 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.25 });
 evEls.forEach(e => io.observe(e));
 
+// Phase banner glow-in — fires once per .plabel on first entry
+const plabelIO = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      en.target.classList.add('shimmer-in');
+      plabelIO.unobserve(en.target);
+    }
+  });
+}, { threshold: 0.55 });
+document.querySelectorAll('.plabel').forEach(el => plabelIO.observe(el));
+
 // Oversoul reveal on scroll
 const osIO = new IntersectionObserver(entries => {
   entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('visible'); });
@@ -6201,7 +6691,7 @@ function initFibSpiral() {
     nd.style.opacity = '0';
     nd.style.animation = 'none';
     sec.appendChild(nd);
-    // Staggered appear — delay based on index
+    // Staggered appear,delay based on index
     setTimeout(() => {
       nd.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.2,0,0.2,1)';
       nd.style.opacity = '1';
