@@ -4372,7 +4372,7 @@ const GEMATRIA_CODES = {
     // ── Nib glow — single shared radialGradient + circle ─
     var ng = document.createElementNS(ns, 'radialGradient');
     ng.id = 'nib-g'; ng.setAttribute('gradientUnits', 'userSpaceOnUse');
-    [[0,'#fffbe6',1],[0.42,'#d4a84c',0.78],[1,'#c9a84c',0]].forEach(function(s) {
+    [[0,'#ffffff',1],[0.25,'#ffe57a',0.95],[0.55,'#c9a84c',0.65],[1,'#c9a84c',0]].forEach(function(s) {
       var st = document.createElementNS(ns, 'stop');
       st.setAttribute('offset', s[0]);
       st.setAttribute('stop-color', s[1]);
@@ -4422,30 +4422,48 @@ const GEMATRIA_CODES = {
       })();
     }
 
+    // ── charGeom — font-size + baseline y → clip/nib coords ─
+    // getBBox() returns zeros on hidden elements in Chrome; this uses
+    // reliable SVG attributes and getComputedTextLength() instead.
+    function charGeom(el) {
+      var fsize = parseFloat(el.getAttribute('font-size'));
+      var ay    = parseFloat(el.getAttribute('y'));
+      var tw    = el.getComputedTextLength() || fsize * el.textContent.length * 0.65;
+      return {
+        fsize: fsize, ay: ay, tw: tw,
+        // clip covers from cap-top (~1.1em above baseline) down through baseline + tiny descender space
+        clipY: ay - fsize * 1.12,
+        clipH: fsize * 1.45,
+        // nib sits at the visual midpoint of uppercase height
+        nibY:  ay - fsize * 0.40,
+        nibR:  fsize * 0.72,          // generous glow radius
+        // for centered text at x=160: left edge = 160 - tw/2
+        sx:    160 - tw / 2
+      };
+    }
+
     // ── writeLine — reveal an entire element in one sweep ─
     function writeLine(el, ms, done) {
-      var bb = el.getBBox();
-      var cl = makeClip(bb.x - 1, bb.y - 2, bb.height + 4);
+      var g  = charGeom(el);
+      var cl = makeClip(g.sx - 2, g.clipY, g.clipH);
       el.setAttribute('clip-path', 'url(#' + cl.id + ')');
       el.style.fillOpacity = el.getAttribute('opacity') || '1';
-      sweepClip(cl.r, bb.width + 3, bb.x - 1,
-                bb.y + bb.height * 0.38, bb.height * 0.56,
-                ms, done);
+      sweepClip(cl.r, g.tw + 4, g.sx - 2, g.nibY, g.nibR, ms, done);
     }
 
     // ── writeChars — reveal each glyph separately, left→right ─
     function writeChars(srcEl, perMs, gapMs, done) {
       var raw    = srcEl.textContent;
-      var fsize  = parseFloat(srcEl.getAttribute('font-size'));
       var fill   = srcEl.getAttribute('fill')    || '#c9a84c';
       var filt   = srcEl.getAttribute('filter')  || '';
       var ay     = srcEl.getAttribute('y');
       var alpha  = srcEl.getAttribute('opacity') || '1';
-      var bb     = srcEl.getBBox();
-      var clipY  = bb.y - 2;
-      var clipH  = bb.height + 4;
-      var nibY   = bb.y + bb.height * 0.38;
-      var nibR   = bb.height * 0.58;
+      var g      = charGeom(srcEl);
+      var fsize  = g.fsize;
+      var clipY  = g.clipY;
+      var clipH  = g.clipH;
+      var nibY   = g.nibY;
+      var nibR   = g.nibR;
 
       // Gather per-glyph x + advance-width using SVG DOM methods
       var chars = [];
