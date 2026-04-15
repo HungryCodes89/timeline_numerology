@@ -300,11 +300,8 @@ body.dark::after { opacity: 0.26; }
 .cover-lotus text:nth-child(4) { animation: svgTextIn 0.6s ease 2.20s forwards; } /* & */
 .cover-lotus text:nth-child(5) { animation: svgTextIn 0.9s ease 2.15s forwards; } /* Sean */
 
-/* Number texts: JS handles draw-in. Stroke provides the tracing line. */
-.cover-lotus text:nth-child(6) { stroke: rgba(201,168,76,0.0); stroke-width: 0.5; } /* 666 solid — fill floods after outline draws */
-.cover-lotus text:nth-child(7) { stroke: rgba(201,168,76,0.90); stroke-width: 0.55; } /* 666 outline — stroke traces */
-.cover-lotus text:nth-child(8) { stroke: rgba(201,168,76,0.80); stroke-width: 0.42; } /* 55·34·27·777 */
-.cover-lotus text:nth-child(9) { stroke: rgba(201,168,76,0.80); stroke-width: 0.42; } /* 43·72 */
+/* Number texts: JS injects per-character elements; original source texts stay hidden.
+   No nth-child stroke rules here — JS owns all stroke/fill on the char elements. */
 
 /* ═══════════════════════════════
    COVER TEXT SHIMMER ON ARRIVAL
@@ -4359,73 +4356,135 @@ const GEMATRIA_CODES = {
 
 
 // ═══════════════════════════════════════════════════
-// NUMBER DRAW-IN — stroke-traces each sacred number
-// onto the cover lotus, then floods the fill
+// NUMBER DRAW-IN — character by character, left→right
+// Each glyph traced then filled individually so the
+// sacred numbers are written one stroke at a time
 // ═══════════════════════════════════════════════════
 (function initNumberDraw() {
-  // SVG text child order inside .cover-lotus:
-  //   nth-child(3)=October, (4)=&, (5)=Sean
-  //   nth-child(6)=666 solid fill
-  //   nth-child(7)=666 stroke-outline
-  //   nth-child(8)=55·34·27·777
-  //   nth-child(9)=43·72
-
-  // Config: { selector, drawDelay, drawDur, fillDelay, fillDur, targetFillOpacity }
-  // drawDelay/fillDelay are ms from page load
-  // null drawDur = skip stroke draw (just fill flood)
-  // null fillDelay = skip fill flood (keep as outline only)
-  const NUM_CFG = [
-    // 666 outline traces first — glowing gold calligraphy stroke
-    { idx: 4, drawDelay: 2500, drawDur: 1700, fillDelay: null,  fillDur: null, targetFill: null },
-    // 666 solid floods in after outline is mostly drawn
-    { idx: 3, drawDelay: null, drawDur: null,  fillDelay: 3800, fillDur: 900,  targetFill: '0.9' },
-    // 55 · 34 · 27 · 777
-    { idx: 5, drawDelay: 4100, drawDur: 1300, fillDelay: 5000, fillDur: 700,  targetFill: '0.7' },
-    // 43 · 72
-    { idx: 6, drawDelay: 4500, drawDur: 1000, fillDelay: 5200, fillDur: 600,  targetFill: '0.6' },
-  ];
-
   document.fonts.ready.then(function() {
-    const svg = document.querySelector('.cover-lotus');
+    var svg = document.querySelector('.cover-lotus');
     if (!svg) return;
-    const texts = Array.from(svg.querySelectorAll('text'));
-    // texts[0-6] = October, &, Sean, 666solid, 666outline, 55·34·27·777, 43·72
+    var ns = 'http://www.w3.org/2000/svg';
+    var allTexts = Array.from(svg.querySelectorAll('text'));
+    // allTexts indices (querySelectorAll order):
+    //   0=October, 1=&, 2=Sean, 3=666solid, 4=666outline, 5=55·34·27·777, 6=43·72
 
-    NUM_CFG.forEach(function(cfg) {
-      const el = texts[cfg.idx];
-      if (!el) return;
-
-      // Cancel any CSS svgTextIn animation so it doesn't fight WAAPI
-      el.style.animation = 'none';
-      // Keep fill invisible until we deliberately reveal it
+    // Hide the source text elements and the 666 outline permanently
+    [3, 4, 5, 6].forEach(function(i) {
+      var el = allTexts[i];
+      el.style.animation   = 'none';
       el.style.fillOpacity = '0';
-
-      if (cfg.drawDelay !== null) {
-        // Measure actual text advance width and scale to estimate stroke outline length.
-        // Stroke path ≈ advance width × 4 for Cinzel at these sizes (confirmed empirically).
-        const advance = el.getComputedTextLength();
-        const dashLen = Math.ceil(advance * 4.2);
-
-        el.style.strokeDasharray = dashLen;
-        el.style.strokeDashoffset = dashLen;
-
-        setTimeout(function() {
-          el.animate(
-            [{ strokeDashoffset: dashLen + '' }, { strokeDashoffset: '0' }],
-            { duration: cfg.drawDur, easing: 'cubic-bezier(0.28, 0, 0.48, 1)', fill: 'forwards' }
-          );
-        }, cfg.drawDelay);
-      }
-
-      if (cfg.fillDelay !== null) {
-        setTimeout(function() {
-          el.animate(
-            [{ fillOpacity: '0' }, { fillOpacity: cfg.targetFill }],
-            { duration: cfg.fillDur, easing: 'ease', fill: 'forwards' }
-          );
-        }, cfg.fillDelay);
-      }
+      el.style.strokeOpacity = '0';
     });
+
+    // writeChars: splits srcEl into per-character <text> nodes,
+    // fires them sequentially starting at startMs.
+    // Returns the approximate ms when the last character's gap elapses.
+    function writeChars(srcEl, startMs) {
+      var raw        = srcEl.textContent;
+      var n          = raw.length;
+      var fontSize   = parseFloat(srcEl.getAttribute('font-size'));
+      var fill       = srcEl.getAttribute('fill') || '#c9a84c';
+      var filter     = srcEl.getAttribute('filter') || '';
+      var y          = srcEl.getAttribute('y');
+      var targetFill = srcEl.getAttribute('opacity') || '0.9';
+      var isLarge    = fontSize >= 30;
+
+      // Gather SVG-unit x position of every character's left edge
+      var chars = [];
+      for (var i = 0; i < n; i++) {
+        try {
+          var cx = srcEl.getStartPositionOfChar(i).x;
+          chars.push({ ch: raw[i], x: cx });
+        } catch (e) { /* skip unmeasurable chars */ }
+      }
+
+      var curMs = startMs;
+
+      chars.forEach(function(c) {
+        var isSpace = (c.ch === ' ');
+        var isDot   = (c.ch === '\u00B7'); // middle dot ·
+
+        // Spaces are invisible — just advance timing a little
+        if (isSpace) {
+          curMs += isLarge ? 55 : 32;
+          return;
+        }
+
+        // Per-character timing values
+        var charDur = isLarge ? 460 : (isDot ? 130 : 210);
+        var charGap = isLarge ? 310 : (isDot ? 65  : 145);
+        // Stroke path length estimate: Cinzel Decorative glyphs are complex;
+        // 7× font-size for large, 6× for small gives partial-to-full trace coverage
+        var dash    = Math.round(fontSize * (isLarge ? 7.0 : 6.0));
+
+        // Create an individual <text> for this character, positioned absolutely
+        var el = document.createElementNS(ns, 'text');
+        el.setAttribute('font-family', srcEl.getAttribute('font-family'));
+        el.setAttribute('font-size',   fontSize);
+        el.setAttribute('text-anchor', 'start');
+        el.setAttribute('x', c.x);
+        el.setAttribute('y', y);
+        if (filter) el.setAttribute('filter', filter);
+        // All visual properties as inline styles (override any CSS nth-child rules)
+        el.style.fill             = fill;
+        el.style.fillOpacity      = '0';
+        el.style.stroke           = 'rgba(201,168,76,0.92)';
+        el.style.strokeWidth      = isLarge ? '0.7' : '0.40';
+        el.style.strokeLinecap    = 'round';
+        el.style.strokeLinejoin   = 'round';
+        el.style.strokeDasharray  = String(dash);
+        el.style.strokeDashoffset = String(dash);
+        el.style.strokeOpacity    = '0';
+        el.textContent = c.ch;
+        srcEl.parentNode.insertBefore(el, srcEl);
+
+        var delay = curMs;
+
+        // IIFE to capture el/dash/charDur/targetFill per iteration
+        (function(charEl, d, cd, tf) {
+          setTimeout(function() {
+            // Step 1 — stroke traces the glyph outline
+            charEl.style.strokeOpacity = '1';
+            charEl.animate(
+              [{ strokeDashoffset: String(d) }, { strokeDashoffset: '0' }],
+              { duration: cd, easing: 'cubic-bezier(0.12, 0, 0.38, 1)', fill: 'forwards' }
+            );
+
+            // Step 2 — fill appears at ~45% through the stroke animation
+            setTimeout(function() {
+              charEl.animate(
+                [{ fillOpacity: '0' }, { fillOpacity: String(tf) }],
+                { duration: Math.round(cd * 0.72), easing: 'ease-out', fill: 'forwards' }
+              );
+            }, Math.round(cd * 0.42));
+
+            // Step 3 — stroke fades out after fill is settled
+            setTimeout(function() {
+              charEl.animate(
+                [{ strokeOpacity: '0.92' }, { strokeOpacity: '0' }],
+                { duration: 360, easing: 'ease-in', fill: 'forwards' }
+              );
+            }, Math.round(cd * 0.82));
+
+          }, delay);
+        })(el, dash, charDur, targetFill);
+
+        curMs += charGap;
+      });
+
+      return curMs; // caller uses this to chain the next line
+    }
+
+    // ── Sequence ──────────────────────────────────────
+    // 666 : 3 large chars, 310ms apart → starts 2400ms
+    var t1 = writeChars(allTexts[3], 2400);
+
+    // 55·34·27·777 : small chars, starts 500ms after last 666 gap
+    var t2 = writeChars(allTexts[5], t1 + 500);
+
+    // 43·72 : small chars, starts 380ms after last small-line gap
+    writeChars(allTexts[6], t2 + 380);
   });
 })();
 
