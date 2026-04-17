@@ -2561,33 +2561,6 @@ body.dark .mn-content p { color: #9a8880; }
   margin: 36px auto;
 }
 
-/* ═══════════════════════════════════════════════════
-   CUSTOM CURSOR
-   ═══════════════════════════════════════════════════ */
-@media (hover: hover) and (pointer: fine) { * { cursor: none !important; } }
-#cur-ring {
-  position: fixed; width: 30px; height: 30px; top: -15px; left: -15px;
-  border-radius: 50%; border: 1.5px solid rgba(201,168,76,0.55);
-  pointer-events: none; z-index: 1000000; will-change: transform;
-  mix-blend-mode: screen; display: none;
-  transition: width .25s ease, height .25s ease, top .25s ease, left .25s ease, border-color .5s ease, background .5s ease;
-}
-#cur-dot {
-  position: fixed; width: 5px; height: 5px; top: -2.5px; left: -2.5px;
-  border-radius: 50%; background: rgba(255,240,145,0.95);
-  pointer-events: none; z-index: 1000001; will-change: transform;
-  mix-blend-mode: screen; display: none;
-  box-shadow: 0 0 7px rgba(201,168,76,0.75), 0 0 18px rgba(201,168,76,0.3);
-}
-body.cur-hover #cur-ring {
-  width: 46px; height: 46px; top: -23px; left: -23px;
-  border-color: rgba(201,168,76,0.88); background: rgba(201,168,76,0.06);
-}
-body.cur-hover #cur-dot { background: white; box-shadow: 0 0 12px rgba(255,240,140,.95); }
-body[data-phase="shadow"] #cur-ring  { border-color: rgba(180,58,40,.65); }
-body[data-phase="shadow"] #cur-dot   { background: rgba(225,85,50,.95); box-shadow: 0 0 9px rgba(180,58,40,.75); }
-body[data-phase="transmutation"] #cur-ring { border-color: rgba(74,103,65,.65); }
-body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); box-shadow: 0 0 9px rgba(74,103,65,.7); }
 
 /* ═══════════════════════════════════════════════════
    PHASE GLASSMORPHISM — tinted card borders
@@ -2630,11 +2603,12 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
 .ec:hover::before { transform: translateX(130%); }
 
 /* ═══════════════════════════════════════════════════
-   HDR PHASE GRADING
+   HDR PHASE GRADING — applied to cards only (not section)
+   section-level filter breaks position:fixed stacking
    ═══════════════════════════════════════════════════ */
-.phase-summer  { filter: saturate(1.10) brightness(1.04); }
-.phase-shadow  { filter: contrast(1.14) saturate(0.85); }
-.phase-meeting { filter: saturate(1.06) brightness(1.02); }
+.phase-summer  .ec { filter: saturate(1.10) brightness(1.04); }
+.phase-shadow  .ec { filter: contrast(1.10) saturate(0.88); }
+.phase-meeting .ec { filter: saturate(1.06) brightness(1.02); }
 
 /* ═══════════════════════════════════════════════════
    KINETIC PHASE BANNERS — letter-spacing unfurl
@@ -2662,55 +2636,6 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
   100% { letter-spacing: .45em; opacity: 1; text-shadow: none; filter: none; }
 }
 
-/* ═══════════════════════════════════════════════════
-   LADYBUG HERO SYSTEM
-   ═══════════════════════════════════════════════════ */
-.lb-hero-container {
-  position: absolute; inset: 0; pointer-events: none; z-index: 3; overflow: hidden;
-}
-.lb-flight {
-  position: absolute; top: 0; left: 0; will-change: transform;
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,.30)) drop-shadow(0 2px 5px rgba(0,0,0,.20));
-}
-.lb-bob  { display: block; }
-.lb-svg  { display: block; shape-rendering: geometricPrecision; }
-.lb-f1 { animation: lbFlight1 24s ease-in-out -5s  infinite; }
-.lb-f2 { animation: lbFlight2 30s ease-in-out -12s infinite; }
-.lb-f3 { animation: lbFlight3 18s ease-in-out -8s  infinite; }
-.lb-b1 { animation: lbBob1 2.4s ease-in-out infinite; }
-.lb-b2 { animation: lbBob2 1.9s ease-in-out infinite; }
-.lb-b3 { animation: lbBob3 2.8s ease-in-out infinite; }
-@keyframes lbFlight1 {
-  0%   { transform: translate(-130px, 55%); opacity: 0; }
-  6%   { opacity: .88; }
-  28%  { transform: translate(20vw, 32%); }
-  64%  { transform: translate(62vw, 50%); }
-  94%  { opacity: .88; }
-  100% { transform: translate(calc(100vw + 130px), 24%); opacity: 0; }
-}
-@keyframes lbFlight2 {
-  0%   { transform: translate(calc(100vw + 100px), 12%); opacity: 0; }
-  6%   { opacity: .82; }
-  32%  { transform: translate(72vw, 62%); }
-  68%  { transform: translate(28vw, 30%); }
-  94%  { opacity: .82; }
-  100% { transform: translate(-100px, 72%); opacity: 0; }
-}
-@keyframes lbFlight3 {
-  0%   { transform: translate(18vw, calc(100% + 80px)); opacity: 0; }
-  7%   { opacity: .78; }
-  38%  { transform: translate(44vw, 68%); }
-  74%  { transform: translate(75vw, 28%); }
-  93%  { opacity: .78; }
-  100% { transform: translate(calc(100vw + 80px), 12%); opacity: 0; }
-}
-@keyframes lbBob1 { 0%,100% { transform: translateY(0) rotate(-3deg); }  50% { transform: translateY(-10px) rotate(3deg); } }
-@keyframes lbBob2 { 0%,100% { transform: translateY(0) rotate(4deg); }   50% { transform: translateY(-9px) rotate(-2deg); } }
-@keyframes lbBob3 { 0%,100% { transform: translateY(0) rotate(-2deg); }  50% { transform: translateY(-13px) rotate(5deg); } }
-.lb-wing-l { transform-origin: 52% 50%; animation: wfL .4s ease-in-out infinite alternate; }
-.lb-wing-r { transform-origin: 48% 50%; animation: wfR .4s ease-in-out infinite alternate; }
-@keyframes wfL { from { transform: scaleX(1) rotate(-1deg); } to { transform: scaleX(.88) rotate(2deg); } }
-@keyframes wfR { from { transform: scaleX(1) rotate(1deg); }  to { transform: scaleX(.88) rotate(-2deg); } }
 
 </style>
 </head>
@@ -2905,19 +2830,19 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
       The premise is simple: every letter is represented by a number. Every word has a sum. Words that share the same sum share a hidden relationship, a resonance beneath the surface of language.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      For instance, there are 26 letters in the English alphabet. English descends from Latin, Latin from Greek, Greek from Phoenician, the alphabet developed by Semitic peoples of the ancient Levant, and the direct ancestor of Hebrew, Greek, Latin, and every Western script that followed. In Hebrew, every letter is also a number. The <em>Sefer Yetzirah</em>, the Book of Formation, one of the oldest texts of Kabbalah, teaches that <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> created the world by combining three instruments: the letter, the number, and the word. Creation itself was an act of language. The number 26 holds the four-letter name of that creator, the Tetragrammaton: YHWH. Yod (10) + He (5) + Vav (6) + He (5) = 26.
+      For instance, there are 26 letters in the English <span class="gw" data-word="Alphabet" data-ciphers='[{"cipher":"Latin Reduction","calc":"A(1) + L(2) + P(6) + H(8) + A(1) + B(2) + E(5) + T(1)","sum":26}]'>alphabet</span>. In Hebrew, every letter is also a number. Both alphabets trace back to the same ancient <span class="gw" data-word="Semitic" data-ciphers='[{"cipher":"Reverse Sumerian","calc":"S(48) + E(132) + M(84) + I(108) + T(42) + I(108) + C(144)","sum":666}]'>Semitic</span> script, Phoenician, which is why the letter count carries weight across both traditions. The <em>Sefer Yetzirah</em>, the Book of <span class="gw" data-word="Formation" data-ciphers='[{"cipher":"Sumerian","calc":"F(36) + O(90) + R(108) + M(78) + A(6) + T(120) + I(54) + O(90) + N(84)","sum":666}]'>Formation</span>, one of the oldest texts of Kabbalah, teaches that <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span> created the world by combining three instruments: the letter, the number, and the word. Creation itself was an act of language. The number 26 holds the four-letter name of that creator, the Tetragrammaton: YHWH. Yod (10) + Heh (5) + Vav (6) + Heh (5) = 26.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      YHWH. Four letters. One name. Yod = 10. Heh = 5. Vav = 6. Heh = 5. <strong style="color:var(--gold);">10 + 5 + 6 + 5 = 26.</strong> The same number as the letters in the English alphabet. Ancient mystics called YHWH the name of the creator. Scientists, working from the opposite direction entirely, discovered that this exact number, and this exact four-unit structure, is encoded in the molecule that carries the blueprint of every living thing on Earth. The name of <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> and the geometry of DNA share the same architecture. This is arithmetic.
+      Ancient mystics called YHWH the name of the creator. Scientists, working from the opposite direction entirely, discovered that this exact number, and this exact four unit structure, is encoded in the molecule that carries the blueprint of every living thing on Earth. The name of <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span> and the geometry of DNA share the same architecture. This is THE arithmetic.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Your DNA is a double helix, a twisted spiral staircase running through every cell in your body. The sequence <strong style="color:var(--gold);">10 → 5 → 6 → 5</strong> is the structure itself, described from the outside in. The helix makes one full turn every <strong style="color:var(--gold);">10 base pairs</strong>, Yod = 10. Each strand's backbone is built from a sugar called deoxyribose, which has exactly <strong style="color:var(--gold);">5 carbons</strong>, numbered 1 through 5, which is why every DNA strand in existence has a 5-prime end and a 3-prime end, named for these exact carbon positions. The backbone of life runs on a 5. Heh = 5. The four chemical letters of the code, A, T, G, and C, are each built around a <strong style="color:var(--gold);">6-membered ring</strong>, a hexagonal structure of carbon and nitrogen that forms the readable face of every base. Vav = 6. And when the sugar bonds into the chain, it closes into a <strong style="color:var(--gold);">5-membered ring</strong>. The 5 returns. Heh = 5. Ten base pairs per turn. Five-carbon backbone. Six-membered base rings. Five-membered ring closure. The sequence of the divine name is the structural description of the molecule that carries every living thing's blueprint.
+      Your DNA is a double helix, a twisted spiral staircase running through every cell in your body. The sequence <strong style="color:var(--gold);">10 → 5 → 6 → 5</strong> is the structure itself, described from the outside in. The helix makes one full turn every <strong style="color:var(--gold);">10 base pairs</strong>, Yod = 10. Each strand's backbone is built around exactly <strong style="color:var(--gold);">5 carbons</strong>. The backbone of life runs on a 5. Heh = 5. The four chemical letters of the code, A, T, G, and C, are each built around a <strong style="color:var(--gold);">6-membered ring</strong>, a hexagonal structure of carbon and nitrogen that forms the readable face of every base. Vav = 6. And when the sugar bonds into the chain, it closes into a <strong style="color:var(--gold);">5-membered ring</strong>. The 5 returns. Heh = 5. Ten base pairs per turn. Five-carbon backbone. Six-membered base rings. Five-membered ring closure. The sequence of the divine name is the structural description of the molecule that carries every living thing's blueprint.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      The scribes who first wrote YHWH did not have microscopes. They arrived at this number through sacred mathematics, through revelation, through the study of language as the architecture of creation. Scientists arrived at it through X-ray crystallography and experimental chemistry. They met at the same structure: four units, ten steps, a mirror code. The divine name was <em>recognized</em>: observed, named, and recorded. And it has been running in every cell of your body since before you were born. This is what gematria is built on. The code was always there. The alphabet was built to read it.
+      The scribes who first wrote YHWH did not have microscopes. They arrived at this number through sacred mathematics, through revelation, through the study of language as the architecture of creation. Scientists arrived at it through X-ray crystallography and experimental chemistry. They met at the same structure: four units, ten steps, a mirror code. The divine name was <em>recognized</em>: observed, named, and recorded. And it has been running in every cell of your body since before you were born. This is what gematria is built on. The code was always there. The <span class="gw" data-word="Alphabet" data-ciphers='[{"cipher":"Latin Reduction","calc":"A(1) + L(2) + P(6) + H(8) + A(1) + B(2) + E(5) + T(1)","sum":26}]'>alphabet</span> was built to read it.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      There is one final dimension to this architecture. In Hebrew, letters have form as well as number. The four letters of YHWH, stacked vertically as they appear in ancient manuscripts, form the silhouette of a human body. Yod, the smallest letter in the Hebrew alphabet, sits at the top: a head. The first Heh extends below: shoulders, arms, a torso open to the world. Vav is a single vertical stroke: the spine, the connector between what is above and what is below. The second Heh grounds the figure at the base: legs, foundation, earth. The Kabbalists taught that man was created not merely in <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span>'s numerical image but in <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span>'s literal letterform. The divine name, written in the script it was given in, looks like the body it encoded. And around that body, the double helix turns.
+      The number is only the first layer. In Hebrew, letters have form as well as number. The four letters of YHWH, stacked vertically as they appear in ancient manuscripts, form the silhouette of a human body. Yod, the smallest letter in the Hebrew <span class="gw" data-word="Alphabet" data-ciphers='[{"cipher":"Latin Reduction","calc":"A(1) + L(2) + P(6) + H(8) + A(1) + B(2) + E(5) + T(1)","sum":26}]'>alphabet</span>, sits at the top: a head. The first Heh extends below: shoulders, arms, a torso open to the world. Vav is a single vertical stroke: the spine, the connector between what is above and what is below. The second Heh grounds the figure at the base: legs, foundation, earth. The Kabbalists taught that man was created not merely in <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span>'s numerical image but in <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span>'s literal letterform. The divine name, written in the script it was given in, looks like the body it encoded. And around that body, the double helix turns.
     </p>
     <figure style="max-width:300px;margin:28px auto 32px;text-align:center;">
       <svg viewBox="0 0 300 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
@@ -3080,13 +3005,20 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
       <figcaption style="font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.16em;color:rgba(201,168,76,.85);margin-top:8px;text-transform:uppercase;">YHWH · The Name Written Into the Helix</figcaption>
     </figure>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Moses, the credited author of Genesis, was born 26 generations from Adam. Genesis 1:26, the 26th verse of the Bible, is the verse where <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> = 26 creates <span class="gw" data-word="Adam" data-cipher="Reverse Reduction" data-calc="A(8) + D(5) + A(8) + M(5)">Adam</span> = 26 in his <span class="gw" data-word="Image" data-cipher="Reduction" data-calc="I(9) + M(4) + A(1) + G(7) + E(5)">image</span> = 26. The creator, the created, and the act of creation: the same number, in the same verse. <span class="gw" data-word="Man" data-cipher="Latin Ordinal" data-calc="M(12) + A(1) + N(13)">Man</span> = 26 in Latin Ordinal has an <span class="gw" data-word="Anatomy" data-cipher="Reduction" data-calc="A(1) + N(5) + A(1) + T(2) + O(6) + M(4) + Y(7)">anatomy</span> = 26 made of <span class="gw" data-word="Bones" data-cipher="Reverse Reduction" data-calc="B(7) + O(3) + N(4) + E(4) + S(8)">bones</span> = 26 and <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26, and iron, the 26th element on the periodic table. The number of the creator woven into the literal chemistry of the body. <span class="gw" data-word="Mankind" data-cipher="Latin Reduction" data-calc="M(3) + A(1) + N(4) + K(1) + I(9) + N(4) + D(4)">Mankind</span> = 26. Which brings us to <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26.
+      The oldest and most studied texts in human history are not merely written in language. They are written in number. Moses, the credited author of <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, is said to have been born 26 generations from Adam. So <span class="gw" data-word="Man" data-cipher="Latin Ordinal" data-calc="M(12) + A(1) + N(13)">Man</span> = 26 has an <span class="gw" data-word="Anatomy" data-cipher="Reduction" data-calc="A(1) + N(5) + A(1) + T(2) + O(6) + M(4) + Y(7)">anatomy</span> = 26, made of <span class="gw" data-word="Bones" data-cipher="Reverse Reduction" data-calc="B(7) + O(3) + N(4) + E(4) + S(8)">bones</span> = 26, comprised mostly of <span class="gw" data-word="Calcium" data-cipher="Reduction" data-calc="C(3) + A(1) + L(3) + C(3) + I(9) + U(3) + M(4)">calcium</span> = 26, but also <span class="gw" data-word="Iron" data-cipher="Latin Reduction" data-calc="I(9) + R(8) + O(5) + N(4)">Iron</span> = 26, which is the 26th element on the periodic table. And there are exactly 206 bones in the human body. Worth noting: <span class="gw" data-word="Skeleton" data-cipher="Ordinal" data-calc="S(19) + K(11) + E(5) + L(12) + E(5) + T(20) + O(15) + N(14)">Skeleton</span> = 101 in ordinal, and 101 is the 26th prime number. The number of the creator is woven into the literal chemistry of the body. <span class="gw" data-word="Mankind" data-cipher="Latin Reduction" data-calc="M(3) + A(1) + N(4) + K(1) + I(9) + N(4) + D(4)">Mankind</span> = 26. Which brings us to <span class="gw" data-word="Carbon" data-cipher="Reduction" data-calc="C(3) + A(1) + R(9) + B(2) + O(6) + N(5)">carbon</span> = 26.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Carbon has exactly 6 protons, 6 neutrons, and 6 electrons. 6-6-6. This is the atomic signature of physical existence. Every cell in your body, every strand of your DNA, every bone in your frame is built on this element. And the individual unit from which that DNA is assembled, the building block of the helix itself, is called a <span class="gw" data-word="Nucleotide" data-cipher="English Extended" data-calc="N(50) + U(300) + C(3) + L(30) + E(5) + O(60) + T(200) + I(9) + D(4) + E(5)">nucleotide</span> = 666 in English Extended gematria. The number of the body appears at the element that builds it, and at the molecular unit that encodes it. Revelation 13:18 calls 666 the number of the beast, but also the number of a man. Read literally they are the same number and Carbon may be exactly why. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian gematria. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, the book that tells the story of creation and the <span class="gw" data-word="Formation" data-cipher="Sumerian" data-calc="F(36) + O(90) + R(108) + M(78) + A(6) + T(120) + I(54) + O(90) + N(84)">formation</span> of the world, encodes the number of the body in its own name.
+      All sentient life on earth is made of Carbon. Carbon has 6 <span class="gw" data-word="Protons" data-ciphers='[{"cipher":"Reduction","calc":"P(7) + R(9) + O(6) + T(2) + O(6) + N(5) + S(1)","sum":36}]'>protons</span>, 6 <span class="gw" data-word="Neutrons" data-ciphers='[{"cipher":"Reduction","calc":"N(5) + E(5) + U(3) + T(2) + R(9) + O(6) + N(5) + S(1)","sum":36}]'>neutrons</span>, and 6 <span class="gw" data-word="Electrons" data-ciphers='[{"cipher":"Sumerian","calc":"E(30) + L(72) + E(30) + C(18) + T(120) + R(108) + O(90) + N(84) + S(114)","sum":666}]'>electrons</span>. 6-6-6. As you can see, the names of the particles themselves encode the same pattern. <span class="gw" data-word="Protons" data-ciphers='[{"cipher":"Reduction","calc":"P(7) + R(9) + O(6) + T(2) + O(6) + N(5) + S(1)","sum":36}]'>Protons</span> = 36. <span class="gw" data-word="Neutrons" data-ciphers='[{"cipher":"Reduction","calc":"N(5) + E(5) + U(3) + T(2) + R(9) + O(6) + N(5) + S(1)","sum":36}]'>Neutrons</span> = 36. <span class="gw" data-word="Electrons" data-ciphers='[{"cipher":"Sumerian","calc":"E(30) + L(72) + E(30) + C(18) + T(120) + R(108) + O(90) + N(84) + S(114)","sum":666}]'>Electrons</span> = 666. 36 and 666 are directly linked and we will come back to that. But 666 is the atomic signature of physical existence. Every cell in your body, every strand of your DNA, every bone in your frame is built on the carbon element. And the individual unit from which that DNA is assembled, the building block of the helix itself, is called a <span class="gw" data-word="Nucleotide" data-cipher="English Extended" data-calc="N(50) + U(300) + C(3) + L(30) + E(5) + O(60) + T(200) + I(9) + D(4) + E(5)">nucleotide</span> = 666 in English Extended gematria. The number of the body appears at the element that builds it, and at the molecular unit that encodes it. <span class="gw" data-word="Humanity" data-cipher="Sumerian" data-calc="H(48) + U(126) + M(78) + A(6) + N(84) + I(54) + T(120) + Y(150)">Humanity</span> = 666 in Sumerian gematria. <span class="gw" data-word="Genesis" data-cipher="Reverse Sumerian" data-calc="G(120) + E(132) + N(78) + E(132) + S(48) + I(108) + S(48)">Genesis</span>, the book that tells the story of creation and the <span class="gw" data-word="Formation" data-cipher="Sumerian" data-calc="F(36) + O(90) + R(108) + M(78) + A(6) + T(120) + I(54) + O(90) + N(84)">formation</span> of the world, encodes the number of the body in its own name.
+    </p>
+    <blockquote style="margin:32px 0;padding:32px 28px;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.18);border-left:3px solid rgba(201,168,76,0.6);text-align:center;">
+      <p style="font-family:'Cinzel',serif;font-size:1.25rem;line-height:1.9;color:#c9a84c;font-weight:400;font-style:italic;margin:0 0 16px;">"Here is wisdom. Let him that hath understanding count the number of the beast: for it is the number of a man; and his number is Six hundred threescore and six."</p>
+      <footer style="font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.2em;color:rgba(201,168,76,0.6);text-transform:uppercase;">— Revelation 13:18</footer>
+    </blockquote>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      The text is not pointing to evil, it is pointing to a number. Now let us look at the coordinates. Chapter 13. 13 is the 6th prime number. Verse 18. 18 = 6 + 6 + 6. The author did not just name 666. They encoded it into the address of the passage itself.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Decode the address of the verse that introduces the number. Revelation 13:18. 13 is the 6th prime number, so the chapter has a prime root of 6. 6 + 6 + 6 = 18, so the verse is the sum of that number tripled. The passage that names 666 is itself encoded by 666. The passage is the pattern.
+      The Number of the Beast. Let us consider what the beast actually is. Are they referring to Satan? The Devil? Or maybe the beast is not an external monster at all. Maybe it is the unintegrated self. Man's lowest nature and urges. The hunger that has no bottom. The rage that cannot name itself. The lust, the greed, the need for control that masquerades as love. The parts of a person that were never examined, never brought into the light, and so were left to operate in the dark, running behavior from below the surface without ever being questioned. I would argue the beast is simply what a human being looks like when the wound has never been named. When the shadows buried deep enough in a person begin to move, they surface as self-sabotage. As patterns that collapse what the hands are trying to build. Relationships that end the same way every time. A version of yourself you keep returning to despite every intention not to. You are left wondering how you arrived somewhere you never consciously chose to go. But here is what the mystics understood: those shadows are not the enemy. They are the door. The wound is exactly where the light enters. What you have been running from is the compressed form of your gifts, your power, your actual self, waiting to be recognized. That is what 666 truly holds. Not damnation. Unrealized human potential. The number of a man is not a condemnation. It is a description of where the work begins.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       666 has been profoundly misunderstood for centuries, feared, demonized, reduced to a symbol of evil by people who never examined what it actually encodes. But the alchemists understood. The alchemical tradition spoke of transmuting lead into gold, and the serious practitioners knew this was not only about metallurgy. Consciousness was the real work. Lead is dense, heavy, unconscious matter, the unrealized human being, weighed down by wounds, shadows, trauma, addiction, and inherited pain. Gold is the same substance <em>refined</em>: the sovereign self that emerges when the base material is placed in the fire and worked. The fire is the process. The lead becomes gold through <em>transmutation</em>.
@@ -3098,10 +3030,10 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
       Seen through this lens, 666 points toward spiritual alchemy: the number of the body, carbon, matter, flesh, becoming <em>conscious</em>. The mother wound, the father wound, the shamed child, the addiction, the self-sabotage, the alchemists would call all of this the lead. And the work of a lifetime may be to recognize it, name it, sit in the fire with it, and transmute it into something sovereign.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <span class="gw" data-word="Lead Into Gold" data-cipher="Reduction" data-calc="L(3) + E(5) + A(1) + D(4) + I(9) + N(5) + T(2) + O(6) + G(7) + O(6) + L(3) + D(4)">Lead Into Gold</span> = 55 in reduction. 55 is a number that runs through this entire story like a thread. It is encoded in the date that began everything, May 5th, written 5/5, a date whose primary numerology is 55, the day of the mother ritual. It is encoded in the union of the two names at the center of this story. And it is the value of <span class="gw" data-word="Heaven" data-cipher="Ordinal" data-calc="H(8) + E(5) + A(1) + V(22) + E(5) + N(14)">Heaven</span> = 55 in ordinal. The destination was always embedded in the process. The alchemy was always moving toward this number. The lead was always going to become gold. It was encoded before the fire was lit.
+      <span class="gw" data-word="Lead Into Gold" data-cipher="Reduction" data-calc="L(3) + E(5) + A(1) + D(4) + I(9) + N(5) + T(2) + O(6) + G(7) + O(6) + L(3) + D(4)">Lead Into Gold</span> = 55 in reduction. 55 is a number that runs through this entire story like a thread. It is encoded in May 5th, written 5/5, my mother's birthday. It is encoded in <span class="gw" data-word="Sean and October" data-cipher="Reduction" data-calc="S(1) + E(5) + A(1) + N(5) + A(1) + N(5) + D(4) + O(6) + C(3) + T(2) + O(6) + B(2) + E(5) + R(9)">Sean and October</span> = 55, the two names at the center of this story. And it is the value of <span class="gw" data-word="Heaven" data-cipher="Ordinal" data-calc="H(8) + E(5) + A(1) + V(22) + E(5) + N(14)">Heaven</span> = 55 in ordinal. The destination was always embedded in the process. The alchemy was always moving toward this number. The lead was always going to become gold. It was encoded before the fire was lit.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:18px;">
-      One of the key principles of gematria is the <strong style="color:var(--gold);">mirror</strong>. Numbers that are reversals of each other carry a direct relationship, 34 and 43, 27 and 72, 122 and 221. This is not arbitrary. Hebrew, the language in which gematria was formalized as a sacred interpretive method, is read from right to left. The mirror is built into the reading itself. When the same pair of digits appears in both directions across names, dates, and events, it signals a resonance that runs deeper than surface-level coincidence. The mirror reflects.
+      One of the key principles of gematria is the <strong style="color:var(--gold);">mirror</strong>. Numbers that are reversals of each other carry a direct relationship, 34 and 43, 27 and 72. Hebrew, the language in which gematria was formalized as a sacred interpretive method, is read from right to left. The mirror is built into the reading itself. When the same pair of digits appears in both directions across names, dates, and events, it points to a resonance between them.
     </p>
 
     <!-- CIPHER SYSTEMS, CLICKABLE DROPDOWNS -->
@@ -3116,7 +3048,7 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
       <details class="cipher-dropdown" style="margin-bottom:8px;">
         <summary style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);cursor:pointer;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.12);">Ordinal: The First Pillar</summary>
         <div style="padding:14px 0 8px;font-size:0.9rem;line-height:1.95;color:#5a4e44;">
-          The simplest and most direct cipher. A=1, B=2, C=3, through Z=26. It maps each letter to its position in the English alphabet. Ordinal is the baseline, the first lens you apply. It often reveals the most obvious connections: <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> = 26, <span class="gw" data-word="Sean" data-cipher="Ordinal" data-calc="S(19) + E(5) + A(1) + N(14)">Sean</span> = 39, <span class="gw" data-word="October" data-cipher="Ordinal" data-calc="O(15) + C(3) + T(20) + O(15) + B(2) + E(5) + R(18)">October</span> = 78. When ordinal matches appear between two words, names, or dates, it is the most fundamental kind of resonance, a direct, unmanipulated alignment.
+          The simplest and most direct cipher. A=1, B=2, C=3, through Z=26. It maps each letter to its position in the English alphabet. Ordinal is the baseline, the first lens you apply. It often reveals the most obvious connections: <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span> = 26, <span class="gw" data-word="Sean" data-cipher="Ordinal" data-calc="S(19) + E(5) + A(1) + N(14)">Sean</span> = 39, <span class="gw" data-word="October" data-cipher="Ordinal" data-calc="O(15) + C(3) + T(20) + O(15) + B(2) + E(5) + R(18)">October</span> = 78. When ordinal matches appear between two words, names, or dates, it is the most fundamental kind of resonance, a direct, unmanipulated alignment.
         </div>
       </details>
 
@@ -3177,7 +3109,7 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
       </details>
 
       <p style="font-size:0.9rem;line-height:1.95;color:#6a5e54;font-style:italic;margin-top:14px;">
-        All of these ciphers are connected, different lenses focused on the same structure. Ordinal reads forward; Reverse reads backward. Reduction distills; Sumerian amplifies. Chaldean listens to vibration; Septenary listens to cycles. Jewish gematria maps the cosmos; Latin maps identity. When the same number appears across multiple ciphers, that is convergence. And convergence, in any discipline, is the closest thing we have to proof.
+        All of these ciphers are connected, different lenses focused on the same structure. Ordinal reads forward. Reverse reads backward. Reduction distills. Sumerian amplifies. Chaldean listens to vibration. Septenary listens to cycles. Jewish gematria maps the cosmos. Latin maps identity.
       </p>
     </div>
 
@@ -3194,16 +3126,16 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
       Gematria is a thread that runs through every major civilization on Earth, independently developed, independently documented, used as a key to the hidden architecture of language, creation, and power. The details differ across cultures and centuries. The principle holds: letters are numbers, and numbers reveal a structure that ordinary reading cannot see.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Babylon, ~800 BCE.</strong> The oldest confirmed use of letter-number encoding dates to ancient Assyria. King Sargon II commissioned his palace at Dur-Sharrukin with a perimeter wall measuring exactly 16,283 cubits, the precise numerical value of his name in the Babylonian letter-number system. He did not do this for decoration. He did it because he believed that embedding a name's number in stone bound the structure to the power of that name. While Assyrian-Babylonian scribes used cuneiform, a completely separate logographic system, the Phoenician alphabet was developing in parallel among the Semitic peoples of the Levant: the direct ancestor of Hebrew, Greek, Latin, and every Western script including the one you are reading now.
+      <strong style="color:var(--gold);">Babylon, ~800 BCE.</strong> The oldest confirmed use of letter-number encoding dates to ancient Assyria. King Sargon II commissioned his palace at Dur-Sharrukin with a perimeter wall measuring exactly 16,283 cubits, the precise numerical value of his name in the Babylonian letter-number system. He did not do this for decoration. He did it because he believed that embedding a name's number in stone bound the structure to the power of that name. While Assyrian-Babylonian scribes used cuneiform, a completely separate logographic system, the Phoenician alphabet was developing in parallel among the <span class="gw" data-word="Semitic" data-ciphers='[{"cipher":"Reverse Sumerian","calc":"S(48) + E(132) + M(84) + I(108) + T(42) + I(108) + C(144)","sum":666}]'>Semitic</span> peoples of the Levant: the direct ancestor of Hebrew, Greek, Latin, and every Western script including the one you are reading now.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Hebrew Kabbalah, 3rd to 13th century CE.</strong> The practice was formalized as a systematic spiritual method within Jewish mysticism. The <em>Sefer Yetzirah</em> (Book of Formation) describes creation as <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> combining the letter, the number, and the word as the three instruments of existence, 22 Hebrew letters and 10 primal numbers (the sefirot) as the raw materials of creation itself. The <em>Zohar</em>, the central text of Kabbalah compiled in 13th-century Spain, uses gematria extensively to link Torah passages: if two verses share the same numerical value, they are spiritually connected regardless of their surface meaning. The Kabbalists built entire cosmological maps from these values, the Tree of Life, the sefirot, the structure of heaven and earth, all rooted in the arithmetic of letters. They understood gematria not as interpretation but as engineering: reading the blueprint creation was built from.
+      <strong style="color:var(--gold);">Hebrew Kabbalah, 3rd to 13th century CE.</strong> The practice was formalized as a systematic spiritual method within Jewish mysticism. The <em>Sefer Yetzirah</em> (Book of Formation) describes creation as <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span> combining the letter, the number, and the word as the three instruments of existence, 22 Hebrew letters and 10 primal numbers (the sefirot) as the raw materials of creation itself. The <em>Zohar</em>, the central text of Kabbalah compiled in 13th-century Spain, uses gematria extensively to link Torah passages: if two verses share the same numerical value, they are spiritually connected regardless of their surface meaning. The Kabbalists built entire cosmological maps from these values, the Tree of Life, the sefirot, the structure of heaven and earth, all rooted in the arithmetic of letters. They understood gematria not as interpretation but as engineering: reading the blueprint creation was built from.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       <strong style="color:var(--gold);">Greek isopsephy.</strong> The Greeks developed the same practice independently and called it <em>isopsephy</em>, from <em>isos</em> (equal) and <em>psephos</em> (pebble, referring to counting stones). Every letter of the Greek alphabet held a numerical value, and philosophers, poets, and oracle priests used these values to find hidden meanings in sacred texts and names. Pythagoras taught that number was the foundation of all reality, not metaphor but structural fact. The proof is in Revelation: the number value of NERON KAISAR, Nero Caesar written in Greek letters, equals 666. Most modern scholars now believe Revelation was written in deliberate code, and the "number of the beast" was always a reference to the Roman emperor, hidden in plain numerical sight. The ancient world was fluent in this language. We forgot how to read it.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      <strong style="color:var(--gold);">Islamic abjad.</strong> Arabic has its own letter-number correspondence system called <em>abjad</em>, derived from the same Phoenician root as Hebrew gematria. The 28 letters of the Arabic alphabet each carry a numerical value, and Islamic scholars have used abjad in Quranic interpretation, sacred naming, analysis of divine attributes, and architecture. The 99 names of <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26},{"cipher":"Primes","calc":"G(17) + O(47) + D(7)","sum":71}]'>God</span> were studied through their abjad values. Sufi mystics used numerical equivalence to find hidden connections between divine names and verses. Sacred buildings were proportioned to the numerical values of the words they were meant to embody. The same logic, on a different continent, in a different language, arriving at the same method.
+      <strong style="color:var(--gold);">Islamic abjad.</strong> Arabic has its own letter-number correspondence system called <em>abjad</em>, derived from the same Phoenician root as Hebrew gematria. The 28 letters of the Arabic alphabet each carry a numerical value, and Islamic scholars have used abjad in Quranic interpretation, sacred naming, analysis of divine attributes, and architecture. The 99 names of <span class="gw" data-word="God" data-ciphers='[{"cipher":"Ordinal","calc":"G(7) + O(15) + D(4)","sum":26}]'>God</span> were studied through their abjad values. Sufi mystics used numerical equivalence to find hidden connections between divine names and verses. Sacred buildings were proportioned to the numerical values of the words they were meant to embody. The same logic, on a different continent, in a different language, arriving at the same method.
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
       <strong style="color:var(--gold);">Renaissance hermeticism, 15th to 16th century.</strong> When Greek and Arabic manuscripts flooded into Europe, scholars formalized gematria within the Western tradition. Heinrich Cornelius Agrippa's <em>Three Books of Occult Philosophy</em> (1531) catalogued numerical values for Hebrew, Greek, and Latin letters across multiple cipher systems, a framework nearly identical to what modern practitioners use today. John Dee, mathematician and advisor to Queen Elizabeth I, developed a sacred language rooted in the belief that number was the primary channel through which the divine communicated with creation. These were not fringe figures. Agrippa's work was read by every educated person in Europe. Dee corresponded with the most powerful monarchs of his era. The practice sat at the center of Renaissance intellectual life.
@@ -3213,6 +3145,47 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       The thread runs unbroken from Sargon's palace wall in 800 BCE to the community of researchers working in real time today. Different languages. Different centuries. Different continents. The same practice, the same conviction: that letters are numbers, that numbers are not arbitrary, and that somewhere beneath the surface of language a structure is waiting, patient, precise, and unchanged, for anyone willing to learn how to read it.
+    </p>
+  </div></details>
+
+  <!-- SECTION: WHAT IS NUMEROLOGY -->
+  <details class="intro-section">
+    <summary>What Is Numerology</summary>
+    <div class="intro-body">
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Numerology is the study of the symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers mean. It holds that the universe is fundamentally mathematical. That numbers may be more than a tool humans <em>discovered</em> to describe reality. They may be a structural property of reality itself.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      Pythagoras, the Greek mathematician who proved that the squares of a right triangle's legs equal the square of its hypotenuse, also founded a mystery school that taught numbers as living forces. To him, mathematics and mysticism were the same inquiry: what is the universe made of? His answer was number. Twenty-five centuries later, quantum physics arrived at a strikingly similar conclusion.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      The core of numerology is the chart. It is calculated from two sources: the full birth name and the birth date. The birth date reduces to a <strong style="color:var(--gold);">Life Path</strong> number, the single most significant number in the chart. It describes the overarching nature and direction of a person's life. The full name at birth encodes three additional numbers: the <strong style="color:var(--gold);">Expression</strong> (all letters), the <strong style="color:var(--gold);">Soul Urge</strong> (vowels only), and the <strong style="color:var(--gold);">Personality</strong> (consonants only). Each represents a different layer of who a person is. The public self. The private drive. The outer impression. Together they form a portrait that is both specific and structural.
+    </p>
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:20px;">
+      In numerology, each number carries a specific vibration. Click any number below to explore its meaning:
+    </p>
+
+    <!-- INTERACTIVE NUMBER GRID -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px;" id="numero-grid">
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="1"><strong>1</strong> The Initiator</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="2"><strong>2</strong> The Diplomat</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="3"><strong>3</strong> The Creator</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="4"><strong>4</strong> The Builder</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="5"><strong>5</strong> The Freedom Seeker</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="6"><strong>6</strong> The Nurturer</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="7"><strong>7</strong> The Seeker</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="8"><strong>8</strong> The Powerhouse</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="9"><strong>9</strong> The Humanitarian</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="11"><strong>11</strong> Master Intuitive</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="22"><strong>22</strong> Master Builder</span>
+      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="33"><strong>33</strong> Master Teacher</span>
+    </div>
+    <div id="numdef-display" style="display:none;padding:18px 22px;border:1px solid rgba(201,168,76,0.15);border-radius:4px;background:rgba(201,168,76,0.03);margin-bottom:24px;animation:fadeUp 0.4s ease;">
+      <p id="numdef-text" style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.92rem;line-height:1.9;color:#5a4e44;"></p>
+    </div>
+
+    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
+      When master numbers (11, 22, 33) appear in a chart, they are not reduced further. <strong style="color:var(--gold);">11</strong> is the number of the Messenger. The most intuitive of all numbers, it bridges the material world and the invisible. Those who carry it often sense what cannot yet be named. They read rooms, people, and patterns before there is language for what they are perceiving. <strong style="color:var(--gold);">22</strong> is the Master Builder, considered the most powerful number in the system. It carries 11's vision and grounds it in 4's discipline, giving it the rare capacity to construct what it sees. Ideas at scale. Structure built from intuition. <strong style="color:var(--gold);">33</strong> is the Master Teacher. The number of compassionate service, spiritual instruction, and selfless uplift. Those who carry it are often called before they feel ready. All three master numbers share one trait: they demand more than their single-digit counterparts ask. The capacity, when developed, tends to match.
     </p>
   </div></details>
 
@@ -3267,44 +3240,6 @@ body[data-phase="transmutation"] #cur-dot  { background: rgba(140,190,105,.9); b
     </p>
     <p style="font-size:0.95rem;line-height:2;color:#5a4e44;">
       But instead of walking away, I walked deeper. I picked up <em>Numerology of the Divine Triangle</em> by Faith Javane and Dusty Bunker, a system I had never studied. The numerology of the self. I calculated my full chart. My Life Path is 11. My Soul Urge is 33. The chart didn't tell me anything I could have predicted. It just made something I had always felt stop feeling so strange. The gematria and the numerology bridged completely. One gave me the language. The other gave me the reason I could read it. The Super Bowl miss was the turn in the road that led me to the map of myself. And the map led me here, to this story, to these codes, and to the understanding that the numbers were never about winning bets. They were about waking up.
-    </p>
-  </div></details>
-
-  <!-- SECTION: WHAT IS NUMEROLOGY -->
-  <details class="intro-section">
-    <summary>What Is Numerology</summary>
-    <div class="intro-body">
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Numerology is the study of the symbolic significance of numbers. Where gematria converts language into number, numerology interprets what those numbers may mean. It holds that the universe is fundamentally mathematical, that numbers may be more than a tool humans <em>discovered</em> to describe reality; they may be a structural property of reality itself.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      Pythagoras, the Greek mathematician who proved that the squares of a right triangle's legs equal the square of its hypotenuse, also founded a mystery school that taught numbers as living forces. To him, mathematics and mysticism were the same inquiry: what is the universe made of? His answer was number. Twenty-five centuries later, quantum physics arrived at a strikingly similar conclusion.
-    </p>
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:20px;">
-      In numerology, each number carries a specific vibration. Click any number below to explore its meaning:
-    </p>
-
-    <!-- INTERACTIVE NUMBER GRID -->
-    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px;" id="numero-grid">
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="1"><strong>1</strong> The Initiator</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="2"><strong>2</strong> The Diplomat</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="3"><strong>3</strong> The Creator</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="4"><strong>4</strong> The Builder</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="5"><strong>5</strong> The Freedom Seeker</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="6"><strong>6</strong> The Nurturer</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="7"><strong>7</strong> The Seeker</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="8"><strong>8</strong> The Powerhouse</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="9"><strong>9</strong> The Humanitarian</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="11"><strong>11</strong> Master Intuitive</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="22"><strong>22</strong> Master Builder</span>
-      <span class="fchip" style="padding:6px 14px;font-size:0.65rem;" onclick="toggleNumDef(this)" data-numdef="33"><strong>33</strong> Master Teacher</span>
-    </div>
-    <div id="numdef-display" style="display:none;padding:18px 22px;border:1px solid rgba(201,168,76,0.15);border-radius:4px;background:rgba(201,168,76,0.03);margin-bottom:24px;animation:fadeUp 0.4s ease;">
-      <p id="numdef-text" style="font-family:'IM Fell English',serif;font-style:italic;font-size:0.92rem;line-height:1.9;color:#5a4e44;"></p>
-    </div>
-
-    <p style="font-size:0.95rem;line-height:2;color:#5a4e44;margin-bottom:14px;">
-      When master numbers (11, 22, 33) appear in a chart, they are not reduced further. Their doubled digit amplifies the frequency. Master numbers indicate a life that carries an intensified version of the single digit's energy, along with a heightened sensitivity to pattern, meaning, and the invisible architecture of events.
     </p>
   </div></details>
 
@@ -6493,6 +6428,9 @@ function decodeDate() {
     'Reverse Sumerian': [156,150,144,138,132,126,120,114,108,102,96,90,84,78,72,66,60,54,48,42,36,30,24,18,12,6],
     'Chaldean': [1,2,3,4,5,8,3,5,1,1,2,3,4,5,7,8,1,2,3,4,6,6,6,5,1,7],
     'Septenary': [1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5],
+    'Latin Ordinal':   [1,2,3,4,5,6,7,8,9,0,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],
+    'Latin Reduction': [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7],
+    'English Extended': [1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800],
   };
   const ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -6503,8 +6441,8 @@ function decodeDate() {
     // Show as 2 rows of 13 on mobile-friendly grid
     for (let i = 0; i < 26; i++) {
       rows += `<span style="display:inline-flex;flex-direction:column;align-items:center;gap:1px;min-width:22px;">` +
-        `<span style="color:var(--gold);font-weight:600;font-size:0.7rem;">${ALPHA[i]}</span>` +
-        `<span style="color:#8a7a6a;font-size:0.6rem;">${vals[i]}</span></span>`;
+        `<span style="color:var(--gold);font-weight:600;font-size:0.75rem;">${ALPHA[i]}</span>` +
+        `<span style="color:#c9a84c;font-size:0.72rem;font-weight:500;">${vals[i]}</span></span>`;
     }
     return `<div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(201,168,76,0.12);">` +
       `<div style="font-family:'Cinzel',serif;font-size:0.42rem;letter-spacing:0.15em;color:#6a5e54;margin-bottom:6px;text-transform:uppercase;">${cipherName} Key</div>` +
@@ -6530,12 +6468,16 @@ function decodeDate() {
         `<button class="gw-cipher-tab${i===idx?' active':''}" onclick="gwSwitchCipher(this,${i})">${c.cipher}</button>`
       ).join('');
       const c0 = ciphers[0];
+      const fmtCalc = (calc) => calc.replace(/([A-Za-z]+)\((\d+)\)/g,
+        '<span class="gw-letter">$1</span>(<span style="color:var(--gold);">$2</span>)')
+        .replace(/\+/g, '<span class="gw-plus">+</span>');
       tip.innerHTML = `
         <button class="gw-tooltip-close" onclick="this.parentElement.remove()">&times;</button>
         <div class="gw-tooltip-word">${word}</div>
         <div class="gw-cipher-tabs">${renderTabs(0)}</div>
-        <div class="gw-tooltip-calc">${c0.calc}</div>
+        <div class="gw-tooltip-calc">${fmtCalc(c0.calc)}</div>
         <div class="gw-tooltip-sum">= ${c0.sum}</div>
+        <div class="gw-cipher-key">${buildCipherKey(c0.cipher)}</div>
       `;
     } else {
       const cipher = el.dataset.cipher || 'Ordinal';
@@ -6575,9 +6517,13 @@ function decodeDate() {
     const tip = btn.closest('.gw-tooltip');
     const ciphers = JSON.parse(tip.dataset.ciphers);
     const c = ciphers[idx];
+    const fmtCalc = (calc) => calc.replace(/([A-Za-z]+)\((\d+)\)/g,
+      '<span class="gw-letter">$1</span>(<span style="color:var(--gold);">$2</span>)')
+      .replace(/\+/g, '<span class="gw-plus">+</span>');
     tip.querySelectorAll('.gw-cipher-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
-    tip.querySelector('.gw-tooltip-calc').textContent = c.calc;
+    tip.querySelector('.gw-tooltip-calc').innerHTML = fmtCalc(c.calc);
     tip.querySelector('.gw-tooltip-sum').textContent = '= ' + c.sum;
+    tip.querySelector('.gw-cipher-key').innerHTML = buildCipherKey(c.cipher);
   };
 
   document.addEventListener('click', (e) => {
@@ -7607,104 +7553,7 @@ document.querySelectorAll('.plabel').forEach(pl => {
 });
 
 
-/* ═══════════════════════════════════════════════════
-   CUSTOM CURSOR SYSTEM
-   ═══════════════════════════════════════════════════ */
-(function initCursor() {
-  var ring = document.getElementById('cur-ring');
-  var dot  = document.getElementById('cur-dot');
-  if (!ring || !dot || window.matchMedia('(hover: none)').matches) return;
-  ring.style.display = dot.style.display = 'block';
-  var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-  var rx = mx, ry = my;
-  document.addEventListener('mousemove', function(e) {
-    mx = e.clientX; my = e.clientY;
-    dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
-  });
-  document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-  document.addEventListener('mouseenter', function() { dot.style.opacity = ''; ring.style.opacity = ''; });
-  document.addEventListener('mouseover', function(e) {
-    if (e.target.closest('a,button,.ec,.dot,.fchip,.cover-begin,[onclick],input,textarea,.nav-btn,.plabel'))
-      document.body.classList.add('cur-hover');
-  });
-  document.addEventListener('mouseout', function(e) {
-    if (e.target.closest('a,button,.ec,.dot,.fchip,.cover-begin,[onclick],input,textarea,.nav-btn,.plabel'))
-      document.body.classList.remove('cur-hover');
-  });
-  var phIO = new IntersectionObserver(function(entries) {
-    entries.forEach(function(en) {
-      if (en.isIntersecting) document.body.setAttribute('data-phase', en.target.getAttribute('data-phase') || '');
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll('.phase-section[data-phase]').forEach(function(s) { phIO.observe(s); });
-  (function animRing() {
-    rx += (mx - rx) * 0.10;
-    ry += (my - ry) * 0.10;
-    ring.style.transform = 'translate3d(' + (rx | 0) + 'px,' + (ry | 0) + 'px,0)';
-    requestAnimationFrame(animRing);
-  })();
-})();
-
-/* ═══════════════════════════════════════════════════
-   LADYBUG HERO SYSTEM
-   ═══════════════════════════════════════════════════ */
-(function initLadybugHeroes() {
-  var origSection = document.querySelector('.phase-section.phase-origin');
-  if (!origSection) return;
-  var container = document.createElement('div');
-  container.className = 'lb-hero-container';
-
-  function makeSVG(spots, c1, c2) {
-    var dots2 = '<circle cx="20" cy="42" r="5.5" fill="#0c0000"/><circle cx="44" cy="42" r="5.5" fill="#0c0000"/>';
-    var dots7 = '<circle cx="18" cy="30" r="4" fill="#0c0000"/><circle cx="46" cy="30" r="4" fill="#0c0000"/>'
-              + '<circle cx="14" cy="46" r="4" fill="#0c0000"/><circle cx="50" cy="46" r="4" fill="#0c0000"/>'
-              + '<circle cx="20" cy="60" r="4" fill="#0c0000"/><circle cx="44" cy="60" r="4" fill="#0c0000"/>'
-              + '<circle cx="32" cy="50" r="4" fill="#0c0000"/>';
-    var dotsSVG = spots === 2 ? dots2 : dots7;
-    return [
-      '<ellipse cx="32" cy="77" rx="18" ry="5" fill="rgba(0,0,0,.18)"/>',
-      /* left wing */ '<path class="lb-wing-l" d="M32,16 C15,16 7,31 7,51 C7,65 17,73 30,73 L32,73Z" fill="' + c1 + '"/>',
-      /* right wing*/ '<path class="lb-wing-r" d="M32,16 C49,16 57,31 57,51 C57,65 47,73 34,73 L32,73Z" fill="' + c2 + '"/>',
-      /* wing sheen */ '<path d="M17,28 Q22,21 29,20" stroke="rgba(255,140,80,.35)" stroke-width="1.5" fill="none" stroke-linecap="round"/>',
-      /* center line*/ '<line x1="32" y1="16" x2="32" y2="73" stroke="#0c0000" stroke-width="2"/>',
-      /* pronotum  */ '<ellipse cx="32" cy="16" rx="13" ry="8.5" fill="#111"/>',
-      /* eyes sheen */ '<path d="M22,14 Q26,9 30,13M42,14 Q38,9 34,13" stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>',
-      /* head       */ '<ellipse cx="32" cy="7" rx="8" ry="6.5" fill="#111"/>',
-      /* eye whites */ '<circle cx="28" cy="6.5" r="2.2" fill="white"/><circle cx="36" cy="6.5" r="2.2" fill="white"/>',
-      /* pupils     */ '<circle cx="28.5" cy="6.8" r="1.1" fill="#333"/><circle cx="36.5" cy="6.8" r="1.1" fill="#333"/>',
-      /* antennae   */ '<path d="M29,2.5 Q23,-3 18,-6M35,2.5 Q41,-3 46,-6" stroke="#333" stroke-width="1.3" fill="none" stroke-linecap="round"/>',
-      '<circle cx="18" cy="-6" r="2.2" fill="#333"/><circle cx="46" cy="-6" r="2.2" fill="#333"/>',
-      /* legs L     */ '<path d="M10,35 Q2,31 -4,34M9,48 Q0,46 -4,50M11,60 Q3,60 0,66" stroke="#222" stroke-width="1.2" fill="none" stroke-linecap="round"/>',
-      /* legs R     */ '<path d="M54,35 Q62,31 68,34M55,48 Q64,46 68,50M53,60 Q61,60 64,66" stroke="#222" stroke-width="1.2" fill="none" stroke-linecap="round"/>',
-      dotsSVG
-    ].join('');
-  }
-
-  [
-    { f: 1, b: 1, w: 90,  h: 110, spots: 2, c1: '#c82010', c2: '#ba1c0e' },
-    { f: 2, b: 2, w: 64,  h: 78,  spots: 7, c1: '#c42010', c2: '#b81808' },
-    { f: 3, b: 3, w: 48,  h: 58,  spots: 2, c1: '#cc2212', c2: '#bc1c08' }
-  ].forEach(function(cfg) {
-    var flight = document.createElement('div');
-    flight.className = 'lb-flight lb-f' + cfg.f;
-    var bob = document.createElement('div');
-    bob.className = 'lb-bob lb-b' + cfg.b;
-    var sv = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    sv.setAttribute('class', 'lb-svg');
-    sv.setAttribute('width',  cfg.w);
-    sv.setAttribute('height', cfg.h);
-    sv.setAttribute('viewBox', '0 0 64 80');
-    sv.innerHTML = makeSVG(cfg.spots, cfg.c1, cfg.c2);
-    bob.appendChild(sv);
-    flight.appendChild(bob);
-    container.appendChild(flight);
-  });
-
-  origSection.insertBefore(container, origSection.firstChild);
-})();
 
 </script>
-<div id="cur-ring"></div>
-<div id="cur-dot"></div>
 </body>
 </html>
