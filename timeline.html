@@ -2637,12 +2637,72 @@ body.dark .mn-content p { color: #9a8880; }
 }
 
 
+/* ─── Event cinematic images ─── */
+.ev-hero {
+  display: none;
+  margin: -24px -28px 20px;
+  position: relative; overflow: hidden;
+  border-radius: 3px 3px 0 0;
+}
+.ev-hero img {
+  width: 100%; max-height: 420px; object-fit: cover; display: block;
+  border-radius: 3px 3px 0 0;
+  border: 1px solid rgba(201,168,76,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.ev-hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 25%;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.88));
+  pointer-events: none;
+}
+.ec.open .ev-hero { display: block; }
+.ev-img-wrap {
+  display: none;
+  margin: 18px -28px;
+}
+.ev-img-wrap img {
+  width: 100%; max-height: 320px; object-fit: cover; display: block;
+  border-radius: 4px;
+  border: 1px solid rgba(201,168,76,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+}
+.ev-img-wrap img.ev-img-in { opacity: 1; transform: translateY(0); }
+body.dark .ev-img-wrap img { filter: brightness(0.92); }
+.ec.open .ev-img-wrap { display: block; }
+.ev-img-close {
+  display: none;
+  margin: 18px -28px -24px;
+}
+.ev-img-close img {
+  width: 100%; max-height: 280px; object-fit: cover; display: block;
+  border-radius: 0 0 3px 3px;
+  border: 1px solid rgba(201,168,76,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+}
+.ev-img-close img.ev-img-in { opacity: 1; transform: translateY(0); }
+body.dark .ev-img-close img { filter: brightness(0.92); }
+.ec.open .ev-img-close { display: block; }
+/* Cover landscape underlayer */
+#cover-landscape {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  z-index: 0; opacity: 0;
+  transition: opacity 3s ease;
+}
+
 </style>
 </head>
 <body class="cover-active">
 
 <!-- ═══════════════ COVER PAGE ═══════════════ -->
 <div id="cover">
+  <img id="cover-landscape" src="assets/images/landscape.webp" alt="" loading="eager" decoding="async">
   <video class="cover-bg-video" id="coverVideo" src="cover-bg.mp4" autoplay muted playsinline preload="auto"></video>
   <video class="cover-bg-video clone" id="coverVideoClone" src="cover-bg.mp4" muted playsinline preload="auto" style="opacity:0;"></video>
   <script>
@@ -3615,15 +3675,32 @@ body.dark .mn-content p { color: #9a8880; }
 
 <div class="ev" data-codes="39,24,33,27,43,93" data-phase="summer">
   <div class="ec" onclick="expand(this)">
+    <div class="ev-hero">
+      <img src="assets/images/horses.webp" alt="Wild horses on the Banff highway" loading="eager" decoding="async">
+    </div>
     <div class="edate">July 1, 2025 · Canada Day</div>
     <div class="etitle">Banff · Wild Horses &amp; The Raven</div>
-    <div class="ebody">We drove to Banff on Canada Day. Lunch at the Light Cellar. Psilocybin mushrooms on the trail. A waterfall so thick with butterflies it looked like the air itself was breathing. On the highway back, six wild horses stood in the road. One of them walked directly toward me and stopped four feet away, looking at me. We took the gondola to the summit and found a family of mountain goats at the top, mother, father, baby, watching us like witnesses. A raven circled overhead, the same bird already tattooed on my hand before we ever met. The first kiss landed just after midnight, crossing into July 2nd. First Kiss equals 27 in Chaldean, the same number the ladybugs had carried to my mother's shrine two months before.</div>
+    <div class="ebody">We drove to Banff on Canada Day. Lunch at the Light Cellar. Psilocybin mushrooms on the trail. A waterfall so thick with butterflies it looked like the air itself was breathing. On the highway back, six wild horses stood in the road. One of them walked directly toward me and stopped four feet away, looking at me. We took the gondola to the summit and found a family of mountain goats at the top, mother, father, baby, watching us like witnesses.</div>
+    <div class="ev-img-wrap">
+      <img src="assets/images/goats.webp" alt="Mountain goat family at the summit" loading="lazy" decoding="async">
+    </div>
+    <div class="ebody">A raven circled overhead, the same bird already tattooed on my hand before we ever met.</div>
+    <div class="ev-img-wrap">
+      <img src="assets/images/raven.webp" alt="Raven circling overhead" loading="lazy" decoding="async">
+    </div>
+    <div class="ebody">The first kiss landed just after midnight, crossing into July 2nd. First Kiss equals 27 in Chaldean, the same number the ladybugs had carried to my mother's shrine two months before. On the drive out, a doe stepped from the treeline with two fawns — one nursing, one watching. The mothers had bookended the day.</div>
+    <div class="ev-img-wrap">
+      <img src="assets/images/deer.webp" alt="Doe with two fawns at the treeline" loading="lazy" decoding="async">
+    </div>
     <div class="detail">Wild Horses = 39, matching Sean, October, Mirror Flame, and May. Raven = 24 reduction. Light Cellar = 33, matching October's reduction and Soul Urge. Mountain Goat = 43 JR. Psilocybin Mushroom = 93 reduction, Saturn = Hungry = Norgan. The kiss landing on 7/2 encoded the same mirror as the ladybug's 72-hour arrival. The raven tattooed on his hand was a memory of a future he hadn't lived yet.</div>
     <div class="tags">
       <span class="tag n" data-code="39">Wild Horses = 39</span>
       <span class="tag n" data-code="24">Raven = 24</span>
       <span class="tag" data-code="33">Light Cellar = 33</span>
       <span class="tag" data-code="27">First Kiss = 27</span>
+    </div>
+    <div class="ev-img-close">
+      <img src="assets/images/landscape.webp" alt="Banff landscape" loading="lazy" decoding="async">
     </div>
     <div class="ea">&#9662;</div>
   </div>
@@ -7552,7 +7629,27 @@ document.querySelectorAll('.plabel').forEach(pl => {
   if (dc) { pl.insertBefore(glyph(), dc); pl.appendChild(glyph()); }
 });
 
+// ── Event image scroll reveal ──────────────────────
+const imgRevealIO = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      en.target.classList.add('ev-img-in');
+      imgRevealIO.unobserve(en.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.ev-img-wrap img, .ev-img-close img').forEach(img => {
+  imgRevealIO.observe(img);
+});
 
+// ── Cover landscape crossfade (8s delay, 3s ease) ──
+(function() {
+  var cl = document.getElementById('cover-landscape');
+  if (!cl) return;
+  var fire = function() { setTimeout(function() { cl.style.opacity = '0.35'; }, 8000); };
+  if (document.readyState === 'complete') fire();
+  else window.addEventListener('load', fire, { once: true });
+})();
 
 </script>
 </body>
