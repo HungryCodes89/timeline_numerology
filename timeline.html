@@ -1327,7 +1327,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
 
   /* ── HEADER ── */
   header { padding: 72px 20px 32px; }
-  h1 { font-size: clamp(1.2rem, 5.8vw, 2.4rem); letter-spacing: 0.01em; }
+  h1 { font-size: min(6vw, 2.8rem); letter-spacing: 0; }
   .sub { font-size: 0.88rem; }
   .motto { font-size: 0.78rem; }
   .sigil { font-size: 1.3rem; letter-spacing: 0.2em; }
@@ -1550,7 +1550,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
    ═══════════════════════════════ */
 @media (max-width: 420px) {
   .numero-clock { display: none; }
-  h1 { font-size: clamp(1.2rem, 6.5vw, 1.8rem); letter-spacing: 0; }
+  h1 { font-size: min(6vw, 2.2rem); letter-spacing: 0; }
   .sub { font-size: 0.82rem; }
   .motto { font-size: 0.72rem; }
 
@@ -1599,7 +1599,7 @@ footer .n { font-family: 'Cinzel', serif; color: var(--gold); font-style: normal
    ULTRA-SMALL PHONES (360px)
    ═══════════════════════════════ */
 @media (max-width: 360px) {
-  h1 { font-size: clamp(1.1rem, 6.5vw, 1.6rem); letter-spacing: 0; }
+  h1 { font-size: min(5.8vw, 2rem); letter-spacing: 0; }
   .cover-lotus { width: clamp(120px, 50vw, 180px); }
   .cover-invocation { font-size: 0.72rem; }
   .cover-begin { padding: 12px 24px; }
